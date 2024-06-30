@@ -5,7 +5,7 @@ include(CheckCXXSymbolExists)
 check_symbol
 ----------------
 
-A wrapper function around ``check_cxx_symbol_exists``.
+A wrapper function around ``check_cxx_symbol_exists``, or ``check_symbol_exists``.
 
 .. code:: cmake
 
@@ -18,26 +18,31 @@ A wrapper function around ``check_cxx_symbol_exists``.
 
 Check if the given ``SYMBOL`` can be found after constructing a ``CXX`` file and
 including ``FILES``. Optionally add header includes by setting the ``INCLUDE_DIRS``
-argument.
+argument. Set the mode to ``check_cxx_symbol_exists`` or ``check_symbol_exists``
+to control the function used to check symbols. Defaults to ``check_cxx_symbol_exists``.
 
 Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
 with the name contained in the ``RETURN_VAR`` variable.
 #]==========================================================================]
-function(check_symbol)
-    set(one_value_args RETURN_VAR SYMBOL)
-    set(multi_value_args FILES INCLUDE_DIRS)
-    cmake_parse_arguments(CHECK_SYMBOL "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+function(check_symbol_add_definitions)
+    set(one_value_args symbol return_var mode)
+    set(multi_value_args files include_dir)
+    cmake_parse_arguments(check_symbol "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    check_required_arg(CHECK_SYMBOL_SYMBOL SYMBOL)
-    check_required_arg(CHECK_SYMBOL_RETURN_VAR RETURN_VAR)
-    check_required_arg(CHECK_SYMBOL_FILES FILES)
+    check_required_arg(check_symbol_return_var return_var)
+    check_required_arg(check_symbol_symbol symbol)
+    check_required_arg(check_symbol_files files)
 
-    prepare_check_function(CHECK_SYMBOL_RETURN_VAR CHECK_SYMBOL_INCLUDE_DIRS)
+    prepare_check_function(check_symbol_return_var check_symbol_include_dir)
 
-    check_cxx_symbol_exists(${CHECK_SYMBOL_SYMBOL} ${CHECK_SYMBOL_FILES} ${CHECK_SYMBOL_RETURN_VAR})
+    if(${check_symbol_mode} STREQUAL "check_symbol_exists")
+        check_symbol_exists(${check_symbol_symbol} ${check_symbol_files} ${check_symbol_return_var})
+    else()
+        check_cxx_symbol_exists(${check_symbol_symbol} ${check_symbol_files} ${check_symbol_return_var})
+    endif()
 
-    if(${CHECK_SYMBOL_RETURN_VAR})
-        add_compile_definitions("${CHECK_SYMBOL_RETURN_VAR}=1")
+    if(${check_symbol_return_var})
+        add_compile_definitions("${check_symbol_return_var}=1")
     endif()
 endfunction()
 
