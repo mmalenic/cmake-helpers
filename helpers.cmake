@@ -1,5 +1,6 @@
 include(CheckIncludeFiles)
 include(CheckCXXSymbolExists)
+include(CheckSymbolExists)
 
 #[==========================================================================[
 check_symbol
@@ -24,26 +25,39 @@ to control the function used to check symbols. Defaults to ``check_cxx_symbol_ex
 Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
 with the name contained in the ``RETURN_VAR`` variable.
 #]==========================================================================]
-function(check_symbol_add_definitions)
-    set(one_value_args symbol return_var mode)
-    set(multi_value_args files include_dir)
-    cmake_parse_arguments(check_symbol "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+function(check_symbol)
+    set(one_value_args SYMBOL VAR MODE)
+    set(multi_value_args FILES INCLUDE_DIRS)
+    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    check_required_arg(check_symbol_return_var return_var)
-    check_required_arg(check_symbol_symbol symbol)
-    check_required_arg(check_symbol_files files)
+    check_required_arg(_VAR)
+    check_required_arg(_SYMBOL)
+    check_required_arg(_FILES)
 
-    prepare_check_function(check_symbol_return_var check_symbol_include_dir)
+    prepare_check_function(VAR INCLUDE_DIRS)
 
-    if(${check_symbol_mode} STREQUAL "check_symbol_exists")
-        check_symbol_exists(${check_symbol_symbol} ${check_symbol_files} ${check_symbol_return_var})
+    if("${_MODE}" STREQUAL "check_symbol_exists")
+        cmake_helpers_status("check_symbol - using check_symbol_exists")
+        check_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
+    elseif("${_MODE}" STREQUAL "check_cxx_symbol_exists")
+        cmake_helpers_status("check_symbol - using check_cxx_symbol_exists")
+        check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     else()
-        check_cxx_symbol_exists(${check_symbol_symbol} ${check_symbol_files} ${check_symbol_return_var})
+        cmake_helpers_error("check_symbol - invalid mode: ${_MODE}")
+        return()
     endif()
 
-    if(${check_symbol_return_var})
-        add_compile_definitions("${check_symbol_return_var}=1")
+    if(${_VAR})
+        add_compile_definitions("${_VAR}=1")
     endif()
+endfunction()
+
+function(cmake_helpers_status message)
+    message(STATUS "cmake-helpers: ${message}")
+endfunction()
+
+function(cmake_helpers_error message)
+    message(FATAL_ERROR "cmake-helpers: ${message}")
 endfunction()
 
 #[==========================================================================[
@@ -235,9 +249,10 @@ arguments.
 Check if ``ARG`` is defined, printing an error message with ``ARG_NAME``
 and returning early if not.
 #]==========================================================================]
-macro(check_required_arg ARG ARG_NAME)
+macro(check_required_arg ARG)
+    string(REGEX REPLACE "^_" "" ARG_NAME ${ARG})
     if(NOT DEFINED ${ARG})
-        message(FATAL_ERROR "utils: required parameter ${ARG_NAME} not set")
+        message(FATAL_ERROR "cmake-helpers: required parameter ${ARG_NAME} not set")
         return()
     endif()
 endmacro()
