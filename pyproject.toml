@@ -17,6 +17,8 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8"
 cmake = "^3"
+conan = "^2"
+brotlicffi = "^1"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
