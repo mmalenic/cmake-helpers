@@ -37,13 +37,13 @@ function(check_symbol)
     prepare_check_function(VAR INCLUDE_DIRS)
 
     if("${_MODE}" STREQUAL "check_symbol_exists")
-        cmake_helpers_status("check_symbol - using check_symbol_exists")
+        cmake_helpers_status("check_symbol" "using check_symbol_exists")
         check_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     elseif(NOT DEFINED _MODE OR "${_MODE}" STREQUAL "check_cxx_symbol_exists")
-        cmake_helpers_status("check_symbol - using check_cxx_symbol_exists")
+        cmake_helpers_status("check_symbol" "using check_cxx_symbol_exists")
         check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     else()
-        cmake_helpers_error("check_symbol - invalid mode: ${_MODE}")
+        cmake_helpers_error("check_symbol" "invalid mode: ${_MODE}")
         return()
     endif()
 
@@ -52,12 +52,12 @@ function(check_symbol)
     endif()
 endfunction()
 
-function(cmake_helpers_status message)
-    message(STATUS "cmake-helpers: ${message}")
+function(cmake_helpers_status function message)
+    message(STATUS "cmake-helpers: ${function} - ${message}")
 endfunction()
 
-function(cmake_helpers_error message)
-    message(FATAL_ERROR "cmake-helpers: ${message}")
+function(cmake_helpers_error function message)
+    message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
 endfunction()
 
 #[==========================================================================[
@@ -85,38 +85,45 @@ to ``COMPONENTS``. ``DIRECT_LINK`` specifies linking a dependency as
 ``${DEPENDENCY_NAME}`` rather than ``${DEPENDENCY_NAME}::${DEPENDENCY_NAME}``.
 #]==========================================================================]
 function(program_dependencies TARGET DEPENDENCY_NAME)
-    set(options DIRECT_LINK)
     set(one_value_args VERSION VISIBILITY)
-    set(multi_value_args COMPONENTS LINK_COMPONENTS)
-    cmake_parse_arguments(PROGRAM_DEPENDENCIES "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+    set(multi_value_args LINK_COMPONENTS FIND_PACKAGE_ARGS)
+    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(NOT ${DEPENDENCY_NAME}_FOUND)
-        find_package(
-            ${DEPENDENCY_NAME} ${PROGRAM_DEPENDENCIES_VERSION} REQUIRED COMPONENTS ${PROGRAM_DEPENDENCIES_COMPONENTS}
-        )
+        get_property(before_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+
+        find_package(${DEPENDENCY_NAME} ${_VERSION} ${_FIND_PACKAGE_ARGS})
+
+        # Set a property containing the imported targets of this find package call.
+        get_property(after_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+        list(REMOVE_ITEM after_importing ${before_importing})
+        cmake_helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components ${after_importing}")
+
+        set(imported_targets_name "_program_dependencies_${DEPENDENCY_NAME}")
+        set_property(DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}" "${after_importing}")
+
+        get_property(name DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
     endif()
 
-    if(NOT DEFINED PROGRAM_DEPENDENCIES_LINK_COMPONENTS)
-        set(PROGRAM_DEPENDENCIES_LINK_COMPONENTS ${PROGRAM_DEPENDENCIES_COMPONENTS})
+    # Override the components if linking manually.
+    get_property(components DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
+    if(DEFINED _LINK_COMPONENTS)
+        set(components ${_LINK_COMPONENTS})
     endif()
 
-    if(DEFINED PROGRAM_DEPENDENCIES_LINK_COMPONENTS)
-        list(LENGTH PROGRAM_DEPENDENCIES_LINK_COMPONENTS COMPONENTS_LENGTH)
-        math(EXPR LOOP "${COMPONENTS_LENGTH} - 1")
+    if(DEFINED components)
+        list(LENGTH components length)
+        math(EXPR loop "${length} - 1")
 
-        foreach(INDEX RANGE 0 ${LOOP})
-            list(GET PROGRAM_DEPENDENCIES_LINK_COMPONENTS ${INDEX} COMP)
-            target_link_libraries(${TARGET} ${PROGRAM_DEPENDENCIES_VISIBILITY} ${DEPENDENCY_NAME}::${COMP})
+        foreach(index RANGE 0 ${loop})
+            list(GET components ${index} component)
+
+            target_link_libraries(${TARGET} ${_VISIBILITY} ${component})
+            cmake_helpers_status("program dependencies" "component ${component} linked to ${TARGET}")
         endforeach()
-    else()
-        if(PROGRAM_DEPENDENCIES_DIRECT_LINK)
-            target_link_libraries(${TARGET} ${PROGRAM_DEPENDENCIES_VISIBILITY} ${DEPENDENCY_NAME})
-        else()
-            target_link_libraries(${TARGET} ${PROGRAM_DEPENDENCIES_VISIBILITY} ${DEPENDENCY_NAME}::${DEPENDENCY_NAME})
-        endif()
     endif()
 
-    message(STATUS "utils: linked ${DEPENDENCY_NAME} to ${TARGET}")
+    cmake_helpers_status("program dependencies" "linked ${DEPENDENCY_NAME} to ${TARGET}")
 endfunction()
 
 #[==========================================================================[
