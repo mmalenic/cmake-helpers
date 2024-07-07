@@ -1,59 +1,59 @@
+import os
 from os.path import dirname, realpath
 from pathlib import Path
 from shutil import copytree, copy
 from subprocess import run
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 import pytest
 
 
-@pytest.fixture(scope="session", autouse=True)
-def conan_profile_detect(tmp_path_factory):
-    """
-    Detect the conan profile for tests that require installing packages.
-    """
-    session_path = tmp_path_factory.getbasetemp().absolute().as_posix()
-    print(f"{tmp_path_factory.getbasetemp()}")
-    with pytest.MonkeyPatch.context() as monkeypatch:
-        monkeypatch.setenv("CONAN_HOME", session_path)
-        monkeypatch.chdir(session_path)
-
-        run("conan profile detect --force".split(), check=True)
-        return session_path
-
-
-@pytest.fixture(scope="session", autouse=True)
-def conan_install(conan_profile_detect):
-    """
-    Install conan dependencies.
-    """
-    run(f"conan install --requires=zlib/1.3.1 --build=missing".split(), check=True)
-
-
 @pytest.fixture
 def check_symbol(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the check_symbol data.
+    """
     return setup_cmake_project(tmp_path, monkeypatch, "check_symbol")
 
 
 @pytest.fixture
 def program_dependencies(tmp_path, monkeypatch) -> Path:
-    return setup_cmake_project(tmp_path, monkeypatch, "program_dependencies")
+    """
+    Fixture which sources the program_dependencies data.
+    """
+    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "program_dependencies")
+
+    monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
+    run("conan profile detect --force".split(), check=True)
+    run(f"conan install . --build=missing".split(), check=True)
+
+    return tmp_path
 
 
-def run_cmake_with_assert(capfd, contains_message: str, variables: Optional[Dict[str, str]] = None):
+def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
+                          variables: Optional[Dict[str, str]] = None,
+                          preset: Optional[str] = None):
     """
     Run cmake with an expected assert message and additional variables to define.
     """
-    command = "cmake . "
+    def add_preset(for_command):
+        if preset is not None:
+            for_command += f"--preset {preset} "
+        return for_command
+
+    command = add_preset("cmake . ")
     if variables is not None:
-        for key, value in variables.items():
-            command += f"-D {key}={value}"
-
+        for key, value in variables.items() or []:
+            command += f"-D {key}={value} "
     run(command.split(), check=True)
-    out, _ = capfd.readouterr()
-    assert contains_message in out
 
-    run("cmake --build .".split(), check=True)
+    out, err = capfd.readouterr()
+
+    for message in contains_messages or []:
+        assert message in out
+
+    command = add_preset("cmake --build . ")
+    run(command.split(), check=True)
     run("./cmake_helpers_test", check=True)
 
 

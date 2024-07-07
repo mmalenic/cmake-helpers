@@ -12,3 +12,6 @@ include(${cmake_helpers})
 
 add_executable(${project_name} main.cpp)
 program_dependencies(${project_name} ZLIB)
+
+# Repeating should not be an issue
+program_dependencies(${project_name} ZLIB)
