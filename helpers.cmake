@@ -94,15 +94,20 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
 
         find_package(${DEPENDENCY_NAME} ${_VERSION} ${_FIND_PACKAGE_ARGS})
 
-        # Set a property containing the imported targets of this find package call.
-        get_property(after_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
-        list(REMOVE_ITEM after_importing ${before_importing})
-        cmake_helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components ${after_importing}")
+        if (${DEPENDENCY_NAME}_FOUND)
+            # Set a property containing the imported targets of this find package call.
+            get_property(after_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+            list(REMOVE_ITEM after_importing ${before_importing})
+            cmake_helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components ${after_importing}")
 
-        set(imported_targets_name "_program_dependencies_${DEPENDENCY_NAME}")
-        set_property(DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}" "${after_importing}")
+            set(imported_targets_name "_program_dependencies_${DEPENDENCY_NAME}")
+            set_property(DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}" "${after_importing}")
 
-        get_property(name DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
+            get_property(name DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
+        else()
+            # Can't link anything if no dependency was found
+            return()
+        endif()
     endif()
 
     # Override the components if linking manually.
@@ -113,6 +118,10 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
 
     if(DEFINED components)
         list(LENGTH components length)
+        if(${length} EQUAL 0)
+            return()
+        endif()
+
         math(EXPR loop "${length} - 1")
 
         foreach(index RANGE 0 ${loop})
