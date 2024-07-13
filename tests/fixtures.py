@@ -9,6 +9,14 @@ import pytest
 
 
 @pytest.fixture
+def check_includes(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the check_includes data.
+    """
+    return setup_cmake_project(tmp_path, monkeypatch, "check_includes")
+
+
+@pytest.fixture
 def check_symbol(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the check_symbol data.
@@ -37,6 +45,7 @@ def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
     """
     Run cmake with an expected assert message and additional variables to define.
     """
+
     def add_preset(for_command):
         if preset is not None:
             for_command += f"--preset {preset} "

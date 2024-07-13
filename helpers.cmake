@@ -179,20 +179,29 @@ Writes the cached result to ``RETURN_VAR`` and defines a compilation definition 
 with the name contained in the ``RETURN_VAR`` variable.
 #]==========================================================================]
 function(check_includes)
-    set(one_value_args RETURN_VAR)
-    set(multi_value_args REQUIRES INCLUDE_DIRS)
+    set(one_value_args VAR LANGUAGE)
+    set(multi_value_args INCLUDES INCLUDE_DIRS)
+    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    cmake_parse_arguments(CHECK_INCLUDES "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+    check_required_arg(_VAR)
+    check_required_arg(_INCLUDES)
 
-    check_required_arg(CHECK_INCLUDES_REQUIRES REQUIRES)
-    check_required_arg(CHECK_INCLUDES_RETURN_VAR RETURN_VAR)
+    prepare_check_function(VAR INCLUDE_DIRS)
 
-    prepare_check_function(CHECK_INCLUDES_RETURN_VAR CHECK_INCLUDES_INCLUDE_DIRS)
+    list(JOIN _INCLUDES ", " includes)
+    cmake_helpers_status("check_includes" "checking ${includes} can be included" ADD_MESSAGES "language ${_LANGUAGE}")
 
-    check_include_files("${CHECK_INCLUDES_REQUIRES}" "${CHECK_INCLUDES_RETURN_VAR}" LANGUAGE CXX)
+    if(NOT DEFINED _LANGUAGE)
+        check_include_files("${_INCLUDES}" "${_VAR}")
+    elseif("${_LANGUAGE}" STREQUAL "CXX" OR "${_LANGUAGE}" STREQUAL "C")
+        check_include_files("${_INCLUDES}" "${_VAR}" LANGUAGE ${_LANGUAGE})
+    else()
+        cmake_helpers_error("check_symbol" "invalid language: ${_LANGUAGE}")
+        return()
+    endif()
 
-    if(${CHECK_INCLUDES_RETURN_VAR})
-        add_compile_definitions("${CHECK_INCLUDES_RETURN_VAR}=1")
+    if(${_VAR})
+        add_compile_definitions("${_VAR}=1")
     endif()
 endfunction()
 
@@ -218,7 +227,7 @@ macro(prepare_check_function RETURN_VAR INCLUDE_DIRS)
     if(DEFINED ${${RETURN_VAR}})
         add_compile_definitions("${${RETURN_VAR}}=1")
 
-        message(STATUS "utils: check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
+        cmake_helpers_status("prepare_check_function" "check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
         return()
     endif()
 
