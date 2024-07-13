@@ -53,7 +53,25 @@ function(check_symbol)
 endfunction()
 
 function(cmake_helpers_status function message)
-    message(STATUS "cmake-helpers: ${function} - ${message}")
+    set(multi_value_args ADD_MESSAGES)
+    cmake_parse_arguments("" "" "" "${multi_value_args}" ${ARGN})
+
+    set(message_prefix "cmake-helpers: ${function} - ")
+    message(STATUS "${message_prefix}${message}")
+
+    foreach(add_message IN LISTS _ADD_MESSAGES)
+        string(REPLACE " " ";" add_message_list "${add_message}")
+
+        list(LENGTH add_message_list add_message_length)
+        if (${add_message_length} GREATER 1)
+            list (GET add_message_list 0 key)
+            list (GET add_message_list 1 value)
+
+            if (NOT "${value}" STREQUAL "")
+                message(STATUS "${message_prefix}    ${key} = ${value}")
+            endif ()
+        endif()
+    endforeach()
 endfunction()
 
 function(cmake_helpers_error function message)
@@ -118,7 +136,7 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
     if(DEFINED components)
         list(LENGTH components length)
         if(${length} EQUAL 0)
-#           # Return early if there is nothing to link.
+            # Return early if there is nothing to link.
             return()
         endif()
 
@@ -132,7 +150,11 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
         endforeach()
     endif()
 
-    cmake_helpers_status("program dependencies" "linked ${DEPENDENCY_NAME} to ${TARGET}")
+    cmake_helpers_status(
+            "program dependencies"
+            "linked ${DEPENDENCY_NAME} to ${TARGET}"
+            ADD_MESSAGES "version ${_VERSION}" "visibility ${_VISIBILITY}"
+    )
 endfunction()
 
 #[==========================================================================[

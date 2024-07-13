@@ -31,6 +31,7 @@ def program_dependencies(tmp_path, monkeypatch) -> Path:
 
 
 def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
+                          not_contains_messages: Optional[List[str]] = None,
                           variables: Optional[Dict[str, str]] = None,
                           preset: Optional[str] = None):
     """
@@ -51,6 +52,8 @@ def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
 
     for message in contains_messages or []:
         assert message in out
+    for message in not_contains_messages or []:
+        assert message not in out
 
     command = add_preset("cmake --build . ")
     run(command.split(), check=True)
