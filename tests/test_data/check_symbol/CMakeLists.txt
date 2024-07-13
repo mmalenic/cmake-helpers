@@ -1,6 +1,7 @@
 # Test config variables
 set(mode "" CACHE STRING "mode to use")
 set(symbol "exit" CACHE STRING "symbol to search for")
+set(run_twice FALSE CACHE BOOL "run the include check twice")
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
@@ -11,6 +12,11 @@ find_file(cmake_helpers "helpers.cmake" PATHS "../../.." ".")
 include(${cmake_helpers})
 
 check_symbol(SYMBOL ${symbol} FILES "stdlib.h" VAR EXIT_EXISTS MODE ${mode})
+
+if(${run_twice})
+    check_symbol(SYMBOL ${symbol} FILES "stdlib.h" VAR EXIT_EXISTS MODE ${mode})
+endif()
+
 if(DEFINED EXIT_EXISTS)
     add_executable(${project_name} main.cpp)
 endif()

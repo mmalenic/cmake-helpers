@@ -27,14 +27,14 @@ with the name contained in the ``RETURN_VAR`` variable.
 #]==========================================================================]
 function(check_symbol)
     set(one_value_args SYMBOL VAR MODE)
-    set(multi_value_args FILES INCLUDE_DIRS)
+    set(multi_value_args FILES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     check_required_arg(_VAR)
     check_required_arg(_SYMBOL)
     check_required_arg(_FILES)
 
-    prepare_check_function(VAR INCLUDE_DIRS)
+    prepare_check_function(_VAR)
 
     if("${_MODE}" STREQUAL "check_symbol_exists")
         cmake_helpers_status("check_symbol" "using check_symbol_exists")
@@ -180,13 +180,13 @@ with the name contained in the ``RETURN_VAR`` variable.
 #]==========================================================================]
 function(check_includes)
     set(one_value_args VAR LANGUAGE)
-    set(multi_value_args INCLUDES INCLUDE_DIRS)
+    set(multi_value_args INCLUDES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     check_required_arg(_VAR)
     check_required_arg(_INCLUDES)
 
-    prepare_check_function(VAR INCLUDE_DIRS)
+    prepare_check_function(_VAR)
 
     list(JOIN _INCLUDES ", " includes)
     cmake_helpers_status("check_includes" "checking ${includes} can be included" ADD_MESSAGES "language ${_LANGUAGE}")
@@ -223,16 +223,12 @@ Returns early if ``RETURN_VAR`` is defined. Sets ``CMAKE_REQUIRED_INCLUDES``
 if ``INCLUDE_DIRS`` is defined. Assumes that ``RETURN_VAR`` and ``INCLUDE_DIRS``
 is passed as a variable name and not a variable value.
 #]==========================================================================]
-macro(prepare_check_function RETURN_VAR INCLUDE_DIRS)
+macro(prepare_check_function RETURN_VAR)
     if(DEFINED ${${RETURN_VAR}})
         add_compile_definitions("${${RETURN_VAR}}=1")
 
         cmake_helpers_status("prepare_check_function" "check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
         return()
-    endif()
-
-    if(DEFINED ${INCLUDE_DIRS})
-        set(CMAKE_REQUIRED_INCLUDES "${${INCLUDE_DIRS}}")
     endif()
 endmacro()
 

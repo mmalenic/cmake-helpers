@@ -1,6 +1,7 @@
 # Test config variables
 set(language "" CACHE STRING "language to use")
 set(include "stdlib.h" CACHE STRING "include to check")
+set(run_twice FALSE CACHE BOOL "run the include check twice")
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
@@ -11,6 +12,11 @@ find_file(cmake_helpers "helpers.cmake" PATHS "../../.." ".")
 include(${cmake_helpers})
 
 check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+
+if(${run_twice})
+    check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+endif()
+
 if(DEFINED STDLIB_EXISTS)
     add_executable(${project_name} main.cpp)
 endif()

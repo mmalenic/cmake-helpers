@@ -47,3 +47,12 @@ def test_check_non_existent_include(check_includes, capfd):
         run_cmake_with_assert(capfd, contains_messages=[
             "cmake-helpers: check_includes - checking non_existent_include.h can be included"],
                               variables={"include": "non_existent_include.h"})
+
+
+def test_check_includes_cached(check_includes, capfd):
+    """
+    Test that check includes compiles an existing cached value.
+    """
+    run_cmake_with_assert(capfd, contains_messages=[
+        "cmake-helpers: prepare_check_function - check result for \"STDLIB_EXISTS\" cached with value: 1"],
+                          variables={"run_twice": "TRUE"})
