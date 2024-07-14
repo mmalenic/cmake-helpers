@@ -249,20 +249,22 @@ Enabled testing and links ``GTest`` to ``TEST_EXECUTABLE_NAME``. Links ``LIBRARY
 to ``TEST_EXECUTABLE_NAME``.
 #]==========================================================================]
 macro(setup_testing TEST_EXECUTABLE_NAME LIBRARY_NAME)
-    target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${LIBRARY_NAME})
-
     include(GoogleTest)
+
+    target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${LIBRARY_NAME})
     enable_testing()
 
     program_dependencies(
         ${TEST_EXECUTABLE_NAME}
         GTest
         LINK_COMPONENTS
-        gtest
-        gtest_main
-        gmock
+        GTest::gtest
+        GTest::gtest_main
+        GTest::gmock
         VISIBILITY
         PUBLIC
+        FIND_PACKAGE_ARGS
+        REQUIRED
     )
 
     set(gtest_force_shared_crt

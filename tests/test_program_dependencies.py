@@ -1,4 +1,4 @@
-from subprocess import CalledProcessError, run
+from subprocess import CalledProcessError
 from typing import List
 
 import pytest

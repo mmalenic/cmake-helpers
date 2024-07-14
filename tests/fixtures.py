@@ -31,6 +31,23 @@ def program_dependencies(tmp_path, monkeypatch) -> Path:
     """
     tmp_path = setup_cmake_project(tmp_path, monkeypatch, "program_dependencies")
 
+    return install_conanfile(tmp_path, monkeypatch)
+
+
+@pytest.fixture
+def setup_testing(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the setup_testing data.
+    """
+    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "setup_testing")
+
+    return install_conanfile(tmp_path, monkeypatch)
+
+
+def install_conanfile(tmp_path, monkeypatch) -> Path:
+    """
+    Install a conanfile for a cmake project.
+    """
     monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
     run("conan profile detect --force".split(), check=True)
     run(f"conan install . --build=missing".split(), check=True)
@@ -41,7 +58,8 @@ def program_dependencies(tmp_path, monkeypatch) -> Path:
 def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
                           not_contains_messages: Optional[List[str]] = None,
                           variables: Optional[Dict[str, str]] = None,
-                          preset: Optional[str] = None):
+                          preset: Optional[str] = None,
+                          run_ctest: bool = False):
     """
     Run cmake with an expected assert message and additional variables to define.
     """
@@ -66,7 +84,11 @@ def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
 
     command = add_preset("cmake --build . ")
     run(command.split(), check=True)
-    run("./cmake_helpers_test", check=True)
+
+    if run_ctest:
+        run("ctest", check=True)
+    else:
+        run("./cmake_helpers_test", check=True)
 
 
 def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
