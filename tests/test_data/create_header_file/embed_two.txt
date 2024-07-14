@@ -1,0 +1,2 @@
+This is also an embedded literal.
+With multiple lines.
