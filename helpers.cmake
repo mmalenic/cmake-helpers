@@ -400,7 +400,7 @@ function(create_header_file header_file_name variable_name)
         set(file "${file}${line}\n")
     endforeach()
 
-    # Remove extra spaces.
+    # Remove extra newlines.
     string(REGEX REPLACE "\n\n\n" "\n\n" file "${file}")
 
     if (NOT DEFINED _OUTPUT_DIR)

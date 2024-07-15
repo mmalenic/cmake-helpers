@@ -25,6 +25,14 @@ def check_symbol(tmp_path, monkeypatch) -> Path:
 
 
 @pytest.fixture
+def create_header_file(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the create_header_file data.
+    """
+    return setup_cmake_project(tmp_path, monkeypatch, "create_header_file")
+
+
+@pytest.fixture
 def program_dependencies(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the program_dependencies data.
@@ -69,22 +77,29 @@ def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
             for_command += f"--preset {preset} "
         return for_command
 
+    # Run cmake with the preset
     command = add_preset("cmake . ")
     if variables is not None:
         for key, value in variables.items() or []:
             command += f"-D {key}={value} "
     run(command.split(), check=True)
 
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
 
+    # Assert expected messages in output.
     for message in contains_messages or []:
         assert message in out
     for message in not_contains_messages or []:
         assert message not in out
 
+    # Build program.
     command = add_preset("cmake --build . ")
     run(command.split(), check=True)
 
+    # Consume extra output so next command has output without build information.
+    capfd.readouterr()
+
+    # Run the program or the tests.
     if run_ctest:
         run("ctest", check=True)
     else:
