@@ -1,3 +1,9 @@
+"""
+Tests for check symbol function.
+
+:meta private:
+"""
+
 from subprocess import CalledProcessError
 
 import pytest

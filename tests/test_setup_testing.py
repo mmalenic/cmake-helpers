@@ -1,3 +1,9 @@
+"""
+Tests for setup testing function.
+
+:meta private:
+"""
+
 from tests.fixtures import setup_testing, run_cmake_with_assert
 
 

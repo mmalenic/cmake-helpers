@@ -2,7 +2,7 @@ include(CheckIncludeFiles)
 include(CheckCXXSymbolExists)
 include(CheckSymbolExists)
 
-#[==========================================================================[
+#[[.rst:
 check_symbol
 ----------------
 
@@ -24,8 +24,8 @@ to control the function used to check symbols. Defaults to ``check_cxx_symbol_ex
 
 Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
 with the name contained in the ``RETURN_VAR`` variable.
-#]==========================================================================]
-function(check_symbol)
+]]
+function(helpers_check_symbol)
     set(one_value_args SYMBOL VAR MODE)
     set(multi_value_args FILES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
@@ -37,13 +37,13 @@ function(check_symbol)
     prepare_check_function(_VAR)
 
     if("${_MODE}" STREQUAL "check_symbol_exists")
-        cmake_helpers_status("check_symbol" "using check_symbol_exists")
+        cmake_helpers_status("cmake_helpers_check_symbol" "using check_symbol_exists")
         check_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     elseif(NOT DEFINED _MODE OR "${_MODE}" STREQUAL "check_cxx_symbol_exists")
-        cmake_helpers_status("check_symbol" "using check_cxx_symbol_exists")
+        cmake_helpers_status("cmake_helpers_check_symbol" "using check_cxx_symbol_exists")
         check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     else()
-        cmake_helpers_error("check_symbol" "invalid mode: ${_MODE}")
+        cmake_helpers_error("cmake_helpers_check_symbol" "invalid mode: ${_MODE}")
         return()
     endif()
 
@@ -78,7 +78,7 @@ function(cmake_helpers_error function message)
     message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
 endfunction()
 
-#[==========================================================================[
+#[[.rst:
 program_dependencies
 ----------------
 
@@ -101,7 +101,7 @@ and components as ``REQUIRED``. ``LINK_COMPONENTS`` optionally specifies the
 the components that should be linked to the target, and if not present defaults
 to ``COMPONENTS``. ``DIRECT_LINK`` specifies linking a dependency as
 ``${DEPENDENCY_NAME}`` rather than ``${DEPENDENCY_NAME}::${DEPENDENCY_NAME}``.
-#]==========================================================================]
+]]
 function(program_dependencies TARGET DEPENDENCY_NAME)
     set(one_value_args VERSION VISIBILITY)
     set(multi_value_args LINK_COMPONENTS FIND_PACKAGE_ARGS)
@@ -157,7 +157,7 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
     )
 endfunction()
 
-#[==========================================================================[
+#[[.rst:
 check_includes
 ----------------
 
@@ -177,7 +177,7 @@ Optionally search through additional header includes by setting the
 
 Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
 with the name contained in the ``RETURN_VAR`` variable.
-#]==========================================================================]
+]]
 function(check_includes)
     set(one_value_args VAR LANGUAGE)
     set(multi_value_args INCLUDES)
@@ -205,7 +205,7 @@ function(check_includes)
     endif()
 endfunction()
 
-#[==========================================================================[
+#[[.rst:
 prepare_check_function
 ----------------
 
@@ -222,7 +222,7 @@ common logic and variables.
 Returns early if ``RETURN_VAR`` is defined. Sets ``CMAKE_REQUIRED_INCLUDES``
 if ``INCLUDE_DIRS`` is defined. Assumes that ``RETURN_VAR`` and ``INCLUDE_DIRS``
 is passed as a variable name and not a variable value.
-#]==========================================================================]
+]]
 macro(prepare_check_function RETURN_VAR)
     if(DEFINED ${${RETURN_VAR}})
         add_compile_definitions("${${RETURN_VAR}}=1")
@@ -232,7 +232,7 @@ macro(prepare_check_function RETURN_VAR)
     endif()
 endmacro()
 
-#[==========================================================================[
+#[[.rst:
 setup_testing
 ----------------
 
@@ -247,7 +247,7 @@ A macro which sets up testing for an executable.
 
 Enabled testing and links ``GTest`` to ``TEST_EXECUTABLE_NAME``. Links ``LIBRARY_NAME``
 to ``TEST_EXECUTABLE_NAME``.
-#]==========================================================================]
+]]
 macro(setup_testing TEST_EXECUTABLE_NAME LIBRARY_NAME)
     include(GoogleTest)
 
@@ -277,7 +277,7 @@ macro(setup_testing TEST_EXECUTABLE_NAME LIBRARY_NAME)
     endif()
 endmacro()
 
-#[==========================================================================[
+#[[.rst:
 check_required_arg
 ----------------
 
@@ -293,7 +293,7 @@ arguments.
 
 Check if ``ARG`` is defined, printing an error message with ``ARG_NAME``
 and returning early if not.
-#]==========================================================================]
+]]
 macro(check_required_arg ARG)
     string(REGEX REPLACE "^_" "" ARG_NAME ${ARG})
     if(NOT DEFINED ${ARG})
@@ -317,7 +317,7 @@ macro(header_file_set_variable_value line_end)
     string(REGEX REPLACE "\\${line_end}$" "" variable_value "${variable_value}")
 endmacro()
 
-#[==========================================================================[
+#[[.rst:
 create_header_file
 ----------------
 
@@ -333,7 +333,7 @@ A function which creates a header file containing to contents of a ```file_name`
 
 Read ``TARGET_FILE_NAMES`` and create a string_view with their contents inside
 ``HEADER_FILE_NAME`` with the name ``VARIABLE_NAME`` and namespace ``NAMESPACE``.
-#]==========================================================================]
+]]
 function(create_header_file header_file_name variable_name)
     set(one_value_args NAMESPACE OUTPUT_DIR TARGET VISIBILITY MODE)
     set(multi_value_args TARGET_FILE_NAMES)
@@ -369,7 +369,6 @@ function(create_header_file header_file_name variable_name)
     endif()
 
     if(DEFINED _NAMESPACE)
-        # Note extra newlines.
         set(namespace_start [[namespace ${_NAMESPACE} {]])
         set(namespace_end [[} // ${_NAMESPACE}]])
     endif()
@@ -387,6 +386,7 @@ function(create_header_file header_file_name variable_name)
     ]])
 
     # Parse the file template as lines of strings.
+    string(STRIP "${template}" template)
     string(REPLACE "\n" ";" lines "${template}")
 
     # Evaluate each line substituting the variables.

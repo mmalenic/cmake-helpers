@@ -19,6 +19,9 @@ pytest = "^8"
 cmake = "^3"
 conan = "^2"
 brotlicffi = "^1"
+sphinx = "^7"
+sphinxcontrib-moderncmakedomain = "^3"
+sphinx-markdown-builder = "^0.6"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

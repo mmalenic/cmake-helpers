@@ -1,4 +1,9 @@
-import os
+"""
+Fixtures for the cmake-helpers tests.
+
+:meta private:
+"""
+
 from os.path import dirname, realpath
 from pathlib import Path
 from shutil import copytree, copy
