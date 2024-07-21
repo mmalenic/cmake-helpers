@@ -1,6 +1,7 @@
 include(CheckIncludeFiles)
 include(CheckCXXSymbolExists)
 include(CheckSymbolExists)
+include(GoogleTest)
 
 #[[.rst:
 .. command:: helpers_check_symbol
@@ -34,7 +35,11 @@ is created if the check was successful.
 
 .. code-block:: cmake
 
-    helpers_check_symbol(SYMBOL "exit" FILES "stdlib.h" VAR EXIT_EXISTS)
+    helpers_check_symbol(
+        SYMBOL "exit"
+        FILES "stdlib.h"
+        VAR EXIT_EXISTS
+    )
 
 This causes the following program to exit with 0 if the symbol exists:
 
@@ -110,7 +115,11 @@ successful.
 
 .. code-block:: cmake
 
-    helpers_check_includes(VAR STDLIB_EXISTS INCLUDES "stdlib.h" LANGUAGE CXX)
+    helpers_check_includes(
+        VAR STDLIB_EXISTS
+        INCLUDES "stdlib.h"
+        LANGUAGE CXX
+    )
 
 This causes the following program to exit with 0 if the include exists:
 
@@ -181,8 +190,9 @@ declare extra targets which aren't necessarily designed to be linked against. Th
 a subset of components declared by |find_package| should be linked to ``target``.
 
 This function calls the |find_package| and |target_link_libraries| directly, so all features of those commands
-are supported. Set ``FIND_PACKAGE_ARGS`` to pass additional arguments to |find_package|. Note,
-``LINK_COMPONENTS`` is not passed to |find_package|, instead use ``FIND_PACKAGE_ARGS`` to pass ``COMPONENTS``
+are supported. Set ``FIND_PACKAGE_ARGS`` to pass additional arguments to |find_package|.
+
+.. note:: ``LINK_COMPONENTS`` is not passed to |find_package|, instead use ``FIND_PACKAGE_ARGS`` to pass ``COMPONENTS``
 that |find_package| should use.
 
 Examples
@@ -217,7 +227,7 @@ to "target".
 
 .. |find_package| replace:: :command:`find_package <command:find_package>`
 .. |target_link_libraries| replace:: :command:`target_link_libraries <command:target_link_libraries>`
-.. |target_link_libraries| replace:: :variable:`IMPORTED_TARGETS <variable:IMPORTED_TARGETS>`
+.. |IMPORTED_TARGETS| replace:: :prop_dir:`IMPORTED_TARGETS <prop_dir:IMPORTED_TARGETS>`
 ]]
 function(helpers_add_dep target dependency)
     set(one_value_args VERSION VISIBILITY)
@@ -263,29 +273,43 @@ function(helpers_add_dep target dependency)
 endfunction()
 
 #[[.rst:
-setup_testing
-----------------
+.. command:: helpers_setup_gtest
 
-A macro which sets up testing for an executable.
+A convenience function which links `GTest`_ and an optional testing library to a test executable
+and calls |gtest_discover_tests| to find tests.
 
-.. code:: cmake
+.. code-block:: cmake
 
-   setup_testing(
-       <TEST_EXECUTABLE_NAME>
-       <LIBRARY_NAME>
-   )
+    helpers_setup_gtest(
+        <test_executable>
+        [ADD_LIBRARY library]
+    )
 
-Enabled testing and links ``GTest`` to ``TEST_EXECUTABLE_NAME``. Links ``LIBRARY_NAME``
-to ``TEST_EXECUTABLE_NAME``.
+.. important:: This function does not call |enable_testing|.
+
+Examples
+^^^^^^^^
+
+Discover tests for "test_executable" and link "additional_library" to the executable.
+
+.. code-block:: cmake
+
+    setup_gtest("test_executable" ADD_LIBRARY "additional_library")
+
+.. _GTest: https://google.github.io/googletest/
+.. |gtest_discover_tests| replace:: :command:`gtest_discover_tests <command:gtest_discover_tests>`
+.. |enable_testing| replace:: :command:`enable_testing <command:enable_testing>`
 ]]
-macro(setup_testing TEST_EXECUTABLE_NAME LIBRARY_NAME)
-    include(GoogleTest)
+function(setup_gtest test_executable)
+    set(one_value_args ADD_LIBRARY)
+    cmake_parse_arguments("" "" "${one_value_args}" "" ${ARGN})
 
-    target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${LIBRARY_NAME})
-    enable_testing()
+    target_link_libraries(${test_executable} PUBLIC ${_ADD_LIBRARY})
 
-    program_dependencies(
-        ${TEST_EXECUTABLE_NAME}
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    helpers_add_dep(
+        ${test_executable}
         GTest
         LINK_COMPONENTS
         GTest::gtest
@@ -297,15 +321,8 @@ macro(setup_testing TEST_EXECUTABLE_NAME LIBRARY_NAME)
         REQUIRED
     )
 
-    set(gtest_force_shared_crt
-        ON
-        CACHE BOOL "" FORCE
-    )
-
-    if(TARGET ${TEST_EXECUTABLE_NAME})
-        gtest_discover_tests(${TEST_EXECUTABLE_NAME})
-    endif()
-endmacro()
+    gtest_discover_tests(${test_executable})
+endfunction()
 
 #[[.rst:
 check_required_arg
@@ -489,9 +506,7 @@ to check for a cached compile definition and return early if it is found.
 ]]
 macro(_helpers_check_cached var status)
     if(${var})
-        if(${var} EQUAL 1)
-            add_compile_definitions("${var}=1")
-        endif()
+        add_compile_definitions("${var}=${${var}}")
 
         _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
         return()

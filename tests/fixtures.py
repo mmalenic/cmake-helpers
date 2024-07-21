@@ -46,11 +46,11 @@ def add_dep(tmp_path, monkeypatch) -> Path:
 
 
 @pytest.fixture
-def setup_testing(tmp_path, monkeypatch) -> Path:
+def setup_gtest(tmp_path, monkeypatch) -> Path:
     """
-    Fixture which sources the setup_testing data.
+    Fixture which sources the setup_gtest data.
     """
-    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "setup_testing")
+    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "setup_gtest")
 
     return install_conanfile(tmp_path, monkeypatch)
 

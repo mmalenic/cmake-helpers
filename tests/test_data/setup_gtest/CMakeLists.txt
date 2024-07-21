@@ -15,4 +15,5 @@ include(${cmake_helpers})
 
 add_executable(${project_name} main.cpp)
 
-setup_testing(${project_name} "")
+enable_testing()
+setup_gtest(${project_name})
