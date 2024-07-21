@@ -3,32 +3,36 @@ include(CheckCXXSymbolExists)
 include(CheckSymbolExists)
 
 #[[.rst:
-check_symbol
-----------------
+.. command:: helpers_check_symbol
 
-A wrapper function around ``check_cxx_symbol_exists``, or ``check_symbol_exists``.
+A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| which adds compile time
+definitions using |add_compile_definitions|.
 
-.. code:: cmake
+.. code-block:: cmake
 
-   check_symbol(
-       SYMBOL [symbol]
-       FILES [files...]
-       INCLUDE_DIRS [directories...]
-       RETURN_VAR [return_variable]
+   helpers_check_symbol(
+       SYMBOL <symbol>
+       VAR <var>
+       FILES [<file>...]
+       C
    )
 
-Check if the given ``SYMBOL`` can be found after constructing a ``CXX`` file and
-including ``FILES``. Optionally add header includes by setting the ``INCLUDE_DIRS``
-argument. Set the mode to ``check_cxx_symbol_exists`` or ``check_symbol_exists``
-to control the function used to check symbols. Defaults to ``check_cxx_symbol_exists``.
+By default, this checks if the given ``SYMBOL`` can be found after including ``FILES`` using
+|check_cxx_symbol_exists|. A cached result is written to ``VAR`` and a compile-time definition with the
+same name as ``VAR`` is created. Setting the ``C`` flag uses |check_symbol_exists| instead.
 
-Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
-with the name contained in the ``RETURN_VAR`` variable.
+This function calls the check function and compile definitions function directly, so all features of
+those functions are supported, such as setting the ``CMAKE_REQUIRED_*`` variables.
+
+.. |check_cxx_symbol_exists| replace:: :cmake:command:`check_cxx_symbol_exists <command:check_cxx_symbol_exists>`
+.. |check_symbol_exists| replace:: :cmake:command:`check_symbol_exists <command:check_symbol_exists>`
+.. |add_compile_definitions| replace:: :cmake:command:`add_compile_definitions <command:add_compile_definitions>`
 ]]
 function(helpers_check_symbol)
+    set(options C)
     set(one_value_args SYMBOL VAR MODE)
     set(multi_value_args FILES)
-    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+    cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     check_required_arg(_VAR)
     check_required_arg(_SYMBOL)
@@ -36,15 +40,12 @@ function(helpers_check_symbol)
 
     prepare_check_function(_VAR)
 
-    if("${_MODE}" STREQUAL "check_symbol_exists")
-        cmake_helpers_status("cmake_helpers_check_symbol" "using check_symbol_exists")
+    if(_C)
+        cmake_helpers_status("helpers_check_symbol" "using check_symbol_exists")
         check_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
-    elseif(NOT DEFINED _MODE OR "${_MODE}" STREQUAL "check_cxx_symbol_exists")
-        cmake_helpers_status("cmake_helpers_check_symbol" "using check_cxx_symbol_exists")
-        check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     else()
-        cmake_helpers_error("cmake_helpers_check_symbol" "invalid mode: ${_MODE}")
-        return()
+        cmake_helpers_status("helpers_check_symbol" "using check_cxx_symbol_exists")
+        check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
     endif()
 
     if(${_VAR})

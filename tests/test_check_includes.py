@@ -1,7 +1,5 @@
 """
 Tests for check includes function.
-
-:meta private:
 """
 
 from subprocess import CalledProcessError

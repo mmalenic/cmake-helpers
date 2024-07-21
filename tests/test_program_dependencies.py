@@ -1,7 +1,5 @@
 """
 Tests for program dependencies function.
-
-:meta private:
 """
 
 from subprocess import CalledProcessError

@@ -1,7 +1,5 @@
 """
 Fixtures for the cmake-helpers tests.
-
-:meta private:
 """
 
 from os.path import dirname, realpath

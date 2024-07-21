@@ -3,8 +3,12 @@ copyright = '2024, Marko Malenic'
 author = 'Marko Malenic'
 release = '0.1.0'
 
-extensions = ['sphinx.ext.autodoc', 'sphinxcontrib.moderncmakedomain']
+extensions = [
+    'sphinxcontrib.moderncmakedomain',
+    'sphinx.ext.intersphinx'
+]
 
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+intersphinx_mapping = {'cmake': ('https://cmake.org/cmake/help/latest', None)}
+exclude_patterns = ['**/_build/*']
 
 html_theme = 'alabaster'

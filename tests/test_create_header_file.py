@@ -1,7 +1,5 @@
 """
 Tests for create header file function.
-
-:meta private:
 """
 
 from tests.fixtures import create_header_file, run_cmake_with_assert

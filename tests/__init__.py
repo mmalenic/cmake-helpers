@@ -1,5 +1,5 @@
 """
-Tests for cmake-helpers functions and macros.
+Tests for cmake-helpers functions.
 
 :meta private:
 """
