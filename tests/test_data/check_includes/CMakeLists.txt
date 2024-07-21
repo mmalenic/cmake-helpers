@@ -11,10 +11,10 @@ project(${project_name} LANGUAGES CXX C)
 find_file(cmake_helpers "helpers.cmake" PATHS "../../.." ".")
 include(${cmake_helpers})
 
-check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+helpers_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
 
 if(${run_twice})
-    check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+    helpers_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
 endif()
 
 if(DEFINED STDLIB_EXISTS)

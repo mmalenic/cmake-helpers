@@ -1,6 +1,8 @@
 cmake-helpers documentation
 ===========================
 
+.. default-domain:: cmake
+
 .. cmake-module:: ../helpers.cmake
 
 .. toctree::

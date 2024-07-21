@@ -10,23 +10,35 @@ definitions using |add_compile_definitions|.
 
 .. code-block:: cmake
 
-   helpers_check_symbol(
-       SYMBOL <symbol>
-       VAR <var>
-       FILES [<file>...]
-       C
-   )
+helpers_check_symbol(
+    SYMBOL <symbol>
+    VAR <var>
+    FILES [<file>...]
+    [C]
+)
 
 By default, this checks if the given ``SYMBOL`` can be found after including ``FILES`` using
 |check_cxx_symbol_exists|. A cached result is written to ``VAR`` and a compile-time definition with the
-same name as ``VAR`` is created. Setting the ``C`` flag uses |check_symbol_exists| instead.
+same name as ``VAR`` is created if this check succeeds. Setting the ``C`` flag uses |check_symbol_exists|
+instead.
 
 This function calls the check function and compile definitions function directly, so all features of
 those functions are supported, such as setting the ``CMAKE_REQUIRED_*`` variables.
 
-.. |check_cxx_symbol_exists| replace:: :cmake:command:`check_cxx_symbol_exists <command:check_cxx_symbol_exists>`
-.. |check_symbol_exists| replace:: :cmake:command:`check_symbol_exists <command:check_symbol_exists>`
-.. |add_compile_definitions| replace:: :cmake:command:`add_compile_definitions <command:add_compile_definitions>`
+Example
+^^^^^^^
+
+Check if the "exit" symbol can be found after including "stdlib.h" in a source file using the C++ compiler.
+The result of this check is stored in EXIT_EXISTS and a compile time definition with the value ``EXIT_EXISTS=1`
+is created if the check was successful.
+
+.. code-block:: cmake
+
+helpers_check_symbol(SYMBOL "exit" FILES "stdlib.h" VAR EXIT_EXISTS)
+
+.. |check_cxx_symbol_exists| replace:: :command:`check_cxx_symbol_exists <command:check_cxx_symbol_exists>`
+.. |check_symbol_exists| replace:: :command:`check_symbol_exists <command:check_symbol_exists>`
+.. |add_compile_definitions| replace:: :command:`add_compile_definitions <command:add_compile_definitions>`
 ]]
 function(helpers_check_symbol)
     set(options C)
@@ -41,11 +53,11 @@ function(helpers_check_symbol)
     prepare_check_function(_VAR)
 
     if(_C)
-        cmake_helpers_status("helpers_check_symbol" "using check_symbol_exists")
-        check_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
+        _helpers_status("helpers_check_symbol" "using check_symbol_exists")
+        check_symbol_exists("${_SYMBOL}" "${_FILES}" "${_VAR}")
     else()
-        cmake_helpers_status("helpers_check_symbol" "using check_cxx_symbol_exists")
-        check_cxx_symbol_exists(${_SYMBOL} ${_FILES} ${_VAR})
+        _helpers_status("helpers_check_symbol" "using check_cxx_symbol_exists")
+        check_cxx_symbol_exists("${_SYMBOL}" "${_FILES}" "${_VAR}")
     endif()
 
     if(${_VAR})
@@ -53,30 +65,68 @@ function(helpers_check_symbol)
     endif()
 endfunction()
 
-function(cmake_helpers_status function message)
-    set(multi_value_args ADD_MESSAGES)
-    cmake_parse_arguments("" "" "" "${multi_value_args}" ${ARGN})
+#[[.rst:
+.. command:: helpers_check_includes
 
-    set(message_prefix "cmake-helpers: ${function} - ")
-    message(STATUS "${message_prefix}${message}")
+A wrapper function around |check_include_files| which adds compile time definitions using
+|add_compile_definitions|.
 
-    foreach(add_message IN LISTS _ADD_MESSAGES)
-        string(REPLACE " " ";" add_message_list "${add_message}")
+.. code-block:: cmake
 
-        list(LENGTH add_message_list add_message_length)
-        if (${add_message_length} GREATER 1)
-            list (GET add_message_list 0 key)
-            list (GET add_message_list 1 value)
+helpers_check_includes(
+    VAR <var>
+    INCLUDES <file>...
+    [LANGUAGE C | CXX]
+)
 
-            if (NOT "${value}" STREQUAL "")
-                message(STATUS "${message_prefix}    ${key} = ${value}")
-            endif ()
-        endif()
-    endforeach()
-endfunction()
+By default, this checks that the given ``INCLUDES`` can be included in a source file and compiled. A cached
+result is written to ``VAR`` and a compile-time definition with the same name as ``VAR`` is created if this
+check succeeds. Setting ``LANGUAGE`` controls which compiler is used to perform the check. ``C`` uses the C
+compiler and `CXX` uses the C++ compiler. If ``LANGUAGE`` is not set the C compiler is preferred over the
+C++ compiler.
 
-function(cmake_helpers_error function message)
-    message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
+This function calls the check function and compile definitions function directly, so all features of those
+functions are supported. For example, if ``LANGUAGE`` is not set, the C compiler is preferred over the C++
+compiler just like |check_include_files|.
+
+Example
+^^^^^^^
+
+Check if "stdlib.h" can be included into a source file using the C++ compiler and store the result in
+STDLIB_EXISTS. A compile time definition with the value ``STDLIB_EXISTS=1` is created if the check was
+successful.
+
+.. code-block:: cmake
+
+helpers_check_includes(VAR STDLIB_EXISTS INCLUDES "stdlib.h" LANGUAGE CXX)
+
+.. |check_include_files| replace:: :command:`check_include_files <command:check_include_files>`
+.. |add_compile_definitions| replace:: :command:`add_compile_definitions <command:add_compile_definitions>`
+]]
+function(helpers_check_includes)
+    set(one_value_args VAR LANGUAGE)
+    set(multi_value_args INCLUDES)
+    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+    check_required_arg(_VAR)
+    check_required_arg(_INCLUDES)
+
+    prepare_check_function(_VAR)
+
+    list(JOIN _INCLUDES ", " includes)
+    _helpers_status("helpers_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language ${_LANGUAGE}")
+
+    if(NOT DEFINED _LANGUAGE)
+        check_include_files("${_INCLUDES}" "${_VAR}")
+    elseif("${_LANGUAGE}" STREQUAL "CXX" OR "${_LANGUAGE}" STREQUAL "C")
+        check_include_files("${_INCLUDES}" "${_VAR}" LANGUAGE "${_LANGUAGE}")
+    else()
+        _helpers_error("helpers_check_includes" "invalid language: ${_LANGUAGE}")
+    endif()
+
+    if(${_VAR})
+        add_compile_definitions("${_VAR}=1")
+    endif()
 endfunction()
 
 #[[.rst:
@@ -119,7 +169,7 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
 
         if (after_importing)
             list(JOIN after_importing ", " imports)
-            cmake_helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components: ${imports}")
+            _helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components: ${imports}")
         endif()
 
         set(imported_targets_name "_program_dependencies_${DEPENDENCY_NAME}")
@@ -147,63 +197,15 @@ function(program_dependencies TARGET DEPENDENCY_NAME)
             list(GET components ${index} component)
 
             target_link_libraries(${TARGET} ${_VISIBILITY} ${component})
-            cmake_helpers_status("program dependencies" "component ${component} linked to ${TARGET}")
+            _helpers_status("program dependencies" "component ${component} linked to ${TARGET}")
         endforeach()
     endif()
 
-    cmake_helpers_status(
+    _helpers_status(
             "program dependencies"
             "linked ${DEPENDENCY_NAME} to ${TARGET}"
             ADD_MESSAGES "version ${_VERSION}" "visibility ${_VISIBILITY}"
     )
-endfunction()
-
-#[[.rst:
-check_includes
-----------------
-
-A wrapper function around ``check_include_files`` for ``CXX`` files.
-
-.. code:: cmake
-
-   check_includes(
-       REQUIRES [requires...]
-       INCLUDE_DIRS [directories...]
-       RETURN_VAR [return_variable]
-   )
-
-Check if the given ``REQUIRES`` may be included in a ``CXX`` source file.
-Optionally search through additional header includes by setting the
-``INCLUDE_DIRS`` argument.
-
-Writes the cached result to ``RETURN_VAR`` and defines a compilation definition macro
-with the name contained in the ``RETURN_VAR`` variable.
-]]
-function(check_includes)
-    set(one_value_args VAR LANGUAGE)
-    set(multi_value_args INCLUDES)
-    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
-
-    check_required_arg(_VAR)
-    check_required_arg(_INCLUDES)
-
-    prepare_check_function(_VAR)
-
-    list(JOIN _INCLUDES ", " includes)
-    cmake_helpers_status("check_includes" "checking ${includes} can be included" ADD_MESSAGES "language ${_LANGUAGE}")
-
-    if(NOT DEFINED _LANGUAGE)
-        check_include_files("${_INCLUDES}" "${_VAR}")
-    elseif("${_LANGUAGE}" STREQUAL "CXX" OR "${_LANGUAGE}" STREQUAL "C")
-        check_include_files("${_INCLUDES}" "${_VAR}" LANGUAGE ${_LANGUAGE})
-    else()
-        cmake_helpers_error("check_symbol" "invalid language: ${_LANGUAGE}")
-        return()
-    endif()
-
-    if(${_VAR})
-        add_compile_definitions("${_VAR}=1")
-    endif()
 endfunction()
 
 #[[.rst:
@@ -228,7 +230,7 @@ macro(prepare_check_function RETURN_VAR)
     if(DEFINED ${${RETURN_VAR}})
         add_compile_definitions("${${RETURN_VAR}}=1")
 
-        cmake_helpers_status("prepare_check_function" "check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
+        _helpers_status("prepare_check_function" "check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
         return()
     endif()
 endmacro()
@@ -352,21 +354,20 @@ function(create_header_file header_file_name variable_name)
     set(def_header "${namespace_upper}_${header_stem}")
 
     if(NOT DEFINED _MODE OR "${_MODE}" STREQUAL "constexpr_auto")
-        cmake_helpers_status("create_header_file" "using constexpr_auto")
+        _helpers_status("create_header_file" "using constexpr_auto")
         header_file_set_variable_value("")
         set(variable_declaration [[constexpr auto ${variable_name} = ${variable_value};]])
     elseif("${_MODE}" STREQUAL "const_char")
         header_file_set_variable_value("")
-        cmake_helpers_status("create_header_file" "using const_char")
+        _helpers_status("create_header_file" "using const_char")
         set(variable_declaration [[const char* ${variable_name} = ${variable_value};]])
     elseif("${_MODE}" STREQUAL "define_constant")
         # Double escape this to because it's entering a macro expansion.
         header_file_set_variable_value("\\\\")
-        cmake_helpers_status("create_header_file" "using define_constant")
+        _helpers_status("create_header_file" "using define_constant")
         set(variable_declaration [[#define ${variable_name} ${variable_value}]])
     else()
-        cmake_helpers_error("create_header_file" "invalid mode: ${_MODE}")
-        return()
+        _helpers_error("create_header_file" "invalid mode: ${_MODE}")
     endif()
 
     if(DEFINED _NAMESPACE)
@@ -411,12 +412,46 @@ function(create_header_file header_file_name variable_name)
     cmake_path(APPEND _OUTPUT_DIR ${header_file_name} OUTPUT_VARIABLE output_file)
     file(WRITE "${output_file}" "${file}")
 
-    cmake_helpers_status("create_header_file" "generated output file")
+    _helpers_status("create_header_file" "generated output file")
 
     if (DEFINED _TARGET AND DEFINED _VISIBILITY)
-        cmake_helpers_status("create_header_file" "linking generated file to target ${_TARGET}")
+        _helpers_status("create_header_file" "linking generated file to target ${_TARGET}")
         target_sources(${_TARGET} ${_VISIBILITY} ${output_file})
     endif ()
 
     set(cmake_helpers_ret ${_OUTPUT_DIR} PARENT_SCOPE)
 endfunction()
+
+#[[
+Print a status message specific to the ``helpers.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print
+additional ``key = value`` messages underneath the status.
+]]
+function(_helpers_status function message)
+    set(multi_value_args ADD_MESSAGES)
+    cmake_parse_arguments("" "" "" "${multi_value_args}" ${ARGN})
+
+    set(message_prefix "cmake-helpers: ${function} - ")
+    message(STATUS "${message_prefix}${message}")
+
+    foreach(add_message IN LISTS _ADD_MESSAGES)
+        string(REPLACE " " ";" add_message_list "${add_message}")
+
+        list(LENGTH add_message_list add_message_length)
+        if (${add_message_length} GREATER 1)
+            list (GET add_message_list 0 key)
+            list (GET add_message_list 1 value)
+
+            if (NOT "${value}" STREQUAL "")
+                message(STATUS "${message_prefix}    ${key} = ${value}")
+            endif ()
+        endif()
+    endforeach()
+endfunction()
+
+#[[
+Print an error message specific to the ``helpers.cmake`` module and exit early.
+]]
+macro(_helpers_error function message)
+    message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
+    return()
+endmacro()

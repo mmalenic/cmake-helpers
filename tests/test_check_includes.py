@@ -1,5 +1,5 @@
 """
-Tests for check includes function.
+Tests for check include function.
 """
 
 from subprocess import CalledProcessError
@@ -9,35 +9,35 @@ import pytest
 from tests.fixtures import check_includes, run_cmake_with_assert
 
 
-def test_check_includes(check_includes, capfd):
+def test_check_include(check_includes, capfd):
     """
-    Test that check includes compiles an existing symbol.
+    Test that check include compiles an existing symbol.
     """
     run_cmake_with_assert(capfd,
-                          contains_messages=["cmake-helpers: check_includes - checking stdlib.h can be included"])
+                          contains_messages=["cmake-helpers: helpers_check_includes - checking stdlib.h can be included"])
 
 
-def test_check_includes_c_language(check_includes, capfd):
+def test_check_include_c_language(check_includes, capfd):
     """
-    Test that check includes compiles an existing symbol with C as the language.
+    Test that check include compiles an existing symbol with C as the language.
     """
-    run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: check_includes - checking stdlib.h can be included",
-                                                    "cmake-helpers: check_includes -     language = C"],
+    run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
+                                                    "cmake-helpers: helpers_check_includes -     language = C"],
                           variables={"language": "C"})
 
 
-def test_check_includes_cxx_language(check_includes, capfd):
+def test_check_include_cxx_language(check_includes, capfd):
     """
-    Test that check includes compiles an existing symbol with CXX as the language.
+    Test that check include compiles an existing symbol with CXX as the language.
     """
-    run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: check_includes - checking stdlib.h can be included",
-                                                    "cmake-helpers: check_includes -     language = CXX"],
+    run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
+                                                    "cmake-helpers: helpers_check_includes -     language = CXX"],
                           variables={"language": "CXX"})
 
 
-def test_check_includes_invalid_language(check_includes, capfd):
+def test_check_include_invalid_language(check_includes, capfd):
     """
-    Test that check includes fails with an unknown language.
+    Test that check include fails with an unknown language.
     """
     with pytest.raises(CalledProcessError):
         run_cmake_with_assert(capfd, variables={"language": "invalid_language"})
@@ -49,13 +49,13 @@ def test_check_non_existent_include(check_includes, capfd):
     """
     with pytest.raises(CalledProcessError):
         run_cmake_with_assert(capfd, contains_messages=[
-            "cmake-helpers: check_includes - checking non_existent_include.h can be included"],
+            "cmake-helpers: helpers_check_includes - checking non_existent_include.h can be included"],
                               variables={"include": "non_existent_include.h"})
 
 
-def test_check_includes_cached(check_includes, capfd):
+def test_check_include_cached(check_includes, capfd):
     """
-    Test that check includes compiles an existing cached value.
+    Test that check include compiles an existing cached value.
     """
     run_cmake_with_assert(capfd, contains_messages=[
         "cmake-helpers: prepare_check_function - check result for \"STDLIB_EXISTS\" cached with value: 1"],
