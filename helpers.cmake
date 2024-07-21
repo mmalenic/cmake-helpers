@@ -10,12 +10,12 @@ definitions using |add_compile_definitions|.
 
 .. code-block:: cmake
 
-helpers_check_symbol(
-    SYMBOL <symbol>
-    VAR <var>
-    FILES [<file>...]
-    [C]
-)
+    helpers_check_symbol(
+        SYMBOL <symbol>
+        VAR <var>
+        FILES [<file>...]
+        [C]
+    )
 
 By default, this checks if the given ``SYMBOL`` can be found after including ``FILES`` using
 |check_cxx_symbol_exists|. A cached result is written to ``VAR`` and a compile-time definition with the
@@ -23,10 +23,10 @@ same name as ``VAR`` is created if this check succeeds. Setting the ``C`` flag u
 instead.
 
 This function calls the check function and compile definitions function directly, so all features of
-those functions are supported, such as setting the ``CMAKE_REQUIRED_*`` variables.
+those commands are supported, such as setting the ``CMAKE_REQUIRED_*`` variables.
 
-Example
-^^^^^^^
+Examples
+^^^^^^^^
 
 Check if the "exit" symbol can be found after including "stdlib.h" in a source file using the C++ compiler.
 The result of this check is stored in EXIT_EXISTS and a compile time definition with the value ``EXIT_EXISTS=1`
@@ -34,7 +34,19 @@ is created if the check was successful.
 
 .. code-block:: cmake
 
-helpers_check_symbol(SYMBOL "exit" FILES "stdlib.h" VAR EXIT_EXISTS)
+    helpers_check_symbol(SYMBOL "exit" FILES "stdlib.h" VAR EXIT_EXISTS)
+
+This causes the following program to exit with 0 if the symbol exists:
+
+.. code-block:: c++
+
+    int main() {
+    #if defined(EXIT_EXISTS)
+        return 0;
+    #else
+        return 1;
+    #endif
+    }
 
 .. |check_cxx_symbol_exists| replace:: :command:`check_cxx_symbol_exists <command:check_cxx_symbol_exists>`
 .. |check_symbol_exists| replace:: :command:`check_symbol_exists <command:check_symbol_exists>`
@@ -50,7 +62,7 @@ function(helpers_check_symbol)
     check_required_arg(_SYMBOL)
     check_required_arg(_FILES)
 
-    prepare_check_function(_VAR)
+    _helpers_check_cached(${_VAR} "helpers_check_symbol")
 
     if(_C)
         _helpers_status("helpers_check_symbol" "using check_symbol_exists")
@@ -73,11 +85,11 @@ A wrapper function around |check_include_files| which adds compile time definiti
 
 .. code-block:: cmake
 
-helpers_check_includes(
-    VAR <var>
-    INCLUDES <file>...
-    [LANGUAGE C | CXX]
-)
+    helpers_check_includes(
+        VAR <var>
+        INCLUDES <file>...
+        [LANGUAGE C | CXX]
+    )
 
 By default, this checks that the given ``INCLUDES`` can be included in a source file and compiled. A cached
 result is written to ``VAR`` and a compile-time definition with the same name as ``VAR`` is created if this
@@ -86,11 +98,11 @@ compiler and `CXX` uses the C++ compiler. If ``LANGUAGE`` is not set the C compi
 C++ compiler.
 
 This function calls the check function and compile definitions function directly, so all features of those
-functions are supported. For example, if ``LANGUAGE`` is not set, the C compiler is preferred over the C++
+commands are supported. For example, if ``LANGUAGE`` is not set, the C compiler is preferred over the C++
 compiler just like |check_include_files|.
 
-Example
-^^^^^^^
+Examples
+^^^^^^^^
 
 Check if "stdlib.h" can be included into a source file using the C++ compiler and store the result in
 STDLIB_EXISTS. A compile time definition with the value ``STDLIB_EXISTS=1` is created if the check was
@@ -98,7 +110,19 @@ successful.
 
 .. code-block:: cmake
 
-helpers_check_includes(VAR STDLIB_EXISTS INCLUDES "stdlib.h" LANGUAGE CXX)
+    helpers_check_includes(VAR STDLIB_EXISTS INCLUDES "stdlib.h" LANGUAGE CXX)
+
+This causes the following program to exit with 0 if the include exists:
+
+.. code-block:: c++
+
+    int main() {
+    #if defined(STDLIB_EXISTS)
+        return 0;
+    #else
+        return 1;
+    #endif
+    }
 
 .. |check_include_files| replace:: :command:`check_include_files <command:check_include_files>`
 .. |add_compile_definitions| replace:: :command:`add_compile_definitions <command:add_compile_definitions>`
@@ -111,7 +135,7 @@ function(helpers_check_includes)
     check_required_arg(_VAR)
     check_required_arg(_INCLUDES)
 
-    prepare_check_function(_VAR)
+    _helpers_check_cached(${_VAR} "helpers_check_includes")
 
     list(JOIN _INCLUDES ", " includes)
     _helpers_status("helpers_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language ${_LANGUAGE}")
@@ -130,110 +154,113 @@ function(helpers_check_includes)
 endfunction()
 
 #[[.rst:
-program_dependencies
-----------------
+.. command:: helpers_add_dep
 
-Adds program dependencies using ``find_package`` and ``target_link_libraries``.
+A wrapper function around |find_package| which links a found dependency to a target using
+|target_link_libraries|.
 
-.. code:: cmake
+.. code-block:: cmake
 
-   program_dependencies(
-       <TARGET>
-       <DEPENDENCY_NAME>
-       VERSION [version]
-       VISIBILITY [visibility]
-       COMPONENTS [components...]
-       LINK_COMPONENTS [link_components...]
-   )
+    helpers_add_dep(
+        <target>
+        <dependency>
+        [VERSION version]
+        [VISIBILITY visibility]
+        [LINK_COMPONENTS link_components...]
+        [FIND_PACKAGE_ARGS extra_args...]
+    )
 
-Finds a program dependency using ``find_package`` and then links it to an
-existing target using ``target_link_libraries``. Treats all dependencies
-and components as ``REQUIRED``. ``LINK_COMPONENTS`` optionally specifies the
-the components that should be linked to the target, and if not present defaults
-to ``COMPONENTS``. ``DIRECT_LINK`` specifies linking a dependency as
-``${DEPENDENCY_NAME}`` rather than ``${DEPENDENCY_NAME}::${DEPENDENCY_NAME}``.
+This function first calls |find_package| with the ``dependency`` and ``version`` if the dependency has not
+already been found. It then determines the new components that the |find_package| call created by comparing
+the state of the |IMPORTED_TARGETS| property before and after the call. Finally, iy links all the new items
+to the ``target`` using |target_link_libraries| and the optionally specified ``VISIBILITY``.
+
+Set ``LINK_COMPONENTS`` to manually specify which components should be linked to the target. This overrides
+the components found using the |IMPORTED_TARGETS| detection logic described above. Some |find_package| modules
+declare extra targets which aren't necessarily designed to be linked against. This option is useful if only
+a subset of components declared by |find_package| should be linked to ``target``.
+
+This function calls the |find_package| and |target_link_libraries| directly, so all features of those commands
+are supported. Set ``FIND_PACKAGE_ARGS`` to pass additional arguments to |find_package|. Note,
+``LINK_COMPONENTS`` is not passed to |find_package|, instead use ``FIND_PACKAGE_ARGS`` to pass ``COMPONENTS``
+that |find_package| should use.
+
+Examples
+^^^^^^^^
+
+Find "ZLIB" with version 1 using |find_package| and link it as private to "target" using |target_link_libraries|.
+Only the "ZLIB::ZLIB" component is linked to "target" and the dependency should be considered required and found
+quietly.
+
+.. code-block:: cmake
+
+    helpers_add_dep(
+        target
+        ZLIB
+        LINK_COMPONENTS ZLIB::ZLIB
+        VERSION 1
+        VISIBILITY PRIVATE
+        FIND_PACKAGE_ARGS REQUIRED QUIET
+    )
+
+Find "Python"  using |find_package| and link it to "target" using |target_link_libraries|. The components that
+are should be found are "Interpreter" and "Development" and all new targets declared by |find_package| are linked
+to "target".
+
+.. code-block:: cmake
+
+    helpers_add_dep(
+        target
+        Python
+        FIND_PACKAGE_ARGS COMPONENTS Interpreter Development
+    )
+
+.. |find_package| replace:: :command:`find_package <command:find_package>`
+.. |target_link_libraries| replace:: :command:`target_link_libraries <command:target_link_libraries>`
+.. |target_link_libraries| replace:: :variable:`IMPORTED_TARGETS <variable:IMPORTED_TARGETS>`
 ]]
-function(program_dependencies TARGET DEPENDENCY_NAME)
+function(helpers_add_dep target dependency)
     set(one_value_args VERSION VISIBILITY)
     set(multi_value_args LINK_COMPONENTS FIND_PACKAGE_ARGS)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    if(NOT ${DEPENDENCY_NAME}_FOUND)
+    if(NOT ${dependency}_FOUND)
         get_property(before_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
 
-        find_package(${DEPENDENCY_NAME} ${_VERSION} ${_FIND_PACKAGE_ARGS})
+        find_package(${dependency} ${_VERSION} ${_FIND_PACKAGE_ARGS})
 
         # Set a property containing the imported targets of this find package call.
         get_property(after_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
-        list(REMOVE_ITEM after_importing ${before_importing})
+        list(REMOVE_ITEM after_importing "${before_importing}")
 
         if (after_importing)
             list(JOIN after_importing ", " imports)
-            _helpers_status("program dependencies" "found ${DEPENDENCY_NAME} with components: ${imports}")
+            _helpers_status("helpers_add_dep" "found ${dependency} with components: ${imports}")
         endif()
 
-        set(imported_targets_name "_program_dependencies_${DEPENDENCY_NAME}")
+        set(imported_targets_name "_program_dependencies_${dependency}")
         set_property(DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}" "${after_importing}")
-
-        get_property(name DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
     endif()
 
     # Override the components if linking manually.
     get_property(components DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
     if(DEFINED _LINK_COMPONENTS)
-        set(components ${_LINK_COMPONENTS})
+        set(components "${_LINK_COMPONENTS}")
     endif()
 
     if(DEFINED components)
-        list(LENGTH components length)
-        if(${length} EQUAL 0)
-            # Return early if there is nothing to link.
-            return()
-        endif()
-
-        math(EXPR loop "${length} - 1")
-
-        foreach(index RANGE 0 ${loop})
-            list(GET components ${index} component)
-
-            target_link_libraries(${TARGET} ${_VISIBILITY} ${component})
-            _helpers_status("program dependencies" "component ${component} linked to ${TARGET}")
+        foreach(component IN LISTS components)
+            target_link_libraries("${target}" "${_VISIBILITY}" "${component}")
+            _helpers_status("helpers_add_dep" "component ${component} linked to ${target}")
         endforeach()
-    endif()
 
-    _helpers_status(
-            "program dependencies"
-            "linked ${DEPENDENCY_NAME} to ${TARGET}"
+        _helpers_status(
+            "helpers_add_dep"
+            "linked ${dependency} to ${target}"
             ADD_MESSAGES "version ${_VERSION}" "visibility ${_VISIBILITY}"
-    )
-endfunction()
-
-#[[.rst:
-prepare_check_function
-----------------
-
-A macro which is used within ``check_includes`` and ``check_symbol`` to set up
-common logic and variables.
-
-.. code:: cmake
-
-   prepare_check_function(
-       <RETURN_VAR>
-       <INCLUDE_DIRS>
-   )
-
-Returns early if ``RETURN_VAR`` is defined. Sets ``CMAKE_REQUIRED_INCLUDES``
-if ``INCLUDE_DIRS`` is defined. Assumes that ``RETURN_VAR`` and ``INCLUDE_DIRS``
-is passed as a variable name and not a variable value.
-]]
-macro(prepare_check_function RETURN_VAR)
-    if(DEFINED ${${RETURN_VAR}})
-        add_compile_definitions("${${RETURN_VAR}}=1")
-
-        _helpers_status("prepare_check_function" "check result for \"${${RETURN_VAR}}\" cached with value: ${${${RETURN_VAR}}}")
-        return()
+        )
     endif()
-endmacro()
+endfunction()
 
 #[[.rst:
 setup_testing
@@ -454,4 +481,19 @@ Print an error message specific to the ``helpers.cmake`` module and exit early.
 macro(_helpers_error function message)
     message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
     return()
+endmacro()
+
+#[[
+A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
+to check for a cached compile definition and return early if it is found.
+]]
+macro(_helpers_check_cached var status)
+    if(${var})
+        if(${var} EQUAL 1)
+            add_compile_definitions("${var}=1")
+        endif()
+
+        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
+        return()
+    endif()
 endmacro()

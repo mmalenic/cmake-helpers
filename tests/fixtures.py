@@ -36,11 +36,11 @@ def create_header_file(tmp_path, monkeypatch) -> Path:
 
 
 @pytest.fixture
-def program_dependencies(tmp_path, monkeypatch) -> Path:
+def add_dep(tmp_path, monkeypatch) -> Path:
     """
-    Fixture which sources the program_dependencies data.
+    Fixture which sources the add_dep data.
     """
-    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "program_dependencies")
+    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "add_dep")
 
     return install_conanfile(tmp_path, monkeypatch)
 

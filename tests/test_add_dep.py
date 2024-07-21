@@ -1,5 +1,5 @@
 """
-Tests for program dependencies function.
+Tests for add dep function.
 """
 
 from subprocess import CalledProcessError
@@ -7,33 +7,33 @@ from typing import List
 
 import pytest
 
-from tests.fixtures import program_dependencies, run_cmake_with_assert
+from tests.fixtures import add_dep, run_cmake_with_assert
 
 
 def default_contains() -> List[str]:
-    return ["cmake-helpers: program dependencies - found ZLIB with components",
-            "cmake-helpers: program dependencies - component ZLIB::ZLIB linked to cmake_helpers_test",
-            "cmake-helpers: program dependencies - linked ZLIB to cmake_helpers_test",
-            "cmake-helpers: program dependencies - component zlib_DEPS_TARGET linked to cmake_helpers_test"]
+    return ["cmake-helpers: helpers_add_dep - found ZLIB with components",
+            "cmake-helpers: helpers_add_dep - component ZLIB::ZLIB linked to cmake_helpers_test",
+            "cmake-helpers: helpers_add_dep - linked ZLIB to cmake_helpers_test",
+            "cmake-helpers: helpers_add_dep - component zlib_DEPS_TARGET linked to cmake_helpers_test"]
 
 
 def default_not_contains() -> List[str]:
-    return ["cmake-helpers: program dependencies -     visibility =",
-            "cmake-helpers: program dependencies -     version ="]
+    return ["cmake-helpers: helpers_add_dep -     visibility =",
+            "cmake-helpers: helpers_add_dep -     version ="]
 
 
-def test_program_dependencies(program_dependencies, capfd):
+def test_add_dep(add_dep, capfd):
     """
-    Test that program dependencies links components to the project target.
+    Test that add dep links components to the project target.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains(),
                           not_contains_messages=default_not_contains(),
                           preset="conan-release")
 
 
-def test_program_dependencies_components(program_dependencies, capfd):
+def test_add_dep_components(add_dep, capfd):
     """
-    Test that program dependencies links manually specified components to the project target.
+    Test that add dep links manually specified components to the project target.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains()[0:3],
                           not_contains_messages=default_not_contains() + [
@@ -41,31 +41,31 @@ def test_program_dependencies_components(program_dependencies, capfd):
                           variables={"components": "ZLIB::ZLIB"}, preset="conan-release")
 
 
-def test_program_dependencies_version(program_dependencies, capfd):
+def test_add_dep_version(add_dep, capfd):
     """
-    Test that program dependencies links components to the project target with a version.
+    Test that add dep links components to the project target with a version.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains() + [
-        "cmake-helpers: program dependencies -     version = 1.3"],
+        "cmake-helpers: helpers_add_dep -     version = 1.3"],
                           not_contains_messages=[default_not_contains()[0]],
                           variables={"version": "1.3"},
                           preset="conan-release")
 
 
-def test_program_dependencies_visibility(program_dependencies, capfd):
+def test_add_dep_visibility(add_dep, capfd):
     """
-    Test that program dependencies links components to the project target with a visibility.
+    Test that add dep links components to the project target with a visibility.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains() +
-                                                   ["cmake-helpers: program dependencies -     visibility = PRIVATE"],
+                                                   ["cmake-helpers: helpers_add_dep -     visibility = PRIVATE"],
                           not_contains_messages=[default_not_contains()[1]],
                           variables={"visibility": "PRIVATE"},
                           preset="conan-release")
 
 
-def test_program_dependencies_extra_args(program_dependencies, capfd):
+def test_add_dep_extra_args(add_dep, capfd):
     """
-    Test that program dependencies links components to the project target with extra find package args.
+    Test that add dep links components to the project target with extra find package args.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains(),
                           not_contains_messages=default_not_contains(),
@@ -73,9 +73,9 @@ def test_program_dependencies_extra_args(program_dependencies, capfd):
                           preset="conan-release")
 
 
-def test_program_dependencies_extra_args_invalid(program_dependencies, capfd):
+def test_add_dep_extra_args_invalid(add_dep, capfd):
     """
-    Test that program dependencies links components to the project target with invalid extra find package args.
+    Test that add dep links components to the project target with invalid extra find package args.
     """
     with pytest.raises(CalledProcessError):
         run_cmake_with_assert(capfd,

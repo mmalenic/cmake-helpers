@@ -1,7 +1,7 @@
 # Test config variables
 set(language "" CACHE STRING "language to use")
 set(include "stdlib.h" CACHE STRING "include to check")
-set(run_twice FALSE CACHE BOOL "run the include check twice")
+set(run_twice TRUE CACHE BOOL "run the include check twice")
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)

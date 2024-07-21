@@ -11,7 +11,6 @@ project(${project_name} CXX)
 find_file(cmake_helpers "helpers.cmake" PATHS "../../.." ".")
 include(${cmake_helpers})
 
-message("SYMBOL ${symbol} FILES \"stdlib.h\" VAR EXIT_EXISTS ${mode}")
 helpers_check_symbol(SYMBOL ${symbol} FILES "stdlib.h" VAR EXIT_EXISTS ${mode})
 
 if(${run_twice})
