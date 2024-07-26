@@ -63,9 +63,9 @@ function(helpers_check_symbol)
     set(multi_value_args FILES)
     cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    check_required_arg(_VAR)
-    check_required_arg(_SYMBOL)
-    check_required_arg(_FILES)
+    _helpers_required(_VAR)
+    _helpers_required(_SYMBOL)
+    _helpers_required(_FILES)
 
     _helpers_check_cached(${_VAR} "helpers_check_symbol")
 
@@ -141,8 +141,8 @@ function(helpers_check_includes)
     set(multi_value_args INCLUDES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    check_required_arg(_VAR)
-    check_required_arg(_INCLUDES)
+    _helpers_required(_VAR)
+    _helpers_required(_INCLUDES)
 
     _helpers_check_cached(${_VAR} "helpers_check_includes")
 
@@ -282,8 +282,11 @@ and calls |gtest_discover_tests| to find tests.
 
     helpers_setup_gtest(
         <test_executable>
-        [ADD_LIBRARY library]
+        [ADD_LIBRARIES add_libraries...]
     )
+
+The ``test_executable`` specifies which test executable to discover tests on and ``ADD_LIBRARIES`` specifies
+any additional libraries which should be publically linked to the ``test_executable``.
 
 .. important:: This function does not call |enable_testing|.
 
@@ -294,17 +297,19 @@ Discover tests for "test_executable" and link "additional_library" to the execut
 
 .. code-block:: cmake
 
-    setup_gtest("test_executable" ADD_LIBRARY "additional_library")
+    setup_gtest("test_executable" ADD_LIBRARIES "additional_library")
 
-.. _GTest: https://google.github.io/googletest/
+.. _GTest: https://google.github.io/googletest
 .. |gtest_discover_tests| replace:: :command:`gtest_discover_tests <command:gtest_discover_tests>`
 .. |enable_testing| replace:: :command:`enable_testing <command:enable_testing>`
 ]]
 function(setup_gtest test_executable)
-    set(one_value_args ADD_LIBRARY)
-    cmake_parse_arguments("" "" "${one_value_args}" "" ${ARGN})
+    set(multi_value_args ADD_LIBRARIES)
+    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    target_link_libraries(${test_executable} PUBLIC ${_ADD_LIBRARY})
+    foreach(library IN LISTS _ADD_LIBRARIES)
+        target_link_libraries(${test_executable} PUBLIC ${library})
+    endforeach ()
 
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
@@ -325,68 +330,156 @@ function(setup_gtest test_executable)
 endfunction()
 
 #[[.rst:
-check_required_arg
-----------------
+.. command:: helpers_embed
 
-A macro which is used to check for required ``cmake_parse_arguments``
-arguments.
+Embeds a resource into source code as a variable or preprocessor define directive.
+This function is similar to the C23 `#embed`_ directive, and can serve as a replacement until
+it is available. The `#embed`_ directive should be preferred over ``helpers_embed`` if it is available.
 
-.. code:: cmake
+.. code-block:: cmake
 
-   check_required_arg(
-       <ARG>
-       <ARG_NAME>
-   )
+    helpers_embed(
+        <file>
+        <variable>
+        <EMBED embed_files...>
+        [NAMESPACE namespace]
+        [OUTPUT_DIR output_dir]
+        [TARGET target]
+        [VISIBILITY visibility]
+        [AUTO_LITERAL | CHAR_LITERAL | AUTO_ARRAY | BYTE_ARRAY | DEFINE_LITERAL | DEFINE_ARRAY]
+    )
 
-Check if ``ARG`` is defined, printing an error message with ``ARG_NAME``
-and returning early if not.
-]]
-macro(check_required_arg ARG)
-    string(REGEX REPLACE "^_" "" ARG_NAME ${ARG})
-    if(NOT DEFINED ${ARG})
-        message(FATAL_ERROR "cmake-helpers: required parameter ${ARG_NAME} not set")
-        return()
-    endif()
-endmacro()
+This function generates C or C++ code at the ``file`` which embeds data contained within ``EMBED``
+in a variable or preprocessor macro called ``variable``. If multiple files are specified in ``EMBED``,
+then they are all concatenated and embedded in the same ``variable``.
 
-macro(header_file_set_variable_value line_end)
-    foreach(file_name IN LISTS _TARGET_FILE_NAMES)
-        file(STRINGS "${file_name}" lines)
+.. note:: This function cannot create multiple variables in the same file.
 
-        foreach(line IN LISTS lines)
-            string(STRIP "${line}" line)
-            set(variable_value "${variable_value}\"${line}\\n\"${line_end}\n")
-        endforeach()
-    endforeach()
-    string(STRIP "${variable_value}" variable_value)
+In order to control how the variable is created a resource definition mode should be specified as either
+``AUTO_LITERAL``, ``CHAR_LITERAL``, ``AUTO_ARRAY``, ``BYTE_ARRAY``, ``DEFINE_LITERAL`` or ``DEFINE_ARRAY``.
+This function returns are error if more than one of these modes if specified. The default mode is ``AUTO_LITERAL``.
 
-    # No line ending for last element. Escape to treat special characters.
-    string(REGEX REPLACE "\\${line_end}$" "" variable_value "${variable_value}")
-endmacro()
+.. role:: cpp_type(code)
+   :language: c++
 
-#[[.rst:
-create_header_file
-----------------
+``AUTO_LITERAL`` and ``CHAR_LITERAL`` both define string literals with a null terminator as the variable, either as
+a :cpp_type:`constexpr auto` or :cpp_type:`const char *` respectively. ``AUTO_ARRAY`` and ``BYTE_ARRAY`` both define
+arrays without a null terminator as the variable, either as :cpp_type:`constexpr auto` or :cpp_type:`const uint8_t *`
+respectively. ``DEFINE`` defines a preprocessor macro string.
 
-A function which creates a header file containing to contents of a ```file_name``.
+The following table describes how each mode defines the embedded resource in "embed.h" where the ``variable`` is
+"variable" and the ``EMBED`` resource is "This is an embedded literal.\\n":
 
-.. code:: cmake
+.. table:: ``helpers_embed`` resource definition modes
+
+    +------------------+-----------------------------------------------------------------------+
+    | Mode             | Generate Code                                                         |
+    +==================+=======================================================================+
+    | ``AUTO_LITERAL`` | .. code-block:: c++                                                   |
+    |                  |    :caption: embed.h                                                  |
+    |                  |                                                                       |
+    |                  |    constexpr auto variable = "This is an embedded literal.\n";        |
+    +------------------+-----------------------------------------------------------------------+
+    | ``CHAR_LITERAL`` | .. code-block:: c++                                                   |
+    |                  |    :caption: embed.h                                                  |
+    |                  |                                                                       |
+    |                  |    const char* include_const_char = "This is an embedded literal.\n"; |
+    +------------------+-----------------------------------------------------------------------+
+    | ``AUTO_ARRAY``   | .. code-block:: c++                                                   |
+    |                  |    :caption: embed.h                                                  |
+    |                  |                                                                       |
+    |                  |    constexpr auto variable = "This is an embedded literal.\n";        |
+    +------------------+-----------------------------------------------------------------------+
+    | ``BYTE_ARRAY``   | .. code-block:: c++                                                   |
+    |                  |    :caption: embed.h                                                  |
+    |                  |                                                                       |
+    |                  |    constexpr auto variable = "This is an embedded literal.\n";        |
+    +------------------+-----------------------------------------------------------------------+
+    | ``DEFINE``       | .. code-block:: c++                                                   |
+    |                  |    :caption: embed.h                                                  |
+    |                  |                                                                       |
+    |                  |    #define INCLUDE_DEFINE_CONSTANT "This is an embedded literal.\n"   |
+    +------------------+-----------------------------------------------------------------------+
+
+The variable definition can be surrounded by a namespace by defining the namespace name in ``NAMESPACE``. By default,
+``helpers_embed`` places the generated file in ``${|CMAKE_CURRENT_BINARY_DIR|}/generated``. ``OUTPUT_DIR`` can be used
+to change this location. If ``TARGET`` is specified, then |target_sources| is used to add the generated
+file to the ``TARGET`` with "PRIVATE" visibility. ``VISIBILITY`` can be used to change the default visibility.
+
+This function sets the a variable called ``helpers_ret`` with ``PARENT_SCOPE`` to the value of the ``OUTPUT_DIR`` when it
+finished. This can be used together with |target_include_directories| to allow the source code to access the embedded variable.
+
+Examples
+^^^^^^^^
+
+Generate a file called ``include_constexpr_auto.h`` with a variable of the same name with the contents of ``embed_one.txt``.
+The target ``application`` has the generated source added, and |target_include_directories| is used to access the variable.
+
+.. code-block:: cmake
 
    create_header_file(
-       <TARGET_FILE_NAME>
-       <HEADER_FILE_NAME>
-       <VARIABLE_NAME>
+       "include_constexpr_auto.h"
+       "include_constexpr_auto"
+       EMBED "embed_one.txt"
+       TARGET application
+   )
+   target_include_directories(application PRIVATE ${cmake_helpers_ret})
+
+This generates the following code, assuming ``embed_one.txt`` contains "This is an embedded literal.\n":
+
+.. code-block:: c++
+
+   // Auto-generated by helpers_embed.
+   #ifndef INCLUDE_CONSTEXPR_AUTO_H
+   #define INCLUDE_CONSTEXPR_AUTO_H
+
+   constexpr auto include_constexpr_auto = "This is an embedded literal.\n";
+
+   #endif // INCLUDE_CONSTEXPR_AUTO_H
+
+Generate a file called ``include_const_char.h`` with a variable of the same name with the contents of ``embed_one.txt``
+and ``embed_two.txt``. The variable mode is ``CHAR_LITERAL`` and a namespace is defined. The target ``application``
+has the generated source added, and |target_include_directories| is used to access the variable.
+
+.. code-block:: cmake
+
+   create_header_file(
+       "include_const_char.h"
+       "include_const_char"
+       EMBED "embed_one.txt" "embed_two.txt"
+       NAMESPACE "application::detail"
+       TARGET application
    )
 
-Read ``TARGET_FILE_NAMES`` and create a string_view with their contents inside
-``HEADER_FILE_NAME`` with the name ``VARIABLE_NAME`` and namespace ``NAMESPACE``.
-]]
-function(create_header_file header_file_name variable_name)
-    set(one_value_args NAMESPACE OUTPUT_DIR TARGET VISIBILITY MODE)
-    set(multi_value_args TARGET_FILE_NAMES)
-    cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
+This generates the following code, assuming ``embed_one.txt`` contains "This is an embedded literal.\\n" and
+``embed_two.txt`` contains "This is also an embedded literal.\\nWith multiple lines.\\n":
 
-    check_required_arg(_TARGET_FILE_NAMES)
+.. code-block:: c++
+
+   // Auto-generated by helpers_embed.
+   #ifndef APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H
+   #define APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H
+
+   namespace application::detail {
+   const char* include_const_char_multi = "This is an embedded literal.\n"
+   "This is also an embedded literal.\n"
+   "With multiple lines.\n";
+   } // application::detail
+
+   #endif // APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H
+
+.. _#embed: https://en.cppreference.com/w/c/preprocessor/embed
+.. |CMAKE_CURRENT_BINARY_DIR| replace:: :variable:`CMAKE_CURRENT_BINARY_DIR <variable:CMAKE_CURRENT_BINARY_DIR>`
+.. |target_sources| replace:: :command:`target_sources <command:target_sources>`
+.. |target_include_directories| replace:: :command:`target_include_directories <command:target_include_directories>`
+]]
+function(helpers_embed file variable)
+    set(options AUTO_LITERAL CHAR_LITERAL AUTO_ARRAY BYTE_ARRAY DEFINE)
+    set(one_value_args NAMESPACE OUTPUT_DIR TARGET VISIBILITY)
+    set(multi_value_args EMBED)
+    cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+    _helpers_required(_EMBED)
 
     # Get the correct define comment and namespace comment.
     string(TOUPPER "${header_file_name}" header_stem)
@@ -399,15 +492,15 @@ function(create_header_file header_file_name variable_name)
 
     if(NOT DEFINED _MODE OR "${_MODE}" STREQUAL "constexpr_auto")
         _helpers_status("create_header_file" "using constexpr_auto")
-        header_file_set_variable_value("")
+        _helpers_embed_variable("")
         set(variable_declaration [[constexpr auto ${variable_name} = ${variable_value};]])
     elseif("${_MODE}" STREQUAL "const_char")
-        header_file_set_variable_value("")
+        _helpers_embed_variable("")
         _helpers_status("create_header_file" "using const_char")
         set(variable_declaration [[const char* ${variable_name} = ${variable_value};]])
     elseif("${_MODE}" STREQUAL "define_constant")
         # Double escape this to because it's entering a macro expansion.
-        header_file_set_variable_value("\\\\")
+        _helpers_embed_variable("\\\\")
         _helpers_status("create_header_file" "using define_constant")
         set(variable_declaration [[#define ${variable_name} ${variable_value}]])
     else()
@@ -420,7 +513,7 @@ function(create_header_file header_file_name variable_name)
     endif()
 
     set(template [[
-        // Auto-generated by my cmake-helpers
+        // Auto-generated by helpers_embed
         #ifndef ${def_header}
         #define ${def_header}
 
@@ -458,13 +551,48 @@ function(create_header_file header_file_name variable_name)
 
     _helpers_status("create_header_file" "generated output file")
 
-    if (DEFINED _TARGET AND DEFINED _VISIBILITY)
+    if (DEFINED _TARGET)
+        if (NOT DEFINED _VISIBILITY)
+            set(_VISIBILITY PRIVATE)
+        endif()
+
         _helpers_status("create_header_file" "linking generated file to target ${_TARGET}")
         target_sources(${_TARGET} ${_VISIBILITY} ${output_file})
     endif ()
 
     set(cmake_helpers_ret ${_OUTPUT_DIR} PARENT_SCOPE)
 endfunction()
+
+#[[
+Used to define a variable value when generating code for embedding files into source code.
+The ``line_end`` specifies the line ending for the variable definition, for example, a semi-colon.
+]]
+macro(_helpers_embed_variable line_end)
+    foreach(file_name IN LISTS _TARGET_FILE_NAMES)
+        file(STRINGS "${file_name}" lines)
+
+        foreach(line IN LISTS lines)
+            string(STRIP "${line}" line)
+            set(variable_value "${variable_value}\"${line}\\n\"${line_end}\n")
+        endforeach()
+    endforeach()
+    string(STRIP "${variable_value}" variable_value)
+
+    # No line ending for last element. Escape to treat special characters.
+    string(REGEX REPLACE "\\${line_end}$" "" variable_value "${variable_value}")
+endmacro()
+
+#[[
+Checks that a required argument parsed by ``cmake_parse_arguments`` is set. This assumes that
+the argument which is being checked is prefixed with ``_``.
+]]
+macro(_helpers_required arg)
+    string(REGEX REPLACE "^_" "" arg_name ${arg})
+    if(NOT DEFINED ${arg})
+        message(FATAL_ERROR "cmake-helpers: required parameter ${arg_name} not set")
+        return()
+    endif()
+endmacro()
 
 #[[
 Print a status message specific to the ``helpers.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print
