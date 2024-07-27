@@ -12,6 +12,16 @@ import pytest
 
 
 @pytest.fixture
+def add_dep(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the add_dep data.
+    """
+    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "add_dep")
+
+    return install_conanfile(tmp_path, monkeypatch)
+
+
+@pytest.fixture
 def check_includes(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the check_includes data.
@@ -36,13 +46,11 @@ def embed(tmp_path, monkeypatch) -> Path:
 
 
 @pytest.fixture
-def add_dep(tmp_path, monkeypatch) -> Path:
+def enum(tmp_path, monkeypatch) -> Path:
     """
-    Fixture which sources the add_dep data.
+    Fixture which sources the enum data.
     """
-    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "add_dep")
-
-    return install_conanfile(tmp_path, monkeypatch)
+    return setup_cmake_project(tmp_path, monkeypatch, "enum")
 
 
 @pytest.fixture

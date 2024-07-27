@@ -597,8 +597,12 @@ Check if only one variable out of ``A``, ``B``, and ``C`` is defined and return 
        C
    )
 ]]
-macro(helpers_enum enums)
-    foreach(enum IN LISTS ${enums})
+macro(helpers_enum)
+    # Grab all the arguments.
+    set(enums ${ARGN})
+
+    # Find the defined values.
+    foreach(enum IN LISTS enums)
         if(DEFINED ${enum})
             list(APPEND _helpers_enum_defined ${enum})
         endif()
@@ -606,12 +610,8 @@ macro(helpers_enum enums)
 
     list(LENGTH _helpers_enum_defined _helpers_enum_n_defined)
     if(_helpers_enum_n_defined GREATER 1)
-        _helpers_error("helpers_enum" "there should not be more than one enum option")
-
         list(JOIN _helpers_enum_defined ", " _helpers_enum_defined_formatted)
-        _helpers_error("helpers_enum" "currently defined: ${_helpers_enum_defined_formatted}")
-
-        return()
+        _helpers_error("helpers_enum" "more than one enum defined: ${_helpers_enum_defined_formatted}")
     endif()
 endmacro()
 

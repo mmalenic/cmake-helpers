@@ -1,6 +1,3 @@
-# Test config variables
-#set(components "" CACHE STRING "components to use")
-
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 14)
