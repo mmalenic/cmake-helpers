@@ -9,11 +9,11 @@ project(${project_name} CXX)
 find_file(cmake_helpers "helpers.cmake" PATHS "../../.." ".")
 include(${cmake_helpers})
 
-set(enum_a TRUE)
+set(arg TRUE)
 if(error)
-    set(enum_c TRUE)
+    unset(arg)
 endif()
 
-helpers_enum(enum_a enum_b enum_c)
+helpers_required(arg)
 
 add_executable(${project_name} main.cpp)

@@ -40,7 +40,7 @@ def check_symbol(tmp_path, monkeypatch) -> Path:
 @pytest.fixture
 def embed(tmp_path, monkeypatch) -> Path:
     """
-    Fixture which sources the create_header_file data.
+    Fixture which sources the embed data.
     """
     return setup_cmake_project(tmp_path, monkeypatch, "embed")
 
@@ -51,6 +51,13 @@ def enum(tmp_path, monkeypatch) -> Path:
     Fixture which sources the enum data.
     """
     return setup_cmake_project(tmp_path, monkeypatch, "enum")
+
+@pytest.fixture
+def required(tmp_path, monkeypatch) -> Path:
+    """
+    Fixture which sources the required data.
+    """
+    return setup_cmake_project(tmp_path, monkeypatch, "required")
 
 
 @pytest.fixture

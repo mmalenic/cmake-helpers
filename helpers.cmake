@@ -63,9 +63,9 @@ function(helpers_check_symbol)
     set(multi_value_args FILES)
     cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    _helpers_required(_VAR)
-    _helpers_required(_SYMBOL)
-    _helpers_required(_FILES)
+    helpers_required(_VAR)
+    helpers_required(_SYMBOL)
+    helpers_required(_FILES)
 
     _helpers_check_cached(${_VAR} "helpers_check_symbol")
 
@@ -141,8 +141,8 @@ function(helpers_check_includes)
     set(multi_value_args INCLUDES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    _helpers_required(_VAR)
-    _helpers_required(_INCLUDES)
+    helpers_required(_VAR)
+    helpers_required(_INCLUDES)
 
     _helpers_check_cached(${_VAR} "helpers_check_includes")
 
@@ -479,7 +479,7 @@ function(helpers_embed file variable)
     set(multi_value_args EMBED)
     cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    _helpers_required(_EMBED)
+    helpers_required(_EMBED)
     helpers_enum(_AUTO_LITERAL _CHAR_LITERAL _AUTO_ARRAY _BYTE_ARRAY _DEFINE)
 
     # Get the include guard and namespace comment.
@@ -546,13 +546,13 @@ function(helpers_embed file variable)
     endforeach()
 
     # Remove extra newlines.
-    string(REGEX REPLACE "\n\n\n" "\n\n" generated "${generated}")
+    string(REGEX REPLACE "\n\n+" "\n\n" generated "${generated}")
 
     if (NOT DEFINED _OUTPUT_DIR)
         set(_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
     endif ()
 
-    cmake_path(APPEND _OUTPUT_DIR ${file} OUTPUT_VARIABLE file)
+    cmake_path(APPEND _OUTPUT_DIR "${file}" OUTPUT_VARIABLE file)
     file(WRITE "${file}" "${generated}")
 
     _helpers_status("helpers_embed" "generated output file at ${file}")
@@ -572,22 +572,24 @@ endfunction()
 #[[.rst
 .. command:: helpers_enum
 
-A utility macro which checks whether only one out of a set of variables is defined and returns an error if not more than
-one is defined. This is useful to define enum value option which can only have one out of a set of options defined at a time.
+A utility macro which checks whether only one out of a set of variables is truthy and returns an error if not.
+This is useful to define enum value options which can only have one out of a set of options defined at a time.
 
 .. code-block:: cmake
 
     helpers_enum(
-        <enums...>
+        <variables...>
     )
 
-This macro returns an prints an error message if more than one variable is defined in ``enums``. It also returns
-early out of the scope of the calling code.
+This macro returns an prints an error message if more than one variable in ``variables`` evaluates to true in an if
+statement. It returns early if not, in the scope of the calling code. It assumes that variables prefixed with "_"
+should be printed without this prefix. This behaviour is useful to properly format prefixed arguments parsed by
+|cmake_parse_arguments|.
 
 Examples
 ^^^^^^^^
 
-Check if only one variable out of ``A``, ``B``, and ``C`` is defined and return early if more than one is defined.
+Check if only one variable out of ``A``, ``B``, and ``C`` is truthy and return early if not.
 
 .. code-block:: cmake
 
@@ -596,6 +598,8 @@ Check if only one variable out of ``A``, ``B``, and ``C`` is defined and return 
        B
        C
    )
+   
+.. |cmake_parse_arguments| replace:: :command:`cmake_parse_arguments <command:cmake_parse_arguments>`
 ]]
 macro(helpers_enum)
     # Grab all the arguments.
@@ -603,15 +607,52 @@ macro(helpers_enum)
 
     # Find the defined values.
     foreach(enum IN LISTS enums)
-        if(DEFINED ${enum})
-            list(APPEND _helpers_enum_defined ${enum})
+        if(${enum})
+            string(REGEX REPLACE "^_" "" enum_name ${enum})
+            list(APPEND _helpers_enum_defined ${enum_name})
         endif()
     endforeach()
 
     list(LENGTH _helpers_enum_defined _helpers_enum_n_defined)
     if(_helpers_enum_n_defined GREATER 1)
         list(JOIN _helpers_enum_defined ", " _helpers_enum_defined_formatted)
-        _helpers_error("helpers_enum" "more than one enum defined: ${_helpers_enum_defined_formatted}")
+        _helpers_error("helpers_enum" "more than one variable defined: ${_helpers_enum_defined_formatted}")
+    endif()
+endmacro()
+
+#[[
+.. command:: helpers_required
+
+A utility macro which checks whether an argument is truthy and returns an error if not. This is useful to
+confirm the presence of arguments parsed by |cmake_parse_arguments|.
+
+.. code-block:: cmake
+
+    helpers_required(
+        <arg>
+    )
+
+This macro checks if ``arg`` is truthy and returns early in the scope of the calling code if not. It assumes that
+variables prefixed with "_" should be printed without this prefix. This behaviour is useful to properly format prefixed
+arguments parsed by |cmake_parse_arguments|.
+
+Examples
+^^^^^^^^
+
+Check if ``arg`` is defined and return early if it is not.
+
+.. code-block:: cmake
+
+   helpers_required(
+       arg
+   )
+
+.. |cmake_parse_arguments| replace:: :command:`cmake_parse_arguments <command:cmake_parse_arguments>`
+]]
+macro(helpers_required arg)
+    string(REGEX REPLACE "^_" "" arg_name ${arg})
+    if(NOT ${arg})
+        _helpers_error("helpers_required" "required parameter ${arg_name} not set")
     endif()
 endmacro()
 
@@ -647,13 +688,14 @@ macro(_helpers_embed_lines line_end hex)
 endmacro()
 
 #[[
-Checks that a required argument parsed by ``cmake_parse_arguments`` is set. This assumes that
-the argument which is being checked is prefixed with ``_``.
+A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
+to check for a cached compile definition and return early if it is found.
 ]]
-macro(_helpers_required arg)
-    string(REGEX REPLACE "^_" "" arg_name ${arg})
-    if(NOT DEFINED ${arg})
-        message(FATAL_ERROR "cmake-helpers: required parameter ${arg_name} not set")
+macro(_helpers_check_cached var status)
+    if(${var})
+        add_compile_definitions("${var}=${${var}}")
+
+        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
         return()
     endif()
 endmacro()
@@ -690,17 +732,4 @@ Print an error message specific to the ``helpers.cmake`` module and exit early.
 macro(_helpers_error function message)
     message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
     return()
-endmacro()
-
-#[[
-A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
-to check for a cached compile definition and return early if it is found.
-]]
-macro(_helpers_check_cached var status)
-    if(${var})
-        add_compile_definitions("${var}=${${var}}")
-
-        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
-        return()
-    endif()
 endmacro()
