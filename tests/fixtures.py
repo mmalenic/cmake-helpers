@@ -28,11 +28,11 @@ def check_symbol(tmp_path, monkeypatch) -> Path:
 
 
 @pytest.fixture
-def create_header_file(tmp_path, monkeypatch) -> Path:
+def embed(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the create_header_file data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "create_header_file")
+    return setup_cmake_project(tmp_path, monkeypatch, "embed")
 
 
 @pytest.fixture
