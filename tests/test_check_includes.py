@@ -22,7 +22,7 @@ def test_check_includes_c_language(check_includes, capfd):
     Test that check includes compiles an existing symbol with C as the language.
     """
     run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
-                                                    "cmake-helpers: helpers_check_includes -     language = C"],
+                                                    "cmake-helpers:                          language = C"],
                           variables={"language": "C"})
 
 
@@ -31,7 +31,7 @@ def test_check_includes_cxx_language(check_includes, capfd):
     Test that check includes compiles an existing symbol with CXX as the language.
     """
     run_cmake_with_assert(capfd, contains_messages=["cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
-                                                    "cmake-helpers: helpers_check_includes -     language = CXX"],
+                                                    "cmake-helpers:                          language = CXX"],
                           variables={"language": "CXX"})
 
 

@@ -18,8 +18,8 @@ def default_contains() -> List[str]:
 
 
 def default_not_contains() -> List[str]:
-    return ["cmake-helpers: helpers_add_dep -     visibility =",
-            "cmake-helpers: helpers_add_dep -     version ="]
+    return ["cmake-helpers:                   visibility =",
+            "cmake-helpers:                   version ="]
 
 
 def test_add_dep(add_dep, capfd):
@@ -46,7 +46,7 @@ def test_add_dep_version(add_dep, capfd):
     Test that add dep links components to the project target with a version.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains() + [
-        "cmake-helpers: helpers_add_dep -     version = 1.3"],
+        "cmake-helpers:                   version = 1.3"],
                           not_contains_messages=[default_not_contains()[0]],
                           variables={"version": "1.3"},
                           preset="conan-release")
@@ -57,7 +57,7 @@ def test_add_dep_visibility(add_dep, capfd):
     Test that add dep links components to the project target with a visibility.
     """
     run_cmake_with_assert(capfd, contains_messages=default_contains() +
-                                                   ["cmake-helpers: helpers_add_dep -     visibility = PRIVATE"],
+                                                   ["cmake-helpers:                   visibility = PRIVATE"],
                           not_contains_messages=[default_not_contains()[1]],
                           variables={"visibility": "PRIVATE"},
                           preset="conan-release")

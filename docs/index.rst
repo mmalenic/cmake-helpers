@@ -1,11 +1,10 @@
-cmake-helpers documentation
-===========================
+helpers documentation
+=====================
 
 .. default-domain:: cmake
 
-.. cmake-module:: ../helpers.cmake
-
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
+   code_generation

@@ -131,7 +131,7 @@ def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
     file_path = Path(dirname(realpath(__file__)))
 
     copytree(file_path / "test_data" / data_path, tmp_path, dirs_exist_ok=True)
-    copy(file_path.parent / "helpers.cmake", tmp_path)
+    copytree(file_path.parent / "src", tmp_path, dirs_exist_ok=True)
 
     monkeypatch.chdir(tmp_path)
 
