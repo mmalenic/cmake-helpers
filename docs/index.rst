@@ -8,3 +8,5 @@ helpers documentation
    :caption: Contents
 
    code_generation
+   combinators
+   utilities

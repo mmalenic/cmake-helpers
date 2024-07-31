@@ -12,7 +12,6 @@
 #include "define.h"
 #include "define_multi.h"
 
-
 int main() {
     std::cout << auto_literal;
     std::cout << const_literal;
@@ -31,6 +30,9 @@ int main() {
 
     std::cout << application::detail::auto_literal_multi;
     std::cout << application::detail::const_literal_multi;
-    std::cout << application::detail::byte_array_multi;
+    std::cout << std::string{
+        reinterpret_cast<const char *>(application::detail::byte_array_multi),
+        sizeof(application::detail::byte_array_multi)
+    };
     std::cout << DEFINE_MULTI;
 }

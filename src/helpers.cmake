@@ -3,50 +3,6 @@ include(combinators)
 include(utilities)
 
 #[[
-Used to define a variable value when generating code for embedding files into source code.
-The ``line_end`` specifies the line ending for each line of the input, for example, an extra backslash.
-]]
-macro(_helpers_embed_lines line_end hex)
-    foreach(file_name IN LISTS _EMBED)
-        if(${hex})
-            # Read as hex and split into bytes.
-            file(READ "${file_name}" lines_hex HEX)
-            string(REGEX MATCHALL "../.." lines ${lines_hex})
-            set(surround_start "0x")
-            set(enclose_start "{")
-            set(enclose_end "}")
-        else()
-            # Read as lines.
-            file(STRINGS "${file_name}" lines)
-            set(surround_start "\"")
-            set(surround_end "\\n\"")
-        endif()
-
-        foreach(line IN LISTS lines)
-            string(STRIP "${line}" line)
-            set(value "${value}${surround_start}${line}${surround_end}${line_end}\n")
-        endforeach()
-    endforeach()
-    string(STRIP "${enclose_start}${value}${enclose_end}" value)
-
-    # No line ending for last element. Escape to treat special characters.
-    string(REGEX REPLACE "\\${line_end}$" "" value "${value}")
-endmacro()
-
-#[[
-A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
-to check for a cached compile definition and return early if it is found.
-]]
-macro(_helpers_check_cached var status)
-    if(${var})
-        add_compile_definitions("${var}=${${var}}")
-
-        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
-        return()
-    endif()
-endmacro()
-
-#[[
 Print a status message specific to the ``helpers.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print
 additional ``key = value`` messages underneath the status.
 ]]

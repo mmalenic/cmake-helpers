@@ -1,1 +1,0 @@
-.. cmake-module:: ../helpers.cmake

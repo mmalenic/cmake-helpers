@@ -1,12 +1,13 @@
-#[[.rst
+#[[.rst:
 Utilities
 *********
 
 The utilities module contains a few utility commands for common operations like definition enums or required arguments.
 ]]
 
-#[[.rst
-.. command:: helpers_enum
+#[[.rst:
+helpers_enum
+============
 
 A utility macro which checks whether only one out of a set of variables is truthy and returns an error if not.
 This is useful to define enum value options which can only have one out of a set of options defined at a time.
@@ -56,8 +57,9 @@ macro(helpers_enum)
     endif()
 endmacro()
 
-#[[
-.. command:: helpers_required
+#[[.rst:
+helpers_required
+================
 
 A utility macro which checks whether an argument is truthy and returns an error if not. This is useful to
 confirm the presence of arguments parsed by |cmake_parse_arguments|.
@@ -82,8 +84,6 @@ Check if ``arg`` is defined and return early if it is not.
    helpers_required(
        arg
    )
-
-.. |cmake_parse_arguments| replace:: :command:`cmake_parse_arguments <command:cmake_parse_arguments>`
 ]]
 macro(helpers_required arg)
     string(REGEX REPLACE "^_" "" arg_name ${arg})

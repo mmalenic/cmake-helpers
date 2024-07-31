@@ -1,6 +1,6 @@
 include(utilities)
 
-#[[.rst
+#[[.rst:
 Combinators
 ***********
 
@@ -12,7 +12,8 @@ In general, combinators aim to reduce repetitive and boilerplate build configura
 ]]
 
 #[[.rst:
-.. command:: helpers_check_symbol
+helpers_check_symbol
+====================
 
 A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| which adds compile time
 definitions using |add_compile_definitions|.
@@ -37,8 +38,8 @@ those commands are supported, such as setting the ``CMAKE_REQUIRED_*`` variables
 Examples
 ^^^^^^^^
 
-Check if the "exit" symbol can be found after including "stdlib.h" in a source file using the C++ compiler.
-The result of this check is stored in EXIT_EXISTS and a compile time definition with the value ``EXIT_EXISTS=1`
+Check if the ``"exit"`` symbol can be found after including ``"stdlib.h"`` in a source file using the C++ compiler.
+The result of this check is stored in EXIT_EXISTS and a compile time definition with the value ``EXIT_EXISTS=1``
 is created if the check was successful.
 
 .. code-block:: cmake
@@ -94,7 +95,8 @@ function(helpers_check_symbol)
 endfunction()
 
 #[[.rst:
-.. command:: helpers_check_includes
+helpers_check_includes
+======================
 
 A wrapper function around |check_include_files| which adds compile time definitions using
 |add_compile_definitions|.
@@ -120,8 +122,8 @@ compiler just like |check_include_files|.
 Examples
 ^^^^^^^^
 
-Check if "stdlib.h" can be included into a source file using the C++ compiler and store the result in
-STDLIB_EXISTS. A compile time definition with the value ``STDLIB_EXISTS=1` is created if the check was
+Check if ``"stdlib.h"`` can be included into a source file using the C++ compiler and store the result in
+STDLIB_EXISTS. A compile time definition with the value ``STDLIB_EXISTS=1`` is created if the check was
 successful.
 
 .. code-block:: cmake
@@ -145,7 +147,6 @@ This causes the following program to exit with 0 if the include exists:
     }
 
 .. |check_include_files| replace:: :command:`check_include_files <command:check_include_files>`
-.. |add_compile_definitions| replace:: :command:`add_compile_definitions <command:add_compile_definitions>`
 ]]
 function(helpers_check_includes)
     set(one_value_args VAR LANGUAGE)
@@ -176,7 +177,8 @@ function(helpers_check_includes)
 endfunction()
 
 #[[.rst:
-.. command:: helpers_add_dep
+helpers_add_dep
+===============
 
 A wrapper function around |find_package| which links a found dependency to a target using
 |target_link_libraries|.
@@ -206,7 +208,7 @@ This function calls the |find_package| and |target_link_libraries| directly, so 
 are supported. Set ``FIND_PACKAGE_ARGS`` to pass additional arguments to |find_package|.
 
 .. note:: ``LINK_COMPONENTS`` is not passed to |find_package|, instead use ``FIND_PACKAGE_ARGS`` to pass ``COMPONENTS``
-that |find_package| should use.
+          that |find_package| should use.
 
 Examples
 ^^^^^^^^
@@ -286,7 +288,8 @@ function(helpers_add_dep target dependency)
 endfunction()
 
 #[[.rst:
-.. command:: helpers_setup_gtest
+helpers_setup_gtest
+===================
 
 A convenience function which links `GTest`_ and an optional testing library to a test executable
 and calls |gtest_discover_tests| to find tests.
@@ -344,3 +347,16 @@ function(setup_gtest test_executable)
     include(GoogleTest)
     gtest_discover_tests(${test_executable})
 endfunction()
+
+#[[
+A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
+to check for a cached compile definition and return early if it is found.
+]]
+macro(_helpers_check_cached var status)
+    if(${var})
+        add_compile_definitions("${var}=${${var}}")
+
+        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
+        return()
+    endif()
+endmacro()

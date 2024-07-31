@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(project_name cmake_helpers_test)
 project(${project_name} CXX)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
 include(helpers)
 
 add_executable(${project_name} main.cpp)
