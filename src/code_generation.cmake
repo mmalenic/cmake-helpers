@@ -9,18 +9,16 @@ include(utilities)
 Code Generation
 ***************
 
-The code generation module has functions for generates code in C or C++. Currently,there is one function which
-embeds any resource as a string literal or binary array into C or C++ code. This serves as a replacement of the
-C23 `#embed`_ directive.
+The code generation module has functions for generating code in C or C++. This includes code generation to embed resources,
+serving as a replacement for the C23 `#embed`_ directive.
 ]]
 
 #[[.rst:
 helpers_embed
 =============
 
-Embeds a resource into source code as a variable or preprocessor define directive.
-This function is similar to the C23 `#embed`_ directive, and can serve as a replacement until
-it is available. The `#embed`_ directive should be preferred over :cmake:`helpers_embed` if it is available.
+Embeds a resource into source code as a variable or define macro. This function is similar to the C23 `#embed`_
+directive, however the `#embed`_ directive should be preferred over :cmake:`helpers_embed` if it is available.
 
 .. code-block:: cmake
 
@@ -41,19 +39,17 @@ then they are all concatenated and embedded in the same :cmake:`variable`.
 
 .. note:: This function cannot create multiple variables in the same file.
 
-In order to control how the variable is created a resource definition mode should be specified as either
-:cmake:`AUTO_LITERAL`, :cmake:`CHAR_LITERAL`, :cmake:`BYTE_ARRAY`, :cmake:`DEFINE_LITERAL` or :cmake:`DEFINE_ARRAY`.
-This function returns are error if more than one of these modes if specified. The default mode is :cmake:`AUTO_LITERAL`.
+In order to control how the variable is created the mode should be specified as either :cmake:`AUTO_LITERAL`,
+:cmake:`CHAR_LITERAL`, :cmake:`BYTE_ARRAY`, :cmake:`DEFINE_LITERAL` or :cmake:`DEFINE_ARRAY`. This function returns
+an error if more than one of these modes if specified. The default mode is :cmake:`AUTO_LITERAL`.
 
-:cmake:`AUTO_LITERAL` and :cmake:`CHAR_LITERAL` both define string literals with a null terminator as the variable, either as
-a :cpp:`constexpr auto` or :cpp:`const char *` respectively. :cmake:`BYTE_ARRAY` both defines and
-array without a null terminator as the variable, as a :cpp:`const uint8_t []`. :cmake:`DEFINE` defines a preprocessor
-macro string.
+:cmake:`AUTO_LITERAL` and :cmake:`CHAR_LITERAL` both define string literal variables with a null terminator, and a type of
+:cpp:`constexpr auto` or :cpp:`const char *` respectively. :cmake:`BYTE_ARRAY` defines a byte array variable without a
+null terminator, and a type of :cpp:`const uint8_t []`. :cmake:`DEFINE` defines a preprocessor macro.
 
-The following table describes how each mode defines the embedded resource in :cmake:`"embed.h"` where the :cmake:`variable` is
-:cmake:`"variable"` and the :cmake:`EMBED` resource is ``"This is an embedded literal.\\n"``:
+The following table shows the generated code using these modes.
 
-.. table:: :cmake:`helpers_embed` resource definition modes
+.. table:: :cmake:`helpers_embed` code generation modes.
 
     +-----------------------+-----------------------------------------------------------------------+
     | Mode                  | Generate Code                                                         |
@@ -68,7 +64,7 @@ The following table describes how each mode defines the embedded resource in :cm
     |                       |                                                                       |
     |                       |    const char* include_const_char = "This is an embedded literal.\n"; |
     +-----------------------+-----------------------------------------------------------------------+
-    | :cmake:`BYTE_ARRAY`    | .. code-block:: c++                                                   |
+    | :cmake:`BYTE_ARRAY`   | .. code-block:: c++                                                   |
     |                       |    :caption: embed.h                                                  |
     |                       |                                                                       |
     |                       |    constexpr auto variable = "This is an embedded literal.\n";        |
@@ -79,19 +75,21 @@ The following table describes how each mode defines the embedded resource in :cm
     |                       |    #define INCLUDE_DEFINE_CONSTANT "This is an embedded literal.\n"   |
     +-----------------------+-----------------------------------------------------------------------+
 
-The variable definition can be surrounded by a namespace by defining the namespace name in :cmake:`NAMESPACE`. By default,
-:cmake:`helpers_embed` places the generated file in :cmake:`${|CMAKE_CURRENT_BINARY_DIR|}/generated`. :cmake:`OUTPUT_DIR` can be used
+The variable definition can be surrounded by a namespace by specifying the :cmake:`NAMESPACE`. By default,
+:cmake:`helpers_embed` places the generated file in |GENERATED_DIR|. :cmake:`OUTPUT_DIR` can be used
 to change this location. If :cmake:`TARGET` is specified, then |target_sources| is used to add the generated
-file to the :cmake:`TARGET` with :cmake:`"PRIVATE"` visibility. :cmake:`VISIBILITY` can be used to change the default visibility.
+file to the :cmake:`TARGET` with :cmake:`VISIBILITY` visibility. The default visibility is :cmake:`"PRIVATE"`.
 
-This function sets the a variable called :cmake:`helpers_ret` with :cmake:`PARENT_SCOPE` to the value of the :cmake:`OUTPUT_DIR` when it
-finished. This can be used together with |target_include_directories| to allow the source code to access the embedded variable.
+This function sets the a variable called :cmake:`helpers_ret` with :cmake:`PARENT_SCOPE` to the value of the :cmake:`OUTPUT_DIR`.
+This can be used with |target_include_directories| to allow the source code to access the embedded resource.
 
 Examples
-^^^^^^^^
+--------
 
-Generate a file called :cmake:`include_constexpr_auto.h` with a variable of the same name with the contents of :cmake:`embed_one.txt`.
-The target :cmake:`application` has the generated source added, and |target_include_directories| is used to access the variable.
+Embed a single file
+^^^^^^^^^^^^^^^^^^^
+
+This example embeds a single file into an auto literal and links the generated code to :cmake:`application`.
 
 .. code-block:: cmake
 
@@ -115,9 +113,10 @@ This generates the following code, assuming :cmake:`embed_one.txt` contains ``"T
 
    #endif // INCLUDE_CONSTEXPR_AUTO_H
 
-Generate a file called :cmake:`include_const_char.h` with a variable of the same name with the contents of :cmake:`embed_one.txt`
-and :cmake:`embed_two.txt`. The variable mode is :cmake:`CHAR_LITERAL` and a namespace is defined. The target :cmake:`application`
-has the generated source added, and |target_include_directories| is used to access the variable.
+Embed multiple files
+^^^^^^^^^^^^^^^^^^^^
+
+This example embeds multiple files into a char literal and links the generated code to :cmake:`application`.
 
 .. code-block:: cmake
 
@@ -128,6 +127,7 @@ has the generated source added, and |target_include_directories| is used to acce
        NAMESPACE "application::detail"
        TARGET application
    )
+   target_include_directories(application PRIVATE ${cmake_helpers_ret})
 
 This generates the following code, assuming :cmake:`embed_one.txt` contains ``"This is an embedded literal.\\n"`` and
 :cmake:`embed_two.txt` contains ``"This is also an embedded literal.\\nWith multiple lines.\\n"``:
@@ -147,7 +147,7 @@ This generates the following code, assuming :cmake:`embed_one.txt` contains ``"T
    #endif // APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H
 
 .. _#embed: https://en.cppreference.com/w/c/preprocessor/embed
-.. |CMAKE_CURRENT_BINARY_DIR| replace:: :variable:`CMAKE_CURRENT_BINARY_DIR <variable:CMAKE_CURRENT_BINARY_DIR>`
+.. |GENERATED_DIR| replace:: :variable:`${CMAKE_CURRENT_BINARY_DIR}/generated <variable:CMAKE_CURRENT_BINARY_DIR>`
 .. |target_sources| replace:: :command:`target_sources <command:target_sources>`
 .. |target_include_directories| replace:: :command:`target_include_directories <command:target_include_directories>`
 ]]
