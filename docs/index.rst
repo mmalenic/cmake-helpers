@@ -1,7 +1,6 @@
-helpers documentation
-=====================
-
 .. default-domain:: cmake
+
+.. cmake-module:: ../src/helpers.cmake
 
 .. toctree::
    :maxdepth: 2
