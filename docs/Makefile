@@ -14,8 +14,10 @@ help:
 
 .PHONY: help Makefile
 
+# Generate the README.md.
 readme:
-	@sphinx-build -M markdown . _build README.rst
+	@$(SPHINXBUILD) -M markdown "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O) readme.rst && \
+	 mv "$(BUILDDIR)"/markdown/readme.md ../README.md
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

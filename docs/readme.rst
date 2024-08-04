@@ -1,7 +1,7 @@
 :orphan:
 
 ..
-   Generate a README.md from the README.rst.
+   This README.md is generated from docs/readme.rst.
 
 .. default-domain:: cmake
 

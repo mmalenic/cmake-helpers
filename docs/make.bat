@@ -23,9 +23,16 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
+if "%1" == "readme" goto readme
+
 if "%1" == "" goto help
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+goto end
+
+:readme
+%SPHINXBUILD% -M markdown %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O% readme.rst && ^
+move %(BUILDDIR)%\markdown\readme.md ..\README.md
 goto end
 
 :help

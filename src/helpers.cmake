@@ -13,8 +13,6 @@ configurations.
 This repository contains a C23 `#embed`_ replacement, functions for better dependency management, utilities for
 defining required args and enums, and combinator functions for |check_command| commands.
 
-Check out the docs:
-
 Usage
 =====
 
