@@ -1,16 +1,21 @@
 #[[.rst:
+.. role:: cmake(code)
+   :language: cmake
+.. role:: cpp(code)
+   :language: c++
+
 Utilities
 *********
 
-The utilities module contains a few utility commands for common operations like definition enums or required arguments.
+The utilities module contains miscellaneous commands such as for defining enums or required arguments.
 ]]
 
 #[[.rst:
 helpers_enum
 ============
 
-A utility macro which checks whether only one out of a set of variables is truthy and returns an error if not.
-This is useful to define enum value options which can only have one out of a set of options defined at a time.
+A macro which checks whether only one out of a set of variables is truthy and returns an error if not.
+This is useful to define enum options which can be one out of a set of defined values.
 
 .. code-block:: cmake
 
@@ -18,15 +23,17 @@ This is useful to define enum value options which can only have one out of a set
         <variables...>
     )
 
-This macro returns an prints an error message if more than one variable in ``variables`` evaluates to true in an if
-statement. It returns early if not, in the scope of the calling code. It assumes that variables prefixed with "_"
-should be printed without this prefix. This behaviour is useful to properly format prefixed arguments parsed by
-|cmake_parse_arguments|.
+This macro returns an error in the scope of the calling code, if more than one variable in :cmake:`variables`
+evaluates to true. It assumes that variables prefixed with :cmake:`_` should be printed without this prefix which is
+useful to properly format arguments parsed by |cmake_parse_arguments|.
 
 Examples
-^^^^^^^^
+--------
 
-Check if only one variable out of ``A``, ``B``, and ``C`` is truthy and return early if not.
+Check if an enum is set
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This checks if only one out of :cmake:`A`, :cmake:`B`, and :cmake:`C` is truthy and returns early if not.
 
 .. code-block:: cmake
 
@@ -61,7 +68,7 @@ endmacro()
 helpers_required
 ================
 
-A utility macro which checks whether an argument is truthy and returns an error if not. This is useful to
+A macro which checks whether an argument is truthy and returns an error if not. This can be used to
 confirm the presence of arguments parsed by |cmake_parse_arguments|.
 
 .. code-block:: cmake
@@ -70,14 +77,15 @@ confirm the presence of arguments parsed by |cmake_parse_arguments|.
         <arg>
     )
 
-This macro checks if ``arg`` is truthy and returns early in the scope of the calling code if not. It assumes that
-variables prefixed with "_" should be printed without this prefix. This behaviour is useful to properly format prefixed
-arguments parsed by |cmake_parse_arguments|.
+This macro returns an error in the scope of the calling code if :cmake:`arg` is not truthy.
 
 Examples
-^^^^^^^^
+--------
 
-Check if ``arg`` is defined and return early if it is not.
+Check if an argument is set
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This checks if :cmake:`arg` is defined and evaluates to true:
 
 .. code-block:: cmake
 

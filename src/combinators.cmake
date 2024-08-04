@@ -1,21 +1,22 @@
 include(utilities)
 
 #[[.rst:
+.. role:: cmake(code)
+   :language: cmake
+.. role:: cpp(code)
+   :language: c++
+
 Combinators
 ***********
 
-The combinators module combines cmake functions to create combination patterns which can be common to builds. For
-example, `helpers_add_dep`_ combines |find_package| and |target_link_libraries| in order to link a dependency to a
-target.
-
-In general, combinators aim to reduce repetitive and boilerplate build configuration code.
+The combinators module combines cmake functions and aim to reduce repetitive build configuration code.
 ]]
 
 #[[.rst:
 helpers_check_symbol
 ====================
 
-A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| which adds compile time
+A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| that adds compile time
 definitions using |add_compile_definitions|.
 
 .. code-block:: cmake
@@ -27,20 +28,21 @@ definitions using |add_compile_definitions|.
         [C]
     )
 
-By default, this checks if the given ``SYMBOL`` can be found after including ``FILES`` using
-|check_cxx_symbol_exists|. A cached result is written to ``VAR`` and a compile-time definition with the
-same name as ``VAR`` is created if this check succeeds. Setting the ``C`` flag uses |check_symbol_exists|
+By default, this checks if the given :cmake:`SYMBOL` can be found after including :cmake:`FILES` using
+|check_cxx_symbol_exists|. A cached result is written to :cmake:`VAR` and a compile-time definition with the
+same name as :cmake:`VAR` is created if this check succeeds. Setting the :cmake:`C` flag uses |check_symbol_exists|
 instead.
 
 This function calls the check function and compile definitions function directly, so all features of
-those commands are supported, such as setting the ``CMAKE_REQUIRED_*`` variables.
+those commands are supported, such as setting the :cmake:`CMAKE_REQUIRED_*` variables.
 
 Examples
-^^^^^^^^
+--------
 
-Check if the ``"exit"`` symbol can be found after including ``"stdlib.h"`` in a source file using the C++ compiler.
-The result of this check is stored in EXIT_EXISTS and a compile time definition with the value ``EXIT_EXISTS=1``
-is created if the check was successful.
+Check if a symbol exists in stdlib.h
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Checks if the :cpp:`"exit"` symbol can be found in :cpp:`"stdlib.h"`:
 
 .. code-block:: cmake
 
@@ -109,22 +111,21 @@ A wrapper function around |check_include_files| which adds compile time definiti
         [LANGUAGE C | CXX]
     )
 
-By default, this checks that the given ``INCLUDES`` can be included in a source file and compiled. A cached
-result is written to ``VAR`` and a compile-time definition with the same name as ``VAR`` is created if this
-check succeeds. Setting ``LANGUAGE`` controls which compiler is used to perform the check. ``C`` uses the C
-compiler and `CXX` uses the C++ compiler. If ``LANGUAGE`` is not set the C compiler is preferred over the
-C++ compiler.
+By default, this checks that the given :cmake:`INCLUDES` can be included in a source file. A cached
+result is written to :cmake:`VAR` and a compile-time definition with the same name as :cmake:`VAR` is created if this
+check succeeds. Setting :cmake:`LANGUAGE` to :cmake:`C` or :cmake:`CXX` uses the C or C++ compiler respectively.
+If :cmake:`LANGUAGE` is not set the C compiler is preferred if it is available.
 
-This function calls the check function and compile definitions function directly, so all features of those
-commands are supported. For example, if ``LANGUAGE`` is not set, the C compiler is preferred over the C++
-compiler just like |check_include_files|.
+This function calls |check_include_files| and |add_compile_definitions| directly, so all features of those
+commands are supported.
 
 Examples
-^^^^^^^^
+--------
 
-Check if ``"stdlib.h"`` can be included into a source file using the C++ compiler and store the result in
-STDLIB_EXISTS. A compile time definition with the value ``STDLIB_EXISTS=1`` is created if the check was
-successful.
+Check if stdlib.h can be included
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Check if ``"stdlib.h"`` can be included using the C++ compiler:
 
 .. code-block:: cmake
 
@@ -134,7 +135,7 @@ successful.
         LANGUAGE CXX
     )
 
-This causes the following program to exit with 0 if the include exists:
+This causes the following program to exit with 0 if the check succeeds:
 
 .. code-block:: c++
 
@@ -180,8 +181,7 @@ endfunction()
 helpers_add_dep
 ===============
 
-A wrapper function around |find_package| which links a found dependency to a target using
-|target_link_libraries|.
+A wrapper function around |find_package| which links a dependency to a target using |target_link_libraries|.
 
 .. code-block:: cmake
 
@@ -194,28 +194,29 @@ A wrapper function around |find_package| which links a found dependency to a tar
         [FIND_PACKAGE_ARGS extra_args...]
     )
 
-This function first calls |find_package| with the ``dependency`` and ``version`` if the dependency has not
-already been found. It then determines the new components that the |find_package| call created by comparing
-the state of the |IMPORTED_TARGETS| property before and after the call. Finally, iy links all the new items
-to the ``target`` using |target_link_libraries| and the optionally specified ``VISIBILITY``.
+This function calls |find_package| with the :cmake:`dependency` and :cmake:`version` and determines the components
+to add by comparing |IMPORTED_TARGETS| before and after calling |find_package|. All new components are linked
+to the ``target`` using |target_link_libraries| with an optional :cmake:`VISIBILITY`.
 
-Set ``LINK_COMPONENTS`` to manually specify which components should be linked to the target. This overrides
-the components found using the |IMPORTED_TARGETS| detection logic described above. Some |find_package| modules
-declare extra targets which aren't necessarily designed to be linked against. This option is useful if only
-a subset of components declared by |find_package| should be linked to ``target``.
+Set :cmake:`LINK_COMPONENTS` to manually specify which components should be linked to the target, overriding
+the components found using the |IMPORTED_TARGETS| logic. This option is useful if only a subset of components
+declared by |find_package| should be linked to ``target``.
+
+.. important:: Some |find_package| modules declare extra targets which may not be intended to be used in |target_link_libraries|.
 
 This function calls the |find_package| and |target_link_libraries| directly, so all features of those commands
-are supported. Set ``FIND_PACKAGE_ARGS`` to pass additional arguments to |find_package|.
+are supported. Set :cmake:`FIND_PACKAGE_ARGS` to pass additional arguments to |find_package|.
 
-.. note:: ``LINK_COMPONENTS`` is not passed to |find_package|, instead use ``FIND_PACKAGE_ARGS`` to pass ``COMPONENTS``
-          that |find_package| should use.
+.. note:: :cmake:`LINK_COMPONENTS` is not passed to |find_package|, instead use :cmake:`FIND_PACKAGE_ARGS` to specify
+          :cmake:`COMPONENTS` that |find_package| should use.
 
 Examples
-^^^^^^^^
+--------
 
-Find "ZLIB" with version 1 using |find_package| and link it as private to "target" using |target_link_libraries|.
-Only the "ZLIB::ZLIB" component is linked to "target" and the dependency should be considered required and found
-quietly.
+Find ZLIB and link to a target
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This example finds :cmake:`ZLIB` and links :cmake:`ZLIB::ZLIB` as private dependency to :cmake:`target`:
 
 .. code-block:: cmake
 
@@ -228,9 +229,11 @@ quietly.
         FIND_PACKAGE_ARGS REQUIRED QUIET
     )
 
-Find "Python"  using |find_package| and link it to "target" using |target_link_libraries|. The components that
-are should be found are "Interpreter" and "Development" and all new targets declared by |find_package| are linked
-to "target".
+Find a only some components
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This finds the :cmake:`Interpreter` and :cmake:`Development` components of :cmake:`Python` and links all found components
+to :cmake`target`:
 
 .. code-block:: cmake
 
@@ -301,19 +304,25 @@ and calls |gtest_discover_tests| to find tests.
         [ADD_LIBRARIES add_libraries...]
     )
 
-The ``test_executable`` specifies which test executable to discover tests on and ``ADD_LIBRARIES`` specifies
-any additional libraries which should be publically linked to the ``test_executable``.
+The :cmake:`test_executable` specifies the  executable to discover tests with and :cmake:`ADD_LIBRARIES` specifies
+additional libraries which should be linked to :cmake:`test_executable`.
 
 .. note:: This function calls |enable_testing|.
 
 Examples
-^^^^^^^^
+--------
 
-Discover tests for "test_executable" and link "additional_library" to the executable.
+Discover tests for an executable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This discovers tests for :cmake:`test_executable` and links :cmake:`additional_library` to the executable.
 
 .. code-block:: cmake
 
-    setup_gtest("test_executable" ADD_LIBRARIES "additional_library")
+    setup_gtest(
+        "test_executable"
+        ADD_LIBRARIES "additional_library"
+    )
 
 .. _GTest: https://google.github.io/googletest
 .. |gtest_discover_tests| replace:: :command:`gtest_discover_tests <command:gtest_discover_tests>`
