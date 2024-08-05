@@ -1,6 +1,7 @@
 """
 Tests for setup gtest function.
 """
+
 from subprocess import CalledProcessError
 
 import pytest

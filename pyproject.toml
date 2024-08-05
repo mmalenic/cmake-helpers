@@ -22,8 +22,10 @@ brotlicffi = "^1"
 sphinx = "^7"
 sphinxcontrib-moderncmakedomain = "^3"
 sphinx-markdown-builder = "^0.6"
-furo = "^2024.7.18"
 sphinx-book-theme = "^1"
+pre-commit = "^3"
+cmake-format = "^0.6"
+black = "^24"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

@@ -52,6 +52,7 @@ def enum(tmp_path, monkeypatch) -> Path:
     """
     return setup_cmake_project(tmp_path, monkeypatch, "enum")
 
+
 @pytest.fixture
 def required(tmp_path, monkeypatch) -> Path:
     """
@@ -81,11 +82,14 @@ def install_conanfile(tmp_path, monkeypatch) -> Path:
     return tmp_path
 
 
-def run_cmake_with_assert(capfd, contains_messages: Optional[List[str]] = None,
-                          not_contains_messages: Optional[List[str]] = None,
-                          variables: Optional[Dict[str, str]] = None,
-                          preset: Optional[str] = None,
-                          run_ctest: bool = False):
+def run_cmake_with_assert(
+    capfd,
+    contains_messages: Optional[List[str]] = None,
+    not_contains_messages: Optional[List[str]] = None,
+    variables: Optional[Dict[str, str]] = None,
+    preset: Optional[str] = None,
+    run_ctest: bool = False,
+):
     """
     Run cmake with an expected assert message and additional variables to define.
     """
