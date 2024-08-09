@@ -32,7 +32,7 @@ goto end
 
 :readme
 %SPHINXBUILD% -M markdown %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O% readme.rst && ^
-move %(BUILDDIR)%\markdown\readme.md ..\README.md
+move %BUILDDIR%\markdown\readme.md ..\README.md
 goto end
 
 :help
