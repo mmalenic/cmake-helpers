@@ -1,3 +1,7 @@
+include(code_generation)
+include(combinators)
+include(utilities)
+
 #[[.rst:
 .. role:: cmake(code)
    :language: cmake
@@ -23,6 +27,7 @@ commands are available after including with a :cmake:`helpers_` prefix:
 
    include(FetchContent)
 
+   # Fetch content from this repo.
    FetchContent_Declare(
         helpers
         GIT_REPOSITORY https://github.com/mmalenic/cmake-helpers
@@ -30,6 +35,8 @@ commands are available after including with a :cmake:`helpers_` prefix:
    )
    FetchContent_MakeAvailable(helpers)
 
+   # Allow cmake to find the src directory.
+   list(APPEND CMAKE_MODULE_PATH "${helpers_SOURCE_DIR}/src")
    include(helpers)
 
 Alternatively, copy and paste the code in the `src`_ directory
@@ -86,10 +93,6 @@ This project is licensed under the MIT `licence`_.
 .. _sphinx: https://www.sphinx-doc.org/en/master/
 .. _licence: https://github.com/mmalenic/cmake-helpers/blob/main/LICENSE
 ]]
-
-include(code_generation)
-include(combinators)
-include(utilities)
 
 #[[
 Print a status message specific to the ``helpers.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print

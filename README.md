@@ -16,6 +16,7 @@ commands are available after including with a `helpers_` prefix:
 ```cmake
 include(FetchContent)
 
+# Fetch content from this repo.
 FetchContent_Declare(
      helpers
      GIT_REPOSITORY https://github.com/mmalenic/cmake-helpers
@@ -23,6 +24,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(helpers)
 
+# Allow cmake to find the src directory.
+list(APPEND CMAKE_MODULE_PATH "${helpers_SOURCE_DIR}/src")
 include(helpers)
 ```
 
