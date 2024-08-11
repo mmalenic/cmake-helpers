@@ -1,8 +1,20 @@
 # Test config variables
-set(components "" CACHE STRING "components to use")
-set(version "" CACHE STRING "version to use")
-set(visibility "" CACHE STRING "visibility to use")
-set(find_package_args "" CACHE STRING "extra find package args")
+set(components
+    ""
+    CACHE STRING "components to use"
+)
+set(version
+    ""
+    CACHE STRING "version to use"
+)
+set(visibility
+    ""
+    CACHE STRING "visibility to use"
+)
+set(find_package_args
+    ""
+    CACHE STRING "extra find package args"
+)
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)

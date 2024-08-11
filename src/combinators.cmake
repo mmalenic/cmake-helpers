@@ -160,7 +160,9 @@ function(helpers_check_includes)
     _helpers_check_cached(${_VAR} "helpers_check_includes")
 
     list(JOIN _INCLUDES ", " includes)
-    _helpers_status("helpers_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language = ${_LANGUAGE}")
+    _helpers_status(
+        "helpers_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language = ${_LANGUAGE}"
+    )
 
     # Include guard is present.
     include(CheckIncludeFiles)
@@ -253,15 +255,23 @@ function(helpers_add_dep target dependency)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(NOT ${dependency}_FOUND)
-        get_property(before_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+        get_property(
+            before_importing
+            DIRECTORY "${CMAKE_SOURCE_DIR}"
+            PROPERTY IMPORTED_TARGETS
+        )
 
         find_package(${dependency} ${_VERSION} ${_FIND_PACKAGE_ARGS})
 
         # Set a property containing the imported targets of this find package call.
-        get_property(after_importing DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+        get_property(
+            after_importing
+            DIRECTORY "${CMAKE_SOURCE_DIR}"
+            PROPERTY IMPORTED_TARGETS
+        )
         list(REMOVE_ITEM after_importing "${before_importing}")
 
-        if (after_importing)
+        if(after_importing)
             list(JOIN after_importing ", " imports)
             _helpers_status("helpers_add_dep" "found ${dependency} with components: ${imports}")
         endif()
@@ -271,7 +281,11 @@ function(helpers_add_dep target dependency)
     endif()
 
     # Override the components if linking manually.
-    get_property(components DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY "${imported_targets_name}")
+    get_property(
+        components
+        DIRECTORY "${CMAKE_SOURCE_DIR}"
+        PROPERTY "${imported_targets_name}"
+    )
     if(DEFINED _LINK_COMPONENTS)
         set(components "${_LINK_COMPONENTS}")
     endif()
@@ -283,9 +297,8 @@ function(helpers_add_dep target dependency)
         endforeach()
 
         _helpers_status(
-            "helpers_add_dep"
-            "linked ${dependency} to ${target}"
-            ADD_MESSAGES "version = ${_VERSION}" "visibility = ${_VISIBILITY}"
+            "helpers_add_dep" "linked ${dependency} to ${target}" ADD_MESSAGES "version = ${_VERSION}"
+            "visibility = ${_VISIBILITY}"
         )
     endif()
 endfunction()
@@ -334,10 +347,13 @@ function(setup_gtest test_executable)
 
     foreach(library IN LISTS _ADD_LIBRARIES)
         target_link_libraries(${test_executable} PUBLIC ${library})
-    endforeach ()
+    endforeach()
 
     enable_testing()
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt
+        ON
+        CACHE BOOL "" FORCE
+    )
 
     helpers_add_dep(
         ${test_executable}

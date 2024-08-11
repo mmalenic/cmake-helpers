@@ -1,5 +1,8 @@
 # Test config variables
-set(error FALSE CACHE BOOL "whether this is the error test case")
+set(error
+    FALSE
+    CACHE BOOL "whether this is the error test case"
+)
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)

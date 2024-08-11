@@ -110,7 +110,7 @@ function(_helpers_status function message)
     message(STATUS "${helpers_prefix}${function_prefix}${message}")
 
     foreach(add_message IN LISTS _ADD_MESSAGES)
-        if (NOT add_message MATCHES "= $" AND NOT add_message MATCHES "^ =")
+        if(NOT add_message MATCHES "= $" AND NOT add_message MATCHES "^ =")
             message(STATUS "${helpers_prefix}${function_spaces}${add_message}")
         endif()
     endforeach()
