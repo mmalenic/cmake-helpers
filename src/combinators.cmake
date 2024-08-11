@@ -204,7 +204,8 @@ Set :cmake:`LINK_COMPONENTS` to manually specify which components should be link
 the components found using the |IMPORTED_TARGETS| logic. This option is useful if only a subset of components
 declared by |find_package| should be linked to ``target``.
 
-.. important:: Some |find_package| modules declare extra targets which may not be intended to be used in |target_link_libraries|.
+.. important:: Some |find_package| modules declare extra targets which may not be intended to be used in
+               |target_link_libraries|.
 
 This function calls the |find_package| and |target_link_libraries| directly, so all features of those commands
 are supported. Set :cmake:`FIND_PACKAGE_ARGS` to pass additional arguments to |find_package|.
@@ -234,8 +235,8 @@ This example finds :cmake:`ZLIB` and links :cmake:`ZLIB::ZLIB` as private depend
 Find a only some components
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This finds the :cmake:`Interpreter` and :cmake:`Development` components of :cmake:`Python` and links all found components
-to :cmake`target`:
+This finds the :cmake:`Interpreter` and :cmake:`Development` components of :cmake:`Python` and links all found
+components to :cmake`target`:
 
 .. code-block:: cmake
 

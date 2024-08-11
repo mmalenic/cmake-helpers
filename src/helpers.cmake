@@ -45,7 +45,8 @@ and include the library using :cmake:`include(helpers)`.
 Why does this project exist?
 ============================
 
-The motivation behind this project is to define a common set of CMake functions that I use for a variety of C++ projects.
+The motivation behind this project is to define a common set of CMake functions that I use for a variety of C++
+projects.
 
 There are countless CMake "helper"-style libraries. See a list of some of the `here`_.
 This project does not aim to replace these, however it does contain some code which existing libraries lack,
@@ -54,8 +55,8 @@ such as interactions with the CMake |check_command| commands.
 Development
 ===========
 
-This project contains a set of unit tests for the :cmake:`helpers` commands. These can be run using `pytest`_ and `poetry`_.
-After initializing the poetry project, run the tests using pytest:
+This project contains a set of unit tests for the :cmake:`helpers` commands. These can be run using `pytest`_ and
+`poetry`_. After initializing the poetry project, run the tests using pytest:
 
 .. code-block:: shell
 

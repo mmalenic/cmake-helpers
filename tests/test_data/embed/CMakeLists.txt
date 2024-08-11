@@ -1,22 +1,22 @@
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 14)
-set(project_name cmake_helpers_test)
-project(${project_name} CXX)
+set(name cmake_helpers_test)
+project(${name} CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
 include(helpers)
 
-add_executable(${project_name} main.cpp)
+add_executable(${name} main.cpp)
 
-helpers_embed("auto_literal.h" "auto_literal" EMBED "embed_one.txt" TARGET ${project_name})
+helpers_embed("auto_literal.h" "auto_literal" EMBED "embed_one.txt" TARGET ${name})
 helpers_embed(
     "const_literal.h"
     "const_literal"
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
     CHAR_LITERAL
 )
 helpers_embed(
@@ -25,7 +25,7 @@ helpers_embed(
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
     BYTE_ARRAY
 )
 helpers_embed(
@@ -34,7 +34,7 @@ helpers_embed(
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
     DEFINE
 )
 
@@ -46,7 +46,7 @@ helpers_embed(
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
 )
 helpers_embed(
     "const_literal_namespace.h"
@@ -56,7 +56,7 @@ helpers_embed(
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
     CHAR_LITERAL
 )
 helpers_embed(
@@ -67,7 +67,7 @@ helpers_embed(
     EMBED
     "embed_one.txt"
     TARGET
-    ${project_name}
+    ${name}
     BYTE_ARRAY
 )
 
@@ -80,7 +80,7 @@ helpers_embed(
     "embed_one.txt"
     "embed_two.txt"
     TARGET
-    ${project_name}
+    ${name}
 )
 helpers_embed(
     "const_literal_multi.h"
@@ -91,7 +91,7 @@ helpers_embed(
     "embed_one.txt"
     "embed_two.txt"
     TARGET
-    ${project_name}
+    ${name}
     CHAR_LITERAL
 )
 helpers_embed(
@@ -103,7 +103,7 @@ helpers_embed(
     "embed_one.txt"
     "embed_two.txt"
     TARGET
-    ${project_name}
+    ${name}
     BYTE_ARRAY
 )
 helpers_embed(
@@ -113,8 +113,8 @@ helpers_embed(
     "embed_one.txt"
     "embed_two.txt"
     TARGET
-    ${project_name}
+    ${name}
     DEFINE
 )
 
-target_include_directories(${project_name} PRIVATE ${cmake_helpers_ret})
+target_include_directories(${name} PRIVATE ${cmake_helpers_ret})

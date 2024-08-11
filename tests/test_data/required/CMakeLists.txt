@@ -6,8 +6,8 @@ set(error
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
-set(project_name cmake_helpers_test)
-project(${project_name} CXX)
+set(name cmake_helpers_test)
+project(${name} CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
 include(helpers)
@@ -19,4 +19,4 @@ endif()
 
 helpers_required(arg)
 
-add_executable(${project_name} main.cpp)
+add_executable(${name} main.cpp)

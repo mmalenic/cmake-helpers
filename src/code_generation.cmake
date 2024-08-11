@@ -9,8 +9,8 @@ include(utilities)
 Code Generation
 ***************
 
-The code generation module has functions for generating code in C or C++. This includes code generation to embed resources,
-serving as a replacement for the C23 `#embed`_ directive.
+The code generation module has functions for generating code in C or C++. This includes code generation to embed
+resources, serving as a replacement for the C23 `#embed`_ directive.
 ]]
 
 #[[.rst:
@@ -43,9 +43,9 @@ In order to control how the variable is created the mode should be specified as 
 :cmake:`CHAR_LITERAL`, :cmake:`BYTE_ARRAY`, :cmake:`DEFINE_LITERAL` or :cmake:`DEFINE_ARRAY`. This function returns
 an error if more than one of these modes if specified. The default mode is :cmake:`AUTO_LITERAL`.
 
-:cmake:`AUTO_LITERAL` and :cmake:`CHAR_LITERAL` both define string literal variables with a null terminator, and a type of
-:cpp:`constexpr auto` or :cpp:`const char *` respectively. :cmake:`BYTE_ARRAY` defines a byte array variable without a
-null terminator, and a type of :cpp:`const uint8_t []`. :cmake:`DEFINE` defines a preprocessor macro.
+:cmake:`AUTO_LITERAL` and :cmake:`CHAR_LITERAL` both define string literal variables with a null terminator, and a type
+of :cpp:`constexpr auto` or :cpp:`const char *` respectively. :cmake:`BYTE_ARRAY` defines a byte array variable without
+a null terminator, and a type of :cpp:`const uint8_t []`. :cmake:`DEFINE` defines a preprocessor macro.
 
 The following table shows the generated code using these modes.
 
@@ -80,8 +80,9 @@ The variable definition can be surrounded by a namespace by specifying the :cmak
 to change this location. If :cmake:`TARGET` is specified, then |target_sources| is used to add the generated
 file to the :cmake:`TARGET` with :cmake:`VISIBILITY` visibility. The default visibility is :cmake:`"PRIVATE"`.
 
-This function sets the a variable called :cmake:`helpers_ret` with :cmake:`PARENT_SCOPE` to the value of the :cmake:`OUTPUT_DIR`.
-This can be used with |target_include_directories| to allow the source code to access the embedded resource.
+This function sets the a variable called :cmake:`helpers_ret` with :cmake:`PARENT_SCOPE` to the value of the
+:cmake:`OUTPUT_DIR`. This can be used with |target_include_directories| to allow the source code to access the embedded
+resource.
 
 Examples
 --------
@@ -152,6 +153,7 @@ This generates the following code, assuming :cmake:`embed_one.txt` contains ``"T
 .. |target_include_directories| replace:: :command:`target_include_directories <command:target_include_directories>`
 ]]
 function(helpers_embed file variable)
+    # cmake-lint: disable=R0915
     set(options AUTO_LITERAL CHAR_LITERAL BYTE_ARRAY DEFINE)
     set(one_value_args NAMESPACE OUTPUT_DIR TARGET VISIBILITY)
     set(multi_value_args EMBED)
