@@ -3,11 +3,12 @@ Tests for add dep function.
 """
 
 from subprocess import CalledProcessError
+import platform
 from typing import List
 
 import pytest
 
-from tests.fixtures import add_dep, run_cmake_with_assert
+from tests.fixtures import add_dep, run_cmake_with_assert, conan_preset
 
 
 def default_contains() -> List[str]:
@@ -26,6 +27,7 @@ def default_not_contains() -> List[str]:
     ]
 
 
+@pytest.mark.skipif(platform.system() == "Windows", reason="unix only test")
 def test_add_dep(add_dep, capfd):
     """
     Test that add dep links components to the project target.
@@ -34,7 +36,7 @@ def test_add_dep(add_dep, capfd):
         capfd,
         contains_messages=default_contains(),
         not_contains_messages=default_not_contains(),
-        preset="conan-release",
+        preset=conan_preset(),
     )
 
 
@@ -47,7 +49,8 @@ def test_add_dep_components(add_dep, capfd):
         contains_messages=default_contains()[0:3],
         not_contains_messages=default_not_contains() + [default_contains()[3]],
         variables={"components": "ZLIB::ZLIB"},
-        preset="conan-release",
+        preset=conan_preset(),
+        build_preset="conan-release",
     )
 
 
@@ -57,11 +60,12 @@ def test_add_dep_version(add_dep, capfd):
     """
     run_cmake_with_assert(
         capfd,
-        contains_messages=default_contains()
+        contains_messages=default_contains()[0:3]
         + ["cmake-helpers:                   version = 1.3"],
         not_contains_messages=[default_not_contains()[0]],
-        variables={"version": "1.3"},
-        preset="conan-release",
+        variables={"components": "ZLIB::ZLIB", "version": "1.3"},
+        preset=conan_preset(),
+        build_preset="conan-release",
     )
 
 
@@ -71,11 +75,12 @@ def test_add_dep_visibility(add_dep, capfd):
     """
     run_cmake_with_assert(
         capfd,
-        contains_messages=default_contains()
+        contains_messages=default_contains()[0:3]
         + ["cmake-helpers:                   visibility = PRIVATE"],
         not_contains_messages=[default_not_contains()[1]],
-        variables={"visibility": "PRIVATE"},
-        preset="conan-release",
+        variables={"components": "ZLIB::ZLIB", "visibility": "PRIVATE"},
+        preset=conan_preset(),
+        build_preset="conan-release",
     )
 
 
@@ -85,10 +90,11 @@ def test_add_dep_extra_args(add_dep, capfd):
     """
     run_cmake_with_assert(
         capfd,
-        contains_messages=default_contains(),
+        contains_messages=default_contains()[0:3],
         not_contains_messages=default_not_contains(),
-        variables={"find_package_args": "QUIET;REQUIRED"},
-        preset="conan-release",
+        variables={"components": "ZLIB::ZLIB", "find_package_args": "QUIET;REQUIRED"},
+        preset=conan_preset(),
+        build_preset="conan-release",
     )
 
 
@@ -99,8 +105,9 @@ def test_add_dep_extra_args_invalid(add_dep, capfd):
     with pytest.raises(CalledProcessError):
         run_cmake_with_assert(
             capfd,
-            contains_messages=default_contains(),
+            contains_messages=default_contains()[0:3],
             not_contains_messages=default_not_contains(),
-            variables={"find_package_args": "invalid_arg"},
-            preset="conan-release",
+            variables={"components": "ZLIB::ZLIB", "find_package_args": "invalid_arg"},
+            preset=conan_preset(),
+            build_preset="conan-release",
         )

@@ -2,6 +2,8 @@
 Fixtures for the cmake-helpers tests.
 """
 
+import os
+import platform
 from os.path import dirname, realpath
 from pathlib import Path
 from shutil import copytree, copy
@@ -71,13 +73,20 @@ def setup_gtest(tmp_path, monkeypatch) -> Path:
     return install_conanfile(tmp_path, monkeypatch)
 
 
+def conan_preset():
+    """
+    Get the conan preset.
+    """
+    return "conan-default" if platform.system() == "Windows" else "conan-release"
+
+
 def install_conanfile(tmp_path, monkeypatch) -> Path:
     """
     Install a conanfile for a cmake project.
     """
     monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
-    run("conan profile detect --force".split(), check=True)
-    run(f"conan install . --build=missing".split(), check=True)
+    run("conan profile detect --force".split(), check=True, shell=True)
+    run(f"conan install . --build=missing".split(), check=True, shell=True)
 
     return tmp_path
 
@@ -88,25 +97,29 @@ def run_cmake_with_assert(
     not_contains_messages: Optional[List[str]] = None,
     variables: Optional[Dict[str, str]] = None,
     preset: Optional[str] = None,
+    build_preset: Optional[str] = None,
     run_ctest: bool = False,
 ):
     """
     Run cmake with an expected assert message and additional variables to define.
     """
 
-    def add_preset(for_command):
+    def add_preset(for_command, preset):
         if preset is not None:
             for_command += f"--preset {preset} "
         return for_command
 
     # Run cmake with the preset
-    command = add_preset("cmake . ")
+    command = add_preset("cmake . ", preset)
     if variables is not None:
         for key, value in variables.items() or []:
             command += f"-D {key}={value} "
-    run(command.split(), check=True)
+
+    run(command.split(), check=True, shell=True)
 
     out, _ = capfd.readouterr()
+
+    print(out)
 
     # Assert expected messages in output.
     for message in contains_messages or []:
@@ -115,17 +128,27 @@ def run_cmake_with_assert(
         assert message not in out
 
     # Build program.
-    command = add_preset("cmake --build . ")
-    run(command.split(), check=True)
+    command = add_preset("cmake --build . ", build_preset)
+    run(command.split(), check=True, shell=True)
 
     # Consume extra output so next command has output without build information.
     capfd.readouterr()
 
     # Run the program or the tests.
     if run_ctest:
-        run("ctest", check=True)
+        run("ctest", check=True, shell=True)
     else:
-        run("./cmake_helpers_test", check=True)
+        app = Path("cmake_helpers_test")
+
+        if platform.system() == "Windows":
+            release = os.path.join(os.getcwd(), "Release", app.with_suffix(".exe"))
+
+            if os.path.exists(release):
+                app = release
+            else:
+                app = os.path.join(os.getcwd(), "Debug", app.with_suffix(".exe"))
+
+        run(app, check=True, shell=True)
 
 
 def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:

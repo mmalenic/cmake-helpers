@@ -27,4 +27,4 @@ include(helpers)
 add_executable(${name} main.cpp)
 
 enable_testing()
-setup_gtest(${namer})
+setup_gtest(${name})

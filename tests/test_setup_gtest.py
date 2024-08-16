@@ -2,7 +2,7 @@
 Tests for setup gtest function.
 """
 
-from tests.fixtures import setup_gtest, run_cmake_with_assert
+from tests.fixtures import setup_gtest, run_cmake_with_assert, conan_preset
 
 
 def test_setup_gtest(setup_gtest, capfd):
@@ -16,6 +16,7 @@ def test_setup_gtest(setup_gtest, capfd):
             "-- cmake-helpers: helpers_add_dep - component GTest::gtest_main linked to cmake_helpers_test",
             "-- cmake-helpers: helpers_add_dep - component GTest::gmock linked to cmake_helpers_test",
         ],
-        preset="conan-release",
+        preset=conan_preset(),
+        build_preset="conan-release",
         run_ctest=True,
     )
