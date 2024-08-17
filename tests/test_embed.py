@@ -26,12 +26,12 @@ def test_embed(embed, capfd):
     embed_one = (embed / "embed_one.txt").read_text()
     embed_two = (embed / "embed_two.txt").read_text()
 
-    if platform.system() == "Windows":
-        embed_one = embed_one.replace("\n", "\r\n")
-        embed_two = embed_two.replace("\n", "\r\n")
-
     expected = embed_one * 7 + (embed_one + embed_two) * 4
 
     out, _ = capfd.readouterr()
+
+    # Normalise line endings
+    expected = "\n".join(expected.splitlines())
+    out = "\n".join(out.splitlines())
 
     assert out == expected

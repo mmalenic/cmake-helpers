@@ -27,6 +27,7 @@ pre-commit = "^3"
 cmake-format = "^0.6"
 black = "^24"
 clang-format = "^18"
+clang-tidy = "^18"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
