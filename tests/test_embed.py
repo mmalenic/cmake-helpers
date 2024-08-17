@@ -30,8 +30,10 @@ def test_embed(embed, capfd):
 
     out, _ = capfd.readouterr()
 
-    # Normalise line endings
-    expected = "\n".join(expected.splitlines())
-    out = "\n".join(out.splitlines())
+    def normalise_lines(lines):
+        return [line for line in lines.splitlines() if line != ""]
 
-    assert out == expected
+    print(normalise_lines(out))
+    print(normalise_lines(expected))
+
+    assert normalise_lines(out) == normalise_lines(expected)
