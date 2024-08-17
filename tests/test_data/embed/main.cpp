@@ -16,15 +16,15 @@ int main() {
     std::cout << auto_literal;
     std::cout << const_literal;
     std::cout << std::string{
-        reinterpret_cast<const char *>(byte_array),
-        sizeof(byte_array)
+        reinterpret_cast<const char *>(byte_array), sizeof(byte_array)
     };
     std::cout << DEFINE;
 
     std::cout << application::detail::auto_literal_namespace;
     std::cout << application::detail::const_literal_namespace;
     std::cout << std::string{
-        reinterpret_cast<const char *>(application::detail::byte_array_namespace),
+        reinterpret_cast<const char *>(application::detail::byte_array_namespace
+        ),
         sizeof(application::detail::byte_array_namespace)
     };
 
