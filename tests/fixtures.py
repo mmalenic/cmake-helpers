@@ -85,8 +85,8 @@ def install_conanfile(tmp_path, monkeypatch) -> Path:
     Install a conanfile for a cmake project.
     """
     monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
-    run("conan profile detect --force".split(), check=True, shell=True)
-    run(f"conan install . --build=missing".split(), check=True, shell=True)
+    run("conan profile detect --force".split(), check=True)
+    run(f"conan install . --build=missing".split(), check=True)
 
     return tmp_path
 
@@ -115,7 +115,7 @@ def run_cmake_with_assert(
         for key, value in variables.items() or []:
             command += f"-D {key}={value} "
 
-    run(command.split(), check=True, shell=True)
+    run(command.split(), check=True)
 
     out, _ = capfd.readouterr()
 
@@ -129,26 +129,26 @@ def run_cmake_with_assert(
 
     # Build program.
     command = add_preset("cmake --build . ", build_preset)
-    run(command.split(), check=True, shell=True)
+    run(command.split(), check=True)
 
     # Consume extra output so next command has output without build information.
     capfd.readouterr()
 
     # Run the program or the tests.
     if run_ctest:
-        run("ctest", check=True, shell=True)
+        run("ctest", check=True)
     else:
         app = Path("cmake_helpers_test")
 
         if platform.system() == "Windows":
-            release = os.path.join(os.getcwd(), "Release", app.with_suffix(".exe"))
+            release = os.path.join("Release", app.with_suffix(".exe"))
 
             if os.path.exists(release):
                 app = release
             else:
-                app = os.path.join(os.getcwd(), "Debug", app.with_suffix(".exe"))
+                app = os.path.join("Debug", app.with_suffix(".exe"))
 
-        run(app, check=True, shell=True)
+        run(Path(os.getcwd()).joinpath(app), check=True)
 
 
 def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
