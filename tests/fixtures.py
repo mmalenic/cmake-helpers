@@ -85,6 +85,7 @@ def install_conanfile(tmp_path, monkeypatch) -> Path:
     Install a conanfile for a cmake project.
     """
     monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
+
     run("conan profile detect --force".split(), check=True)
     run(f"conan install . --build=missing".split(), check=True)
 
@@ -116,10 +117,7 @@ def run_cmake_with_assert(
             command += f"-D {key}={value} "
 
     run(command.split(), check=True)
-
     out, _ = capfd.readouterr()
-
-    print(out)
 
     # Assert expected messages in output.
     for message in contains_messages or []:
@@ -132,7 +130,7 @@ def run_cmake_with_assert(
     run(command.split(), check=True)
 
     # Consume extra output so next command has output without build information.
-    capfd.readouterr()
+    out, err = capfd.readouterr()
 
     # Run the program or the tests.
     if run_ctest:
@@ -159,6 +157,7 @@ def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
 
     copytree(file_path / "test_data" / data_path, tmp_path, dirs_exist_ok=True)
     copytree(file_path.parent / "src", tmp_path, dirs_exist_ok=True)
+    copy(file_path.parent / ".clang-tidy", tmp_path)
 
     monkeypatch.chdir(tmp_path)
 

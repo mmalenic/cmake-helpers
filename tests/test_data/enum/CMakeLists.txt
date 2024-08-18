@@ -4,6 +4,8 @@ set(error
     CACHE BOOL "whether this is the error test case"
 )
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(name cmake_helpers_test)

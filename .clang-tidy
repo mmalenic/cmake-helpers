@@ -1,0 +1,15 @@
+Checks: >
+  *,
+  -llvmlibc-restrict-system-libc-headers,
+  -llvmlibc-implementation-in-namespace,
+  -llvmlibc-callee-namespace,
+  -modernize-use-trailing-return-type,
+  -cppcoreguidelines-macro-usage,
+  -fuchsia-default-arguments-calls,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -llvm-header-guard,
+  -cppcoreguidelines-avoid-c-arrays,
+  -modernize-avoid-c-arrays,
+  -hicpp-avoid-c-arrays
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.'

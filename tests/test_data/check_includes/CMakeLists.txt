@@ -12,6 +12,8 @@ set(run_twice
     CACHE BOOL "run the include check twice"
 )
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(name cmake_helpers_test)

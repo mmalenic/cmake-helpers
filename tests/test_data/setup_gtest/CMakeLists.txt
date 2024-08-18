@@ -16,6 +16,8 @@ set(find_package_args
     CACHE STRING "extra find package args"
 )
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(name cmake_helpers_test)

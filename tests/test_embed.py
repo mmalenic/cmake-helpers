@@ -33,7 +33,4 @@ def test_embed(embed, capfd):
     def normalise_lines(lines):
         return [line for line in lines.splitlines() if line != ""]
 
-    print(normalise_lines(out))
-    print(normalise_lines(expected))
-
     assert normalise_lines(out) == normalise_lines(expected)

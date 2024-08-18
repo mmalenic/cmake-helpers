@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(name cmake_helpers_test)
 project(${name} CXX)
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
 include(helpers)
 
