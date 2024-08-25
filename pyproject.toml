@@ -32,3 +32,5 @@ ninja = "^1"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
+python_files = "check*.py test_*.py"
+python_functions = "check* test_*"

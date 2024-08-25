@@ -14,11 +14,11 @@ import pytest
 
 
 @pytest.fixture
-def add_dep(tmp_path, monkeypatch) -> Path:
+def add_dep(tmp_path, monkeypatch, request) -> Path:
     """
     Fixture which sources the add_dep data.
     """
-    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "add_dep")
+    tmp_path = setup_cmake_project(tmp_path.joinpath("add_dep"), monkeypatch, "add_dep")
 
     return install_conanfile(tmp_path, monkeypatch)
 
@@ -28,7 +28,9 @@ def check_includes(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the check_includes data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "check_includes")
+    return setup_cmake_project(
+        tmp_path.joinpath("check_includes"), monkeypatch, "check_includes"
+    )
 
 
 @pytest.fixture
@@ -36,7 +38,9 @@ def check_symbol(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the check_symbol data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "check_symbol")
+    return setup_cmake_project(
+        tmp_path.joinpath("check_symbol"), monkeypatch, "check_symbol"
+    )
 
 
 @pytest.fixture
@@ -44,7 +48,7 @@ def embed(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the embed data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "embed")
+    return setup_cmake_project(tmp_path.joinpath("embed"), monkeypatch, "embed")
 
 
 @pytest.fixture
@@ -52,7 +56,7 @@ def enum(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the enum data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "enum")
+    return setup_cmake_project(tmp_path.joinpath("enum"), monkeypatch, "enum")
 
 
 @pytest.fixture
@@ -60,7 +64,7 @@ def required(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the required data.
     """
-    return setup_cmake_project(tmp_path, monkeypatch, "required")
+    return setup_cmake_project(tmp_path.joinpath("required"), monkeypatch, "required")
 
 
 @pytest.fixture
@@ -68,7 +72,9 @@ def setup_gtest(tmp_path, monkeypatch) -> Path:
     """
     Fixture which sources the setup_gtest data.
     """
-    tmp_path = setup_cmake_project(tmp_path, monkeypatch, "setup_gtest")
+    tmp_path = setup_cmake_project(
+        tmp_path.joinpath("setup_gtest"), monkeypatch, "setup_gtest"
+    )
 
     return install_conanfile(tmp_path, monkeypatch)
 

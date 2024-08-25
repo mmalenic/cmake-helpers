@@ -11,8 +11,14 @@ set(run_twice
     FALSE
     CACHE BOOL "run the include check twice"
 )
+set(run_clang_tidy
+    FALSE
+    CACHE BOOL "run clang tidy when building"
+)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+if(run_clang_tidy)
+    set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+endif()
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
