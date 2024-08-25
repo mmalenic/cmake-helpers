@@ -49,7 +49,7 @@ def test_add_dep_components(add_dep, capfd):
         contains_messages=default_contains()[0:3],
         not_contains_messages=default_not_contains() + [default_contains()[3]],
         variables={"components": "ZLIB::ZLIB"},
-        preset="conan-release",
+        preset=conan_preset(),
         build_preset="conan-release",
     )
 
