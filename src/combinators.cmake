@@ -371,6 +371,7 @@ function(setup_gtest test_executable)
 
     # Include guard is present.
     include(GoogleTest)
+    include(CTest)
     gtest_discover_tests(${test_executable})
 endfunction()
 

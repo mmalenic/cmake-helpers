@@ -90,7 +90,7 @@ def install_conanfile(tmp_path, monkeypatch) -> Path:
     """
     Install a conanfile for a cmake project.
     """
-    monkeypatch.setenv("CONAN_HOME", tmp_path.as_posix())
+    monkeypatch.setenv("CONAN_HOME", str(tmp_path))
 
     run("conan profile detect --force".split(), check=True)
     run(f"conan install . --build=missing".split(), check=True)
@@ -106,6 +106,7 @@ def run_cmake_with_assert(
     preset: Optional[str] = None,
     build_preset: Optional[str] = None,
     run_ctest: bool = False,
+    memcheck: bool = False,
 ):
     """
     Run cmake with an expected assert message and additional variables to define.
@@ -136,11 +137,22 @@ def run_cmake_with_assert(
     run(command.split(), check=True)
 
     # Consume extra output so next command has output without build information.
-    out, err = capfd.readouterr()
+    capfd.readouterr()
 
     # Run the program or the tests.
+    memcheck_options = "--leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --error-exitcode=1"
     if run_ctest:
-        run("ctest", check=True)
+        command = ["ctest"]
+        if memcheck:
+            command += [
+                "--output-on-failure",
+                "--overwrite",
+                f"MemoryCheckCommandOptions={memcheck_options}",
+                "-T",
+                "memcheck",
+            ]
+
+        run(command, check=True)
     else:
         app = Path("cmake_helpers_test")
 
@@ -152,7 +164,12 @@ def run_cmake_with_assert(
             else:
                 app = os.path.join("Debug", app.with_suffix(".exe"))
 
-        run(Path(os.getcwd()).joinpath(app), check=True)
+        command = ""
+        if memcheck:
+            command += f"valgrind {memcheck_options} "
+        command += str(Path(os.getcwd()).joinpath(app))
+
+        run(command.split(), check=True)
 
 
 def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
@@ -161,7 +178,7 @@ def setup_cmake_project(tmp_path, monkeypatch, data_path) -> Path:
     """
     file_path = Path(dirname(realpath(__file__)))
 
-    copytree(file_path / "test_data" / data_path, tmp_path, dirs_exist_ok=True)
+    copytree(file_path / "resources" / data_path, tmp_path, dirs_exist_ok=True)
     copytree(file_path.parent / "src", tmp_path, dirs_exist_ok=True)
     copy(file_path.parent / ".clang-tidy", tmp_path)
 
