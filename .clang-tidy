@@ -13,3 +13,4 @@ Checks: >
   -hicpp-avoid-c-arrays
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.'
+ExtraArgs: ['-std=c++17']
