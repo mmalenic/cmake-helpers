@@ -65,50 +65,6 @@ html5lib = ["html5lib"]
 lxml = ["lxml"]
 
 [[package]]
-name = "black"
-version = "24.8.0"
-description = "The uncompromising code formatter."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "black-24.8.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:09cdeb74d494ec023ded657f7092ba518e8cf78fa8386155e4a03fdcc44679e6"},
-    {file = "black-24.8.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:81c6742da39f33b08e791da38410f32e27d632260e599df7245cccee2064afeb"},
-    {file = "black-24.8.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:707a1ca89221bc8a1a64fb5e15ef39cd755633daa672a9db7498d1c19de66a42"},
-    {file = "black-24.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:d6417535d99c37cee4091a2f24eb2b6d5ec42b144d50f1f2e436d9fe1916fe1a"},
-    {file = "black-24.8.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:fb6e2c0b86bbd43dee042e48059c9ad7830abd5c94b0bc518c0eeec57c3eddc1"},
-    {file = "black-24.8.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:837fd281f1908d0076844bc2b801ad2d369c78c45cf800cad7b61686051041af"},
-    {file = "black-24.8.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:62e8730977f0b77998029da7971fa896ceefa2c4c4933fcd593fa599ecbf97a4"},
-    {file = "black-24.8.0-cp311-cp311-win_amd64.whl", hash = "sha256:72901b4913cbac8972ad911dc4098d5753704d1f3c56e44ae8dce99eecb0e3af"},
-    {file = "black-24.8.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:7c046c1d1eeb7aea9335da62472481d3bbf3fd986e093cffd35f4385c94ae368"},
-    {file = "black-24.8.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:649f6d84ccbae73ab767e206772cc2d7a393a001070a4c814a546afd0d423aed"},
-    {file = "black-24.8.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:2b59b250fdba5f9a9cd9d0ece6e6d993d91ce877d121d161e4698af3eb9c1018"},
-    {file = "black-24.8.0-cp312-cp312-win_amd64.whl", hash = "sha256:6e55d30d44bed36593c3163b9bc63bf58b3b30e4611e4d88a0c3c239930ed5b2"},
-    {file = "black-24.8.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:505289f17ceda596658ae81b61ebbe2d9b25aa78067035184ed0a9d855d18afd"},
-    {file = "black-24.8.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:b19c9ad992c7883ad84c9b22aaa73562a16b819c1d8db7a1a1a49fb7ec13c7d2"},
-    {file = "black-24.8.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1f13f7f386f86f8121d76599114bb8c17b69d962137fc70efe56137727c7047e"},
-    {file = "black-24.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:f490dbd59680d809ca31efdae20e634f3fae27fba3ce0ba3208333b713bc3920"},
-    {file = "black-24.8.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:eab4dd44ce80dea27dc69db40dab62d4ca96112f87996bca68cd75639aeb2e4c"},
-    {file = "black-24.8.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:3c4285573d4897a7610054af5a890bde7c65cb466040c5f0c8b732812d7f0e5e"},
-    {file = "black-24.8.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9e84e33b37be070ba135176c123ae52a51f82306def9f7d063ee302ecab2cf47"},
-    {file = "black-24.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:73bbf84ed136e45d451a260c6b73ed674652f90a2b3211d6a35e78054563a9bb"},
-    {file = "black-24.8.0-py3-none-any.whl", hash = "sha256:972085c618ee94f402da1af548a4f218c754ea7e5dc70acb168bfaca4c2542ed"},
-    {file = "black-24.8.0.tar.gz", hash = "sha256:2500945420b6784c38b9ee885af039f5e7471ef284ab03fa35ecdde4688cd83f"},
-]
-
-[package.dependencies]
-click = ">=8.0.0"
-mypy-extensions = ">=0.4.3"
-packaging = ">=22.0"
-pathspec = ">=0.9.0"
-platformdirs = ">=2"
-
-[package.extras]
-colorama = ["colorama (>=0.4.3)"]
-d = ["aiohttp (>=3.7.4)", "aiohttp (>=3.7.4,!=3.9.0)"]
-jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
-uvloop = ["uvloop (>=0.15.2)"]
-
-[[package]]
 name = "brotlicffi"
 version = "1.1.0.0"
 description = "Python CFFI bindings to the Brotli library"
@@ -348,62 +304,6 @@ files = [
 ]
 
 [[package]]
-name = "clang-format"
-version = "18.1.8"
-description = "Clang-Format is an LLVM-based code formatting tool"
-optional = false
-python-versions = "*"
-files = [
-    {file = "clang_format-18.1.8-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:7c41e2521b7e6ba706cc5d1c3e95eed9a41c1522244e23624e1518991f02a604"},
-    {file = "clang_format-18.1.8-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:4be2b5d983a0cc1ef90a224b599f5928d82ce31154ba69accfdcb670aea62f40"},
-    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d2db077523bd4517b41fa6adb2e5ee63fc91bc7b641dc6e28b959fa8050cf41b"},
-    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:310206c21fa8177c019a3871de8c5400e51867376cae630ee3d1610aa6c93816"},
-    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c11ecdae9cd9068ed010b7cc5fa9d3d2ae08de8bbfa493df865774ad63fd7d76"},
-    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2a73a50e17c94325712631c15e5b210e374841bbeefb915f12934b902310df7b"},
-    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2de122b8aa78ba49e326f974131caab2c79f4ae877c227cd4e3e5d82a98d21e5"},
-    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:7d71869103d0f27be3c4930bea59dc6325177a259ba321a04663a231432ec343"},
-    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_i686.whl", hash = "sha256:ea103b3ae5b0941152cd29c67eab086aafc98675370ac13581005807680132aa"},
-    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_ppc64le.whl", hash = "sha256:82c5dd546efa80a838bb9fd4cf6f6e37d85301c0bca13cd79ab5749422ca35a1"},
-    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_s390x.whl", hash = "sha256:d3a41b7c7c3e65fa56763f5712f919111b35d7a8e857f8bef4ad5a4cdc1be131"},
-    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:4762e95ea887d522bf664c1411d93d4d41fc9eb059835dd88b9ad54bc3cb08e0"},
-    {file = "clang_format-18.1.8-py2.py3-none-win32.whl", hash = "sha256:03e0a762b4b504750ce4999174fa50a3c4d6b83d7999481e1b6a1b3bc2915121"},
-    {file = "clang_format-18.1.8-py2.py3-none-win_amd64.whl", hash = "sha256:6ca6768270e291495174faa6d8c082aa0181722b29ef8e36558b397069fa4a2d"},
-    {file = "clang_format-18.1.8.tar.gz", hash = "sha256:065ddb7fdd0cb329976115fa03500dd560d9753dd50c25a269776648e6e6bf35"},
-]
-
-[[package]]
-name = "clang-tidy"
-version = "18.1.8"
-description = "clang-tidy is a clang-based C++ “linter” tool."
-optional = false
-python-versions = "*"
-files = [
-    {file = "clang_tidy-18.1.8-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:341f3bebe13ef31d6d3fb9a9fde52795557d7d67d7449e8ed98a36dfe29b7421"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:d635df55e45c9141b16f4d33ef785d3ec6944db66a43ece865981447460affc3"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1f832286035f9df3be3b41ba29493ca9e67bf61a8636177da756d89b6313bbca"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c725a95c316d15df12f5bf7c1abfdf3cb9e4f3b9a9afb4cb6bb1e9df4e669493"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-musllinux_1_2_i686.whl", hash = "sha256:cebd2aa934e07e95c6821f27daa26dcbffcd946bd224f1d2a105af4bc857c143"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:a5f5e44649d2412bfe1563e6e7a4135102fbf2d98dbf30ce513b00a0a977c047"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-win32.whl", hash = "sha256:9970d6c9c7e8c044582576f3be46bba3287d7280719b77c83e3977477de08ec4"},
-    {file = "clang_tidy-18.1.8-py2.py3-none-win_amd64.whl", hash = "sha256:9ff353dfa56d2b1afa09df7feedbee95d381339656cee8d8d61b326630d1ff2b"},
-    {file = "clang_tidy-18.1.8.tar.gz", hash = "sha256:226618642af66a734c0cca079dcf86ca94b2e6fc9ba1d7332f6b9e4426379198"},
-]
-
-[[package]]
-name = "click"
-version = "8.1.7"
-description = "Composable command line interface toolkit"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "click-8.1.7-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
-    {file = "click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"},
-]
-
-[package.dependencies]
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
-
-[[package]]
 name = "cmake"
 version = "3.30.2"
 description = "CMake is an open-source, cross-platform family of tools designed to build, test and package software"
@@ -431,41 +331,6 @@ files = [
 
 [package.extras]
 test = ["coverage (>=4.2)", "pytest (>=3.0.3)", "pytest-cov (>=2.4.0)"]
-
-[[package]]
-name = "cmake-format"
-version = "0.6.13"
-description = "Can format your listfiles so they don't look like crap"
-optional = false
-python-versions = "*"
-files = [
-    {file = "cmake-format-0.6.13.tar.gz", hash = "sha256:1a48b779067ecca68c498691d07d5c9d3df9803a7e0c5b641128fa6efe5ae489"},
-    {file = "cmake_format-0.6.13-py3-none-any.whl", hash = "sha256:ec7ed949101e5f0b7bc19317d122b83ccbc28fd766c41c93094845719667c56e"},
-]
-
-[package.dependencies]
-cmakelang = ">=0.6.13"
-
-[package.extras]
-yaml = ["pyyaml (>=5.3)"]
-
-[[package]]
-name = "cmakelang"
-version = "0.6.13"
-description = "Language tools for cmake (format, lint, etc)"
-optional = false
-python-versions = "*"
-files = [
-    {file = "cmakelang-0.6.13-py3-none-any.whl", hash = "sha256:764b9467195c7c36453d60a829f30229720d26c7dffd41cb516b99bd9c7daf4e"},
-    {file = "cmakelang-0.6.13.tar.gz", hash = "sha256:03982e87b00654d024d73ef972d9d9bb0e5726cdb6b8a424a15661fb6278e67f"},
-]
-
-[package.dependencies]
-six = ">=1.13.0"
-
-[package.extras]
-html-gen = ["jinja2 (==2.10.3)"]
-yaml = ["pyyaml (>=5.3)"]
 
 [[package]]
 name = "colorama"
@@ -698,44 +563,6 @@ files = [
 ]
 
 [[package]]
-name = "mypy-extensions"
-version = "1.0.0"
-description = "Type system extensions for programs checked with the mypy type checker."
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
-    {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
-]
-
-[[package]]
-name = "ninja"
-version = "1.11.1.1"
-description = "Ninja is a small build system with a focus on speed"
-optional = false
-python-versions = "*"
-files = [
-    {file = "ninja-1.11.1.1-py2.py3-none-macosx_10_9_universal2.macosx_10_9_x86_64.macosx_11_0_arm64.macosx_11_0_universal2.whl", hash = "sha256:376889c76d87b95b5719fdd61dd7db193aa7fd4432e5d52d2e44e4c497bdbbee"},
-    {file = "ninja-1.11.1.1-py2.py3-none-manylinux1_i686.manylinux_2_5_i686.whl", hash = "sha256:ecf80cf5afd09f14dcceff28cb3f11dc90fb97c999c89307aea435889cb66877"},
-    {file = "ninja-1.11.1.1-py2.py3-none-manylinux1_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:84502ec98f02a037a169c4b0d5d86075eaf6afc55e1879003d6cab51ced2ea4b"},
-    {file = "ninja-1.11.1.1-py2.py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:73b93c14046447c7c5cc892433d4fae65d6364bec6685411cb97a8bcf815f93a"},
-    {file = "ninja-1.11.1.1-py2.py3-none-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:18302d96a5467ea98b68e1cae1ae4b4fb2b2a56a82b955193c637557c7273dbd"},
-    {file = "ninja-1.11.1.1-py2.py3-none-manylinux2014_s390x.manylinux_2_17_s390x.whl", hash = "sha256:aad34a70ef15b12519946c5633344bc775a7656d789d9ed5fdb0d456383716ef"},
-    {file = "ninja-1.11.1.1-py2.py3-none-musllinux_1_1_aarch64.whl", hash = "sha256:d491fc8d89cdcb416107c349ad1e3a735d4c4af5e1cb8f5f727baca6350fdaea"},
-    {file = "ninja-1.11.1.1-py2.py3-none-musllinux_1_1_i686.whl", hash = "sha256:7563ce1d9fe6ed5af0b8dd9ab4a214bf4ff1f2f6fd6dc29f480981f0f8b8b249"},
-    {file = "ninja-1.11.1.1-py2.py3-none-musllinux_1_1_ppc64le.whl", hash = "sha256:9df724344202b83018abb45cb1efc22efd337a1496514e7e6b3b59655be85205"},
-    {file = "ninja-1.11.1.1-py2.py3-none-musllinux_1_1_s390x.whl", hash = "sha256:3e0f9be5bb20d74d58c66cc1c414c3e6aeb45c35b0d0e41e8d739c2c0d57784f"},
-    {file = "ninja-1.11.1.1-py2.py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:76482ba746a2618eecf89d5253c0d1e4f1da1270d41e9f54dfbd91831b0f6885"},
-    {file = "ninja-1.11.1.1-py2.py3-none-win32.whl", hash = "sha256:fa2ba9d74acfdfbfbcf06fad1b8282de8a7a8c481d9dee45c859a8c93fcc1082"},
-    {file = "ninja-1.11.1.1-py2.py3-none-win_amd64.whl", hash = "sha256:95da904130bfa02ea74ff9c0116b4ad266174fafb1c707aa50212bc7859aebf1"},
-    {file = "ninja-1.11.1.1-py2.py3-none-win_arm64.whl", hash = "sha256:185e0641bde601e53841525c4196278e9aaf4463758da6dd1e752c0a0f54136a"},
-    {file = "ninja-1.11.1.1.tar.gz", hash = "sha256:9d793b08dd857e38d0b6ffe9e6b7145d7c485a42dcfea04905ca0cdb6017cc3c"},
-]
-
-[package.extras]
-test = ["codecov (>=2.0.5)", "coverage (>=4.2)", "flake8 (>=3.0.4)", "pytest (>=4.5.0)", "pytest-cov (>=2.7.1)", "pytest-runner (>=5.1)", "pytest-virtualenv (>=1.7.0)", "virtualenv (>=15.0.3)"]
-
-[[package]]
 name = "nodeenv"
 version = "1.9.1"
 description = "Node.js virtual environment builder"
@@ -765,17 +592,6 @@ optional = false
 python-versions = ">=3.6"
 files = [
     {file = "patch-ng-1.18.0.tar.gz", hash = "sha256:da067628d6d5fd9dc5a55eab37951d46bd95661b7219fab364b711366abcc690"},
-]
-
-[[package]]
-name = "pathspec"
-version = "0.12.1"
-description = "Utility library for gitignore style pattern matching of file paths."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08"},
-    {file = "pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712"},
 ]
 
 [[package]]
@@ -1278,4 +1094,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ca6642f4d1df1e047da39f7e46eebabf644a35f1067210f44698d5ac1dfe3abf"
+content-hash = "d1d5f2b9988da65ed728586f28b51399d30d1a10dedf4d822d319bcc92fce4cc"

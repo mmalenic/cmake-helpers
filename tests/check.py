@@ -95,3 +95,26 @@ def check_memcheck(
         setup_gtest,
         memcheck=True,
     )
+
+
+@pytest.mark.skipif(platform.system() != "Linux", reason="Linux only lint")
+def check_sanitizer(
+    capfd, add_dep, check_includes, check_symbol, embed, enum, required, setup_gtest
+):
+    """
+    Run sanitizers on all test code.
+    """
+    run_check(
+        capfd,
+        add_dep,
+        check_includes,
+        check_symbol,
+        embed,
+        enum,
+        required,
+        setup_gtest,
+        variables={
+            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined,leak,integer -Wall -Wextra -Wpedantic -Werror",
+        },
+    )

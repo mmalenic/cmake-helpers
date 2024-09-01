@@ -12,6 +12,9 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - if: matrix.os == 'ubuntu-latest'
+        run: apt install -y clang clang-tidy valgrind
+
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:

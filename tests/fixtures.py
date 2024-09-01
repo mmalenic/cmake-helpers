@@ -118,12 +118,12 @@ def run_cmake_with_assert(
         return for_command
 
     # Run cmake with the preset
-    command = add_preset("cmake . ", preset)
+    command = add_preset("cmake . ", preset).split()
     if variables is not None:
         for key, value in variables.items() or []:
-            command += f"-D {key}={value} "
+            command += [f"-D{key}={value}"]
 
-    run(command.split(), check=True)
+    run(command, check=True)
     out, _ = capfd.readouterr()
 
     # Assert expected messages in output.
