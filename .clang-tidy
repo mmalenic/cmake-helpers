@@ -10,7 +10,9 @@ Checks: >
   -llvm-header-guard,
   -cppcoreguidelines-avoid-c-arrays,
   -modernize-avoid-c-arrays,
-  -hicpp-avoid-c-arrays
+  -hicpp-avoid-c-arrays,
+  -hicpp-deprecated-headers,
+  -modernize-deprecated-headers
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.'
 ExtraArgs: ['-std=c++17']
