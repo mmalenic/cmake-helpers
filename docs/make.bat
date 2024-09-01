@@ -23,11 +23,15 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
+if "%1" == "html" goto html
 if "%1" == "readme" goto readme
-
 if "%1" == "" goto help
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+goto end
+
+:html
+sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
 :readme

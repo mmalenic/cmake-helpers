@@ -23,6 +23,7 @@ sphinx = "^7"
 sphinxcontrib-moderncmakedomain = "^3"
 sphinx-markdown-builder = "^0.6"
 sphinx-book-theme = "^1"
+sphinx-multiversion = "^0.2"
 pre-commit = "^3"
 
 [tool.pytest.ini_options]
