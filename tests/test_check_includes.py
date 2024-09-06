@@ -29,7 +29,7 @@ def test_check_includes_c_language(check_includes, capfd):
         capfd,
         contains_messages=[
             "cmake-toolbelt: toolbelt_check_includes - checking stdlib.h can be included",
-            "cmake-toolbelt:                          language = C",
+            "language = C",
         ],
         variables={"language": "C"},
     )
@@ -43,7 +43,7 @@ def test_check_includes_cxx_language(check_includes, capfd):
         capfd,
         contains_messages=[
             "cmake-toolbelt: toolbelt_check_includes - checking stdlib.h can be included",
-            "cmake-toolbelt:                          language = CXX",
+            "language = CXX",
         ],
         variables={"language": "CXX"},
     )

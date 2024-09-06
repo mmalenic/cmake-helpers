@@ -128,6 +128,7 @@ def run_cmake_with_assert(
 
     # Assert expected messages in output.
     for message in contains_messages or []:
+        print(message)
         assert message in out
     for message in not_contains_messages or []:
         assert message not in out

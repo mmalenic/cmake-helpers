@@ -240,7 +240,7 @@ components to :cmake`target`:
 
 .. code-block:: cmake
 
-    helpers_add_dep(
+    toolbelt_add_dep(
         target
         Python
         FIND_PACKAGE_ARGS COMPONENTS Interpreter Development
@@ -250,7 +250,7 @@ components to :cmake`target`:
 .. |target_link_libraries| replace:: :command:`target_link_libraries <command:target_link_libraries>`
 .. |IMPORTED_TARGETS| replace:: :prop_dir:`IMPORTED_TARGETS <prop_dir:IMPORTED_TARGETS>`
 ]]
-function(helpers_add_dep target dependency)
+function(toolbelt_add_dep target dependency)
     set(one_value_args VERSION VISIBILITY)
     set(multi_value_args LINK_COMPONENTS FIND_PACKAGE_ARGS)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
@@ -274,7 +274,7 @@ function(helpers_add_dep target dependency)
 
         if(after_importing)
             list(JOIN after_importing ", " imports)
-            _helpers_status("helpers_add_dep" "found ${dependency} with components: ${imports}")
+            _toolbelt_status("toolbelt_add_dep" "found ${dependency} with components: ${imports}")
         endif()
 
         set(imported_targets_name "_program_dependencies_${dependency}")
@@ -294,18 +294,18 @@ function(helpers_add_dep target dependency)
     if(DEFINED components)
         foreach(component IN LISTS components)
             target_link_libraries("${target}" "${_VISIBILITY}" "${component}")
-            _helpers_status("helpers_add_dep" "component ${component} linked to ${target}")
+            _toolbelt_status("toolbelt_add_dep" "component ${component} linked to ${target}")
         endforeach()
 
-        _helpers_status(
-            "helpers_add_dep" "linked ${dependency} to ${target}" ADD_MESSAGES "version = ${_VERSION}"
+        _toolbelt_status(
+            "toolbelt_add_dep" "linked ${dependency} to ${target}" ADD_MESSAGES "version = ${_VERSION}"
             "visibility = ${_VISIBILITY}"
         )
     endif()
 endfunction()
 
 #[[.rst:
-helpers_setup_gtest
+toolbelt_setup_gtest
 ===================
 
 A convenience function which links `GTest`_ and an optional testing library to a test executable
@@ -313,7 +313,7 @@ and calls |gtest_discover_tests| to find tests.
 
 .. code-block:: cmake
 
-    helpers_setup_gtest(
+    toolbelt_setup_gtest(
         <test_executable>
         [ADD_LIBRARIES add_libraries...]
     )
@@ -356,7 +356,7 @@ function(setup_gtest test_executable)
         CACHE BOOL "" FORCE
     )
 
-    helpers_add_dep(
+    toolbelt_add_dep(
         ${test_executable}
         GTest
         LINK_COMPONENTS
@@ -376,14 +376,14 @@ function(setup_gtest test_executable)
 endfunction()
 
 #[[
-A macro which is used within ``helpers_check_includes`` and ``helpers_check_includes``
+A macro which is used within ``toolbelt_check_includes`` and ``toolbelt_check_includes``
 to check for a cached compile definition and return early if it is found.
 ]]
-macro(_helpers_check_cached var status)
+macro(_toolbelt_check_cached var status)
     if(${var})
         add_compile_definitions("${var}=${${var}}")
 
-        _helpers_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
+        _toolbelt_status(${status} "check result for \"${var}\" cached with value: ${${var}}")
         return()
     endif()
 endmacro()

@@ -12,9 +12,9 @@ def test_setup_gtest(setup_gtest, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "-- cmake-toolbelt: toolbelt_add_dep - component GTest::gtest linked to cmake_toolbelt_test",
-            "-- cmake-toolbelt: toolbelt_add_dep - component GTest::gtest_main linked to cmake_toolbelt_test",
-            "-- cmake-toolbelt: toolbelt_add_dep - component GTest::gmock linked to cmake_toolbelt_test",
+            "cmake-toolbelt: toolbelt_add_dep - component GTest::gtest linked to cmake_toolbelt_test",
+            "cmake-toolbelt: toolbelt_add_dep - component GTest::gtest_main linked to cmake_toolbelt_test",
+            "cmake-toolbelt: toolbelt_add_dep - component GTest::gmock linked to cmake_toolbelt_test",
         ],
         preset=conan_preset(),
         build_preset="conan-release",
