@@ -22,7 +22,8 @@ def default_contains() -> List[str]:
 
 def default_not_contains() -> List[str]:
     return [
-        "visibility =", "version =",
+        "visibility =",
+        "version =",
     ]
 
 
@@ -59,8 +60,7 @@ def test_add_dep_version(add_dep, capfd):
     """
     run_cmake_with_assert(
         capfd,
-        contains_messages=default_contains()[0:3]
-        + ["version = 1.3"],
+        contains_messages=default_contains()[0:3] + ["version = 1.3"],
         not_contains_messages=[default_not_contains()[0]],
         variables={"components": "ZLIB::ZLIB", "version": "1.3"},
         preset=conan_preset(),
@@ -74,8 +74,7 @@ def test_add_dep_visibility(add_dep, capfd):
     """
     run_cmake_with_assert(
         capfd,
-        contains_messages=default_contains()[0:3]
-        + ["visibility = PRIVATE"],
+        contains_messages=default_contains()[0:3] + ["visibility = PRIVATE"],
         not_contains_messages=[default_not_contains()[1]],
         variables={"components": "ZLIB::ZLIB", "visibility": "PRIVATE"},
         preset=conan_preset(),

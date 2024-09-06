@@ -15,7 +15,7 @@ resources, serving as a replacement for the C23 `#embed`_ directive.
 
 #[[.rst:
 toolbelt_embed
-=============
+==============
 
 Embeds a resource into source code as a variable or define macro. This function is similar to the C23 `#embed`_
 directive, however the `#embed`_ directive should be preferred over :cmake:`toolbelt_embed` if it is available.

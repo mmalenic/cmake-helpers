@@ -4,7 +4,10 @@
         <div class="bd-toc-item navbar-nav active">
             <p aria-level="2" class="caption" role="heading"><span class="caption-text">Versions</span></p>
             <ul class="nav bd-sidenav">
-                {%- for item in versions %}
+                {%- for item in versions.branches %}
+                <li class="toctree-l1"><a class="reference internal" href="{{ item.url }}">{{ item.name }}</a></li>
+                {%- endfor %}
+                {%- for item in versions.tags %}
                 <li class="toctree-l1"><a class="reference internal" href="{{ item.url }}">{{ item.name }}</a></li>
                 {%- endfor %}
             </ul>

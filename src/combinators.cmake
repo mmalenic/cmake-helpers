@@ -14,7 +14,7 @@ The combinators module combines cmake functions and aim to reduce repetitive bui
 
 #[[.rst:
 toolbelt_check_symbol
-====================
+=====================
 
 A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| that adds compile time
 definitions using |add_compile_definitions|.
@@ -98,7 +98,7 @@ endfunction()
 
 #[[.rst:
 toolbelt_check_includes
-======================
+=======================
 
 A wrapper function around |check_include_files| which adds compile time definitions using
 |add_compile_definitions|.
@@ -181,7 +181,7 @@ endfunction()
 
 #[[.rst:
 toolbelt_add_dep
-===============
+================
 
 A wrapper function around |find_package| which links a dependency to a target using |target_link_libraries|.
 
@@ -306,7 +306,7 @@ endfunction()
 
 #[[.rst:
 toolbelt_setup_gtest
-===================
+====================
 
 A convenience function which links `GTest`_ and an optional testing library to a test executable
 and calls |gtest_discover_tests| to find tests.

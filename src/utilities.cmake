@@ -12,7 +12,7 @@ The utilities module contains miscellaneous commands such as for defining enums 
 
 #[[.rst:
 toolbelt_enum
-============
+=============
 
 A macro which checks whether only one out of a set of variables is truthy and returns an error if not.
 This is useful to define enum options which can be one out of a set of defined values.
@@ -66,7 +66,7 @@ endmacro()
 
 #[[.rst:
 toolbelt_required
-================
+=================
 
 A macro which checks whether an argument is truthy and returns an error if not. This can be used to
 confirm the presence of arguments parsed by |cmake_parse_arguments|.

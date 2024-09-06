@@ -9,7 +9,7 @@ include(utilities)
    :language: shell
 
 cmake-toolbelt
-*************
+**************
 
 A small collection of CMake build code which adds some missing functionality and reduces repetitive build
 configurations.
