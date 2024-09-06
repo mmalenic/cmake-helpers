@@ -5,7 +5,7 @@ pushd %~dp0
 REM Command file for Sphinx documentation
 
 if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=sphinx-build
+	set SPHINXBUILD=poetry run sphinx-build
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
@@ -31,7 +31,7 @@ if "%1" == "" goto help
 goto end
 
 :html
-sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+poetry run sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
 :readme
