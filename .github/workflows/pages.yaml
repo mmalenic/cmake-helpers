@@ -1,0 +1,27 @@
+name: pages
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - run: poetry install
+
+      - name: build docs
+        working-directory: ./docs
+        run: make html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          working-directory: ./docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_build
