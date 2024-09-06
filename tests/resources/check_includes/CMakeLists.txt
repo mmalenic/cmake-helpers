@@ -22,16 +22,16 @@ endif()
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
-set(name cmake_helpers_test)
+set(name cmake_toolbelt_test)
 project(${name} LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
-include(helpers)
+include(toolbelt)
 
-helpers_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+toolbelt_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
 
 if(${run_twice})
-    helpers_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
+    toolbelt_check_includes(INCLUDES ${include} VAR STDLIB_EXISTS LANGUAGE ${language})
 endif()
 
 if(DEFINED STDLIB_EXISTS)

@@ -26,14 +26,14 @@ endif()
 
 # Test definition
 cmake_minimum_required(VERSION 3.24)
-set(name cmake_helpers_test)
+set(name cmake_toolbelt_test)
 project(${name} CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
-include(helpers)
+include(toolbelt)
 
 add_executable(${name} main.cpp)
-helpers_add_dep(
+toolbelt_add_dep(
     ${name}
     ZLIB
     LINK_COMPONENTS
@@ -47,7 +47,7 @@ helpers_add_dep(
 )
 
 # Repeating should not be an issue
-helpers_add_dep(
+toolbelt_add_dep(
     ${name}
     ZLIB
     LINK_COMPONENTS

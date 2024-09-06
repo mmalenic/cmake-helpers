@@ -14,12 +14,12 @@ def test_embed(embed, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "-- cmake-helpers: helpers_embed - defining auto literal",
-            "-- cmake-helpers: helpers_embed - defining char literal",
-            "-- cmake-helpers: helpers_embed - defining byte array",
-            "-- cmake-helpers: helpers_embed - defining preprocessor macro",
-            "-- cmake-helpers: helpers_embed - generated output file",
-            "-- cmake-helpers: helpers_embed - linking generated file to target cmake_helpers_test",
+            "-- cmake-toolbelt: toolbelt_embed - defining auto literal",
+            "-- cmake-toolbelt: toolbelt_embed - defining char literal",
+            "-- cmake-toolbelt: toolbelt_embed - defining byte array",
+            "-- cmake-toolbelt: toolbelt_embed - defining preprocessor macro",
+            "-- cmake-toolbelt: toolbelt_embed - generated output file",
+            "-- cmake-toolbelt: toolbelt_embed - linking generated file to target cmake_toolbelt_test",
         ],
     )
 

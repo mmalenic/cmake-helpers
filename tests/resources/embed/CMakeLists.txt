@@ -11,16 +11,16 @@ endif()
 # Test definition
 cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 17)
-set(name cmake_helpers_test)
+set(name cmake_toolbelt_test)
 project(${name} CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../src" ".")
-include(helpers)
+include(toolbelt)
 
 add_executable(${name} main.cpp)
 
-helpers_embed("auto_literal.h" "auto_literal" EMBED "embed_one.txt" TARGET ${name})
-helpers_embed(
+toolbelt_embed("auto_literal.h" "auto_literal" EMBED "embed_one.txt" TARGET ${name})
+toolbelt_embed(
     "const_literal.h"
     "const_literal"
     EMBED
@@ -29,7 +29,7 @@ helpers_embed(
     ${name}
     CHAR_LITERAL
 )
-helpers_embed(
+toolbelt_embed(
     "byte_array.h"
     "byte_array"
     EMBED
@@ -38,7 +38,7 @@ helpers_embed(
     ${name}
     BYTE_ARRAY
 )
-helpers_embed(
+toolbelt_embed(
     "define.h"
     "DEFINE"
     EMBED
@@ -48,7 +48,7 @@ helpers_embed(
     DEFINE
 )
 
-helpers_embed(
+toolbelt_embed(
     "auto_literal_namespace.h"
     "auto_literal_namespace"
     NAMESPACE
@@ -58,7 +58,7 @@ helpers_embed(
     TARGET
     ${name}
 )
-helpers_embed(
+toolbelt_embed(
     "const_literal_namespace.h"
     "const_literal_namespace"
     NAMESPACE
@@ -69,7 +69,7 @@ helpers_embed(
     ${name}
     CHAR_LITERAL
 )
-helpers_embed(
+toolbelt_embed(
     "byte_array_namespace.h"
     "byte_array_namespace"
     NAMESPACE
@@ -81,7 +81,7 @@ helpers_embed(
     BYTE_ARRAY
 )
 
-helpers_embed(
+toolbelt_embed(
     "auto_literal_multi.h"
     "auto_literal_multi"
     NAMESPACE
@@ -92,7 +92,7 @@ helpers_embed(
     TARGET
     ${name}
 )
-helpers_embed(
+toolbelt_embed(
     "const_literal_multi.h"
     "const_literal_multi"
     NAMESPACE
@@ -104,7 +104,7 @@ helpers_embed(
     ${name}
     CHAR_LITERAL
 )
-helpers_embed(
+toolbelt_embed(
     "byte_array_multi.h"
     "byte_array_multi"
     NAMESPACE
@@ -116,7 +116,7 @@ helpers_embed(
     ${name}
     BYTE_ARRAY
 )
-helpers_embed(
+toolbelt_embed(
     "define_multi.h"
     "DEFINE_MULTI"
     EMBED
@@ -127,4 +127,4 @@ helpers_embed(
     DEFINE
 )
 
-target_include_directories(${name} PRIVATE ${cmake_helpers_ret})
+target_include_directories(${name} PRIVATE ${cmake_toolbelt_ret})

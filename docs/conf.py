@@ -1,4 +1,4 @@
-project = "cmake-helpers"
+project = "cmake-toolbelt"
 copyright = "2024, Marko Malenic"
 author = "Marko Malenic"
 release = "0.1.0"

@@ -16,10 +16,10 @@ def test_check_symbol(check_symbol, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "cmake-helpers: helpers_check_symbol - using check_cxx_symbol_exists"
+            "cmake-toolbelt: toolbelt_check_symbol - using check_cxx_symbol_exists"
         ],
         not_contains_messages=[
-            'cmake-helpers: helpers_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
+            'cmake-toolbelt: toolbelt_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
         ],
     )
 
@@ -31,10 +31,10 @@ def test_check_symbol_mode(check_symbol, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "cmake-helpers: helpers_check_symbol - using check_symbol_exists"
+            "cmake-toolbelt: toolbelt_check_symbol - using check_symbol_exists"
         ],
         not_contains_messages=[
-            'cmake-helpers: helpers_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
+            'cmake-toolbelt: toolbelt_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
         ],
         variables={"mode": "C"},
     )
@@ -48,10 +48,10 @@ def test_non_existent_symbol(check_symbol, capfd):
         run_cmake_with_assert(
             capfd,
             contains_messages=[
-                "cmake-helpers: helpers_check_symbol - using check_cxx_symbol_exists"
+                "cmake-toolbelt: toolbelt_check_symbol - using check_cxx_symbol_exists"
             ],
             not_contains_messages=[
-                'cmake-helpers: helpers_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
+                'cmake-toolbelt: toolbelt_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
             ],
             variables={"symbol": "non_existent_symbol"},
         )
@@ -64,7 +64,7 @@ def test_check_symbol_cached(check_symbol, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            'cmake-helpers: helpers_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
+            'cmake-toolbelt: toolbelt_check_symbol - check result for "EXIT_EXISTS" cached with value: 1'
         ],
         variables={"run_twice": "TRUE"},
     )

@@ -13,17 +13,17 @@ from tests.fixtures import add_dep, run_cmake_with_assert, conan_preset
 
 def default_contains() -> List[str]:
     return [
-        "cmake-helpers: helpers_add_dep - found ZLIB with components",
-        "cmake-helpers: helpers_add_dep - component ZLIB::ZLIB linked to cmake_helpers_test",
-        "cmake-helpers: helpers_add_dep - linked ZLIB to cmake_helpers_test",
-        "cmake-helpers: helpers_add_dep - component zlib_DEPS_TARGET linked to cmake_helpers_test",
+        "cmake-toolbelt: toolbelt_add_dep - found ZLIB with components",
+        "cmake-toolbelt: toolbelt_add_dep - component ZLIB::ZLIB linked to cmake_toolbelt_test",
+        "cmake-toolbelt: toolbelt_add_dep - linked ZLIB to cmake_toolbelt_test",
+        "cmake-toolbelt: toolbelt_add_dep - component zlib_DEPS_TARGET linked to cmake_toolbelt_test",
     ]
 
 
 def default_not_contains() -> List[str]:
     return [
-        "cmake-helpers:                   visibility =",
-        "cmake-helpers:                   version =",
+        "cmake-toolbelt:                   visibility =",
+        "cmake-toolbelt:                   version =",
     ]
 
 
@@ -61,7 +61,7 @@ def test_add_dep_version(add_dep, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=default_contains()[0:3]
-        + ["cmake-helpers:                   version = 1.3"],
+        + ["cmake-toolbelt:                   version = 1.3"],
         not_contains_messages=[default_not_contains()[0]],
         variables={"components": "ZLIB::ZLIB", "version": "1.3"},
         preset=conan_preset(),
@@ -76,7 +76,7 @@ def test_add_dep_visibility(add_dep, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=default_contains()[0:3]
-        + ["cmake-helpers:                   visibility = PRIVATE"],
+        + ["cmake-toolbelt:                   visibility = PRIVATE"],
         not_contains_messages=[default_not_contains()[1]],
         variables={"components": "ZLIB::ZLIB", "visibility": "PRIVATE"},
         preset=conan_preset(),

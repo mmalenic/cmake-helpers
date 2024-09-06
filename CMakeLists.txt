@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
 project(
-    cmake_helpers
+    cmake_toolbelt
     VERSION 0.1.0
     DESCRIPTION "a small collection of CMake build functions."
-    HOMEPAGE_URL "https://github.com/mmalenic/cmake-helpers"
+    HOMEPAGE_URL "https://github.com/mmalenic/cmake-toolbelt"
 )
 
 # Include src directory.

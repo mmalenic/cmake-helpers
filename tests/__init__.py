@@ -1,5 +1,5 @@
 """
-Tests for cmake-helpers functions.
+Tests for cmake-toolbelt functions.
 
 :meta private:
 """

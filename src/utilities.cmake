@@ -11,7 +11,7 @@ The utilities module contains miscellaneous commands such as for defining enums 
 ]]
 
 #[[.rst:
-helpers_enum
+toolbelt_enum
 ============
 
 A macro which checks whether only one out of a set of variables is truthy and returns an error if not.
@@ -19,7 +19,7 @@ This is useful to define enum options which can be one out of a set of defined v
 
 .. code-block:: cmake
 
-    helpers_enum(
+    toolbelt_enum(
         <variables...>
     )
 
@@ -37,7 +37,7 @@ This checks if only one out of :cmake:`A`, :cmake:`B`, and :cmake:`C` is truthy 
 
 .. code-block:: cmake
 
-   helpers_enum(
+   toolbelt_enum(
        A
        B
        C
@@ -45,7 +45,7 @@ This checks if only one out of :cmake:`A`, :cmake:`B`, and :cmake:`C` is truthy 
 
 .. |cmake_parse_arguments| replace:: :command:`cmake_parse_arguments <command:cmake_parse_arguments>`
 ]]
-macro(helpers_enum)
+macro(toolbelt_enum)
     # Grab all the arguments.
     set(enums ${ARGN})
 
@@ -53,19 +53,19 @@ macro(helpers_enum)
     foreach(enum IN LISTS enums)
         if(${enum})
             string(REGEX REPLACE "^_" "" enum_name ${enum})
-            list(APPEND _helpers_enum_defined ${enum_name})
+            list(APPEND _toolbelt_enum_defined ${enum_name})
         endif()
     endforeach()
 
-    list(LENGTH _helpers_enum_defined _helpers_enum_n_defined)
-    if(_helpers_enum_n_defined GREATER 1)
-        list(JOIN _helpers_enum_defined ", " _helpers_enum_defined_formatted)
-        _helpers_error("helpers_enum" "more than one variable defined: ${_helpers_enum_defined_formatted}")
+    list(LENGTH _toolbelt_enum_defined _toolbelt_enum_n_defined)
+    if(_toolbelt_enum_n_defined GREATER 1)
+        list(JOIN _toolbelt_enum_defined ", " _toolbelt_enum_defined_formatted)
+        _toolbelt_error("toolbelt_enum" "more than one variable defined: ${_toolbelt_enum_defined_formatted}")
     endif()
 endmacro()
 
 #[[.rst:
-helpers_required
+toolbelt_required
 ================
 
 A macro which checks whether an argument is truthy and returns an error if not. This can be used to
@@ -73,7 +73,7 @@ confirm the presence of arguments parsed by |cmake_parse_arguments|.
 
 .. code-block:: cmake
 
-    helpers_required(
+    toolbelt_required(
         <arg>
     )
 
@@ -89,13 +89,13 @@ This checks if :cmake:`arg` is defined and evaluates to true:
 
 .. code-block:: cmake
 
-   helpers_required(
+   toolbelt_required(
        arg
    )
 ]]
-macro(helpers_required arg)
+macro(toolbelt_required arg)
     string(REGEX REPLACE "^_" "" arg_name ${arg})
     if(NOT ${arg})
-        _helpers_error("helpers_required" "required parameter ${arg_name} not set")
+        _toolbelt_error("toolbelt_required" "required parameter ${arg_name} not set")
     endif()
 endmacro()

@@ -16,7 +16,7 @@ def test_check_includes(check_includes, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "cmake-helpers: helpers_check_includes - checking stdlib.h can be included"
+            "cmake-toolbelt: toolbelt_check_includes - checking stdlib.h can be included"
         ],
     )
 
@@ -28,8 +28,8 @@ def test_check_includes_c_language(check_includes, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
-            "cmake-helpers:                          language = C",
+            "cmake-toolbelt: toolbelt_check_includes - checking stdlib.h can be included",
+            "cmake-toolbelt:                          language = C",
         ],
         variables={"language": "C"},
     )
@@ -42,8 +42,8 @@ def test_check_includes_cxx_language(check_includes, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            "cmake-helpers: helpers_check_includes - checking stdlib.h can be included",
-            "cmake-helpers:                          language = CXX",
+            "cmake-toolbelt: toolbelt_check_includes - checking stdlib.h can be included",
+            "cmake-toolbelt:                          language = CXX",
         ],
         variables={"language": "CXX"},
     )
@@ -65,7 +65,7 @@ def test_check_non_existent_includes(check_includes, capfd):
         run_cmake_with_assert(
             capfd,
             contains_messages=[
-                "cmake-helpers: helpers_check_includes - checking non_existent_include.h can be included"
+                "cmake-toolbelt: toolbelt_check_includes - checking non_existent_include.h can be included"
             ],
             variables={"include": "non_existent_include.h"},
         )
@@ -78,7 +78,7 @@ def test_check_includes_cached(check_includes, capfd):
     run_cmake_with_assert(
         capfd,
         contains_messages=[
-            'cmake-helpers: helpers_check_includes - check result for "STDLIB_EXISTS" cached with value: 1'
+            'cmake-toolbelt: toolbelt_check_includes - check result for "STDLIB_EXISTS" cached with value: 1'
         ],
         variables={"run_twice": "TRUE"},
     )

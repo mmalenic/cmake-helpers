@@ -1,6 +1,6 @@
 .. default-domain:: cmake
 
-.. cmake-module:: ../src/helpers.cmake
+.. cmake-module:: ../src/toolbelt.cmake
 
 .. toctree::
    :maxdepth: 2

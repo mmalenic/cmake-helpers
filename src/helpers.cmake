@@ -8,7 +8,7 @@ include(utilities)
 .. role:: shell(code)
    :language: shell
 
-cmake-helpers
+cmake-toolbelt
 *************
 
 A small collection of CMake build code which adds some missing functionality and reduces repetitive build
@@ -21,7 +21,7 @@ Usage
 =====
 
 To use this library, you can use CMake's |fetch_content| to import the project. All library
-commands are available after including with a :cmake:`helpers_` prefix:
+commands are available after including with a :cmake:`toolbelt_` prefix:
 
 .. code-block:: cmake
 
@@ -29,18 +29,18 @@ commands are available after including with a :cmake:`helpers_` prefix:
 
    # Fetch content from this repo.
    FetchContent_Declare(
-        helpers
-        GIT_REPOSITORY https://github.com/mmalenic/cmake-helpers
+        toolbelt
+        GIT_REPOSITORY https://github.com/mmalenic/cmake-toolbelt
         GIT_TAG 0.1.0
    )
-   FetchContent_MakeAvailable(helpers)
+   FetchContent_MakeAvailable(toolbelt)
 
    # Allow cmake to find the src directory.
-   list(APPEND CMAKE_MODULE_PATH "${helpers_SOURCE_DIR}/src")
-   include(helpers)
+   list(APPEND CMAKE_MODULE_PATH "${toolbelt_SOURCE_DIR}/src")
+   include(toolbelt)
 
 Alternatively, copy and paste the code in the `src`_ directory
-and include the library using :cmake:`include(helpers)`.
+and include the library using :cmake:`include(toolbelt)`.
 
 Why does this project exist?
 ============================
@@ -55,7 +55,7 @@ such as interactions with the CMake |check_command| commands.
 Development
 ===========
 
-This project contains a set of unit tests for the :cmake:`helpers` commands. These can be run using `pytest`_ and
+This project contains a set of unit tests for the :cmake:`toolbelt` commands. These can be run using `pytest`_ and
 `poetry`_. After initializing the poetry project, run the tests using pytest:
 
 .. code-block:: shell
@@ -87,19 +87,19 @@ This project is licensed under the MIT `licence`_.
 
 .. _#embed: https://en.cppreference.com/w/c/preprocessor/embed
 .. _here: https://github.com/onqtam/awesome-cmake
-.. _src: https://github.com/mmalenic/cmake-helpers/tree/main/src
-.. _docs: https://github.com/mmalenic/cmake-helpers/tree/main/docs
+.. _src: https://github.com/mmalenic/cmake-toolbelt/tree/main/src
+.. _docs: https://github.com/mmalenic/cmake-toolbelt/tree/main/docs
 .. _pytest: https://docs.pytest.org/en/stable/
 .. _poetry: https://python-poetry.org/
 .. _sphinx: https://www.sphinx-doc.org/en/master/
-.. _licence: https://github.com/mmalenic/cmake-helpers/blob/main/LICENSE
+.. _licence: https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE
 ]]
 
 #[[
-Print a status message specific to the ``helpers.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print
+Print a status message specific to the ``toolbelt.cmake`` module. Accepts multiple ``ADD_MESSAGES`` that print
 additional ``key = value`` messages underneath the status.
 ]]
-function(_helpers_status function message)
+function(_toolbelt_status function message)
     set(multi_value_args ADD_MESSAGES)
     cmake_parse_arguments("" "" "" "${multi_value_args}" ${ARGN})
 
@@ -107,20 +107,20 @@ function(_helpers_status function message)
     string(LENGTH "${function_prefix}" function_prefix_length)
     string(REPEAT " " "${function_prefix_length}" function_spaces)
 
-    set(helpers_prefix "cmake-helpers: ")
-    message(STATUS "${helpers_prefix}${function_prefix}${message}")
+    set(toolbelt_prefix "cmake-toolbelt: ")
+    message(STATUS "${toolbelt_prefix}${function_prefix}${message}")
 
     foreach(add_message IN LISTS _ADD_MESSAGES)
         if(NOT add_message MATCHES "= $" AND NOT add_message MATCHES "^ =")
-            message(STATUS "${helpers_prefix}${function_spaces}${add_message}")
+            message(STATUS "${toolbelt_prefix}${function_spaces}${add_message}")
         endif()
     endforeach()
 endfunction()
 
 #[[
-Print an error message specific to the ``helpers.cmake`` module and exit early in the calling scope.
+Print an error message specific to the ``toolbelt.cmake`` module and exit early in the calling scope.
 ]]
-macro(_helpers_error function message)
-    message(FATAL_ERROR "cmake-helpers: ${function} - ${message}")
+macro(_toolbelt_error function message)
+    message(FATAL_ERROR "cmake-toolbelt: ${function} - ${message}")
     return()
 endmacro()

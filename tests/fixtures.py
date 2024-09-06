@@ -1,5 +1,5 @@
 """
-Fixtures for the cmake-helpers tests.
+Fixtures for the cmake-toolbelt tests.
 """
 
 import os
@@ -154,7 +154,7 @@ def run_cmake_with_assert(
 
         run(command, check=True)
     else:
-        app = Path("cmake_helpers_test")
+        app = Path("cmake_toolbelt_test")
 
         if platform.system() == "Windows":
             release = os.path.join("Release", app.with_suffix(".exe"))

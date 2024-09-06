@@ -13,7 +13,7 @@ The combinators module combines cmake functions and aim to reduce repetitive bui
 ]]
 
 #[[.rst:
-helpers_check_symbol
+toolbelt_check_symbol
 ====================
 
 A wrapper function around |check_cxx_symbol_exists|, or |check_symbol_exists| that adds compile time
@@ -21,7 +21,7 @@ definitions using |add_compile_definitions|.
 
 .. code-block:: cmake
 
-    helpers_check_symbol(
+    toolbelt_check_symbol(
         SYMBOL <symbol>
         VAR <var>
         FILES [<file>...]
@@ -46,7 +46,7 @@ Checks if the :cpp:`"exit"` symbol can be found in :cpp:`"stdlib.h"`:
 
 .. code-block:: cmake
 
-    helpers_check_symbol(
+    toolbelt_check_symbol(
         SYMBOL "exit"
         FILES "stdlib.h"
         VAR EXIT_EXISTS
@@ -68,25 +68,25 @@ This causes the following program to exit with 0 if the symbol exists:
 .. |check_symbol_exists| replace:: :command:`check_symbol_exists <command:check_symbol_exists>`
 .. |add_compile_definitions| replace:: :command:`add_compile_definitions <command:add_compile_definitions>`
 ]]
-function(helpers_check_symbol)
+function(toolbelt_check_symbol)
     set(options C)
     set(one_value_args SYMBOL VAR MODE)
     set(multi_value_args FILES)
     cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    helpers_required(_VAR)
-    helpers_required(_SYMBOL)
-    helpers_required(_FILES)
+    toolbelt_required(_VAR)
+    toolbelt_required(_SYMBOL)
+    toolbelt_required(_FILES)
 
-    _helpers_check_cached(${_VAR} "helpers_check_symbol")
+    _toolbelt_check_cached(${_VAR} "toolbelt_check_symbol")
 
     # Include guard is present.
     if(_C)
-        _helpers_status("helpers_check_symbol" "using check_symbol_exists")
+        _toolbelt_status("toolbelt_check_symbol" "using check_symbol_exists")
         include(CheckSymbolExists)
         check_symbol_exists("${_SYMBOL}" "${_FILES}" "${_VAR}")
     else()
-        _helpers_status("helpers_check_symbol" "using check_cxx_symbol_exists")
+        _toolbelt_status("toolbelt_check_symbol" "using check_cxx_symbol_exists")
         include(CheckCXXSymbolExists)
         check_cxx_symbol_exists("${_SYMBOL}" "${_FILES}" "${_VAR}")
     endif()
@@ -97,7 +97,7 @@ function(helpers_check_symbol)
 endfunction()
 
 #[[.rst:
-helpers_check_includes
+toolbelt_check_includes
 ======================
 
 A wrapper function around |check_include_files| which adds compile time definitions using
@@ -105,7 +105,7 @@ A wrapper function around |check_include_files| which adds compile time definiti
 
 .. code-block:: cmake
 
-    helpers_check_includes(
+    toolbelt_check_includes(
         VAR <var>
         INCLUDES <file>...
         [LANGUAGE C | CXX]
@@ -129,7 +129,7 @@ Check if ``"stdlib.h"`` can be included using the C++ compiler:
 
 .. code-block:: cmake
 
-    helpers_check_includes(
+    toolbelt_check_includes(
         VAR STDLIB_EXISTS
         INCLUDES "stdlib.h"
         LANGUAGE CXX
@@ -149,19 +149,19 @@ This causes the following program to exit with 0 if the check succeeds:
 
 .. |check_include_files| replace:: :command:`check_include_files <command:check_include_files>`
 ]]
-function(helpers_check_includes)
+function(toolbelt_check_includes)
     set(one_value_args VAR LANGUAGE)
     set(multi_value_args INCLUDES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
-    helpers_required(_VAR)
-    helpers_required(_INCLUDES)
+    toolbelt_required(_VAR)
+    toolbelt_required(_INCLUDES)
 
-    _helpers_check_cached(${_VAR} "helpers_check_includes")
+    _toolbelt_check_cached(${_VAR} "toolbelt_check_includes")
 
     list(JOIN _INCLUDES ", " includes)
-    _helpers_status(
-        "helpers_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language = ${_LANGUAGE}"
+    _toolbelt_status(
+        "toolbelt_check_includes" "checking ${includes} can be included" ADD_MESSAGES "language = ${_LANGUAGE}"
     )
 
     # Include guard is present.
@@ -171,7 +171,7 @@ function(helpers_check_includes)
     elseif("${_LANGUAGE}" STREQUAL "CXX" OR "${_LANGUAGE}" STREQUAL "C")
         check_include_files("${_INCLUDES}" "${_VAR}" LANGUAGE "${_LANGUAGE}")
     else()
-        _helpers_error("helpers_check_includes" "invalid language: ${_LANGUAGE}")
+        _toolbelt_error("toolbelt_check_includes" "invalid language: ${_LANGUAGE}")
     endif()
 
     if(${_VAR})
@@ -180,14 +180,14 @@ function(helpers_check_includes)
 endfunction()
 
 #[[.rst:
-helpers_add_dep
+toolbelt_add_dep
 ===============
 
 A wrapper function around |find_package| which links a dependency to a target using |target_link_libraries|.
 
 .. code-block:: cmake
 
-    helpers_add_dep(
+    toolbelt_add_dep(
         <target>
         <dependency>
         [VERSION version]
@@ -223,7 +223,7 @@ This example finds :cmake:`ZLIB` and links :cmake:`ZLIB::ZLIB` as private depend
 
 .. code-block:: cmake
 
-    helpers_add_dep(
+    toolbelt_add_dep(
         target
         ZLIB
         LINK_COMPONENTS ZLIB::ZLIB
