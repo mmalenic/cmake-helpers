@@ -1,3 +1,6 @@
+from pathlib import Path
+from shutil import copy
+
 project = "cmake-toolbelt"
 copyright = "2024, Marko Malenic"
 author = "Marko Malenic"
@@ -18,6 +21,7 @@ templates_path = [
 
 html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
+html_extra_path = ["_static/index.html"]
 html_css_files = ["custom.css"]
 html_sidebars = {
     "**": [
@@ -28,3 +32,16 @@ html_sidebars = {
         "versioning.html",
     ],
 }
+
+
+def copy_index_html(app, exception):
+    """
+    Copy the index.html from _static into the _build directory.
+    """
+    if exception is not None:
+        confdir = Path(app.confdir)
+        copy(confdir / "_static/index.html", confdir / "_build")
+
+
+def setup(app):
+    app.connect("build-finished", copy_index_html)
