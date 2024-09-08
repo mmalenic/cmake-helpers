@@ -38,7 +38,7 @@ def copy_index_html(app, exception):
     """
     Copy the index.html from _static into the _build directory.
     """
-    if exception is not None:
+    if exception is None:
         confdir = Path(app.confdir)
         copy(confdir / "_static/index.html", confdir / "_build")
 
