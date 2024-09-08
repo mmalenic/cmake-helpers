@@ -21,8 +21,29 @@ templates_path = [
 
 html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
-html_extra_path = ["_static/index.html"]
 html_css_files = ["custom.css"]
+html_logo = "_static/logo.png"
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "MIT Licensed",
+            "url": "https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE",
+            "icon": "https://img.shields.io/badge/license-MIT-blue.svg",
+            "type": "url",
+        },
+        {
+            "name": "Build status",
+            "url": "https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain",
+            "icon": "https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg",
+            "type": "url",
+        },
+        {
+            "name": "GitHub",
+            "url": "https://github.com/mmalenic/cmake-toolbelt",
+            "icon": "fa-brands fa-github",
+        },
+    ]
+}
 html_sidebars = {
     "**": [
         "navbar-logo.html",
