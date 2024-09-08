@@ -1,0 +1,5 @@
+/* Hide unnecessary left sidebar. */
+#rtd-footer-container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
