@@ -22,8 +22,11 @@ templates_path = [
 html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
-html_logo = "_static/logo.png"
 html_theme_options = {
+    "logo": {
+        "image_dark": "_static/logo_light.svg",
+        "image_light": "_static/logo_dark.svg",
+    },
     "icon_links": [
         {
             "name": "MIT Licensed",

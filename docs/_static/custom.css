@@ -3,3 +3,11 @@
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
+
+html[data-theme=dark] {
+    --pst-color-background: #141510;
+}
+
+html[data-theme=light] {
+    --pst-color-background: #d6b9b2;
+}
