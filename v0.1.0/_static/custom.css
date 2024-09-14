@@ -3,3 +3,27 @@
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
+
+html[data-theme=dark] {
+    --pst-color-background: #141510;
+    --pst-color-primary: #ffabba;
+    --pst-color-secondary: #ffe6f0;
+    --pst-color-table-row-hover-bg: #d9919e;
+    --logo-colour: #ffe6f0;
+}
+
+html[data-theme=light] {
+    --pst-color-background: #fff6fa;
+    --pst-color-primary: #d9919e;
+    --pst-color-secondary: #ffabba;
+    --pst-color-table-row-hover-bg: #d9919e;
+    --logo-colour: #141510;
+}
+
+.primary-logo {
+    width: 100%;
+    height: 12rem;
+    background: var(--logo-colour);
+    -webkit-mask-image: url("primary_logo.svg");
+    mask-image: url("primary_logo.svg");
+}
