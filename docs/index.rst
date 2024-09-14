@@ -1,6 +1,8 @@
 .. default-domain:: cmake
 
-.. image:: _static/logo_dark.svg
+.. raw:: html
+
+   <div class="primary-logo"></div>
 
 .. cmake-module:: ../src/toolbelt.cmake
 

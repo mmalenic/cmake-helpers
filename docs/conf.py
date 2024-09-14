@@ -24,8 +24,8 @@ html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 html_theme_options = {
     "logo": {
-        "image_dark": "_static/logo_light.svg",
-        "image_light": "_static/logo_dark.svg",
+        "image_dark": "_static/secondary_logo_light.svg",
+        "image_light": "_static/secondary_logo_dark.svg",
     },
     "icon_links": [
         {
@@ -56,16 +56,3 @@ html_sidebars = {
         "versioning.html",
     ],
 }
-
-
-def copy_index_html(app, exception):
-    """
-    Copy the index.html from _static into the _build directory.
-    """
-    if exception is None:
-        confdir = Path(app.confdir)
-        copy(confdir / "_static/index.html", confdir / "_build")
-
-
-def setup(app):
-    app.connect("build-finished", copy_index_html)

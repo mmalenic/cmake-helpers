@@ -8,10 +8,6 @@ include(utilities)
 .. role:: shell(code)
    :language: shell
 
-.. image:: ../_static/logo_secondary_dark.svg
-   :target: https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE
-   :alt: MIT licensed
-
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE
    :alt: MIT licensed

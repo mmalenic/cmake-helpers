@@ -20,7 +20,7 @@ readme:
 	 mv "$(BUILDDIR)"/markdown/readme.md ../README.md
 
 # Generate versioned html
-html:
+html-versioned:
 	@poetry run sphinx-multiversion "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # Catch-all target: route all unknown targets to Sphinx using the new

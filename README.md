@@ -1,4 +1,4 @@
-![The cmake-toolbelt logo](docs/_static/logo.png)[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE)[![Build status](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain)[![Docs](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE)[![Build status](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain)[![Docs](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment)
 
 # cmake-toolbelt
 

@@ -30,7 +30,7 @@ if "%1" == "" goto help
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
-:html
+:html-versioned
 poetry run sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
