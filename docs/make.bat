@@ -23,7 +23,7 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
-if "%1" == "html" goto html
+if "%1" == "html-versioned" goto html-versioned
 if "%1" == "readme" goto readme
 if "%1" == "" goto help
 
@@ -31,7 +31,8 @@ if "%1" == "" goto help
 goto end
 
 :html-versioned
-poetry run sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+poetry run sphinx-multiversion %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O% && ^
+copy %SOURCEDIR%\_static\index.html %BUILDDIR%
 goto end
 
 :readme

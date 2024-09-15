@@ -8,18 +8,6 @@ include(utilities)
 .. role:: shell(code)
    :language: shell
 
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg
-   :target: https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE
-   :alt: MIT licensed
-
-.. image:: https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg
-   :target: https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain
-   :alt: Build status
-
-.. image:: https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment/badge.svg
-   :target: https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment
-   :alt: Docs
-
 cmake-toolbelt
 **************
 

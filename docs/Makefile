@@ -21,7 +21,8 @@ readme:
 
 # Generate versioned html
 html-versioned:
-	@poetry run sphinx-multiversion "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@poetry run sphinx-multiversion "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O) && \
+	 cp "$(SOURCEDIR)/_static/index.html" "$(BUILDDIR)"
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
