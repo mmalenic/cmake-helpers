@@ -5,9 +5,9 @@
 .. raw:: html
 
    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/_static/primary_logo_dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="docs/_static/primary_logo_light.svg">
-      <img alt="Logo" src="docs/_static/primary_logo_light.svg">
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_light.svg">
+      <img alt="Logo" src="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_light.svg">
    </picture>
    <br>
 
