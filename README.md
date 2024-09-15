@@ -1,4 +1,9 @@
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE)[![Build status](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain)[![Docs](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/pages/pages-build-deployment)
+<picture>
+   <source media="(prefers-color-scheme: dark)" srcset="docs/_static/primary_logo_dark.svg">
+   <source media="(prefers-color-scheme: light)" srcset="docs/_static/primary_logo_light.svg">
+   <img alt="Logo" src="docs/_static/primary_logo_light.svg">
+</picture>
+<br>[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE)[![Build status](https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg)](https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain)
 
 # cmake-toolbelt
 
