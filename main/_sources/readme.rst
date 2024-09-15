@@ -11,10 +11,8 @@
    </picture>
    <br>
    <a href="https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE" target="_blank"><img
-      alt="MIT licensed" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
-   </a>
+      alt="MIT licensed" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
    <a href="https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain" target="_blank"><img
-      alt="Build status" src="https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg"/>
-   </a>
+      alt="Build status" src="https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg"/></a>
 
 .. cmake-module:: ../src/toolbelt.cmake
