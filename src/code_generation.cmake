@@ -18,7 +18,7 @@ toolbelt_embed
 ==============
 
 Embeds a resource into source code as a variable or define macro. This function is similar to the C23 `#embed`_
-directive, however the `#embed`_ directive should be preferred over :cmake:`toolbelt_embed` if it is available.
+directive. The `#embed`_ directive should be preferred over :cmake:`toolbelt_embed` if it is available.
 
 .. code-block:: cmake
 
@@ -30,7 +30,7 @@ directive, however the `#embed`_ directive should be preferred over :cmake:`tool
         [OUTPUT_DIR output_dir]
         [TARGET target]
         [VISIBILITY visibility]
-        [AUTO_LITERAL | CHAR_LITERAL | BYTE_ARRAY | DEFINE_LITERAL | DEFINE_ARRAY]
+        [AUTO_LITERAL | CHAR_LITERAL | BYTE_ARRAY | DEFINE]
     )
 
 This function generates C or C++ code at the :cmake:`file` which embeds data contained within :cmake:`EMBED`
@@ -40,8 +40,8 @@ then they are all concatenated and embedded in the same :cmake:`variable`.
 .. note:: This function cannot create multiple variables in the same file.
 
 In order to control how the variable is created the mode should be specified as either :cmake:`AUTO_LITERAL`,
-:cmake:`CHAR_LITERAL`, :cmake:`BYTE_ARRAY`, :cmake:`DEFINE_LITERAL` or :cmake:`DEFINE_ARRAY`. This function returns
-an error if more than one of these modes if specified. The default mode is :cmake:`AUTO_LITERAL`.
+:cmake:`CHAR_LITERAL`, :cmake:`BYTE_ARRAY`, :cmake:`DEFINE`. This function returns an error if more than one of
+these modes if specified. The default mode is :cmake:`AUTO_LITERAL`.
 
 :cmake:`AUTO_LITERAL` and :cmake:`CHAR_LITERAL` both define string literal variables with a null terminator, and a type
 of :cpp:`constexpr auto` or :cpp:`const char *` respectively. :cmake:`BYTE_ARRAY` defines a byte array variable without
@@ -75,7 +75,7 @@ The following table shows the generated code using these modes.
     |                       |    #define INCLUDE_DEFINE_CONSTANT "This is an embedded literal.\n"   |
     +-----------------------+-----------------------------------------------------------------------+
 
-The variable definition can be surrounded by a namespace by specifying the :cmake:`NAMESPACE`. By default,
+The variable definition can be surrounded by a namespace by specifying :cmake:`NAMESPACE`. By default,
 :cmake:`toolbelt_embed` places the generated file in |GENERATED_DIR|. :cmake:`OUTPUT_DIR` can be used
 to change this location. If :cmake:`TARGET` is specified, then |target_sources| is used to add the generated
 file to the :cmake:`TARGET` with :cmake:`VISIBILITY` visibility. The default visibility is :cmake:`"PRIVATE"`.
@@ -127,6 +127,7 @@ This example embeds multiple files into a char literal and links the generated c
        EMBED "embed_one.txt" "embed_two.txt"
        NAMESPACE "application::detail"
        TARGET application
+       CHAR_LITERAL
    )
    target_include_directories(application PRIVATE ${cmake_toolbelt_ret})
 
@@ -143,7 +144,7 @@ This generates the following code, assuming :cmake:`embed_one.txt` contains ``"T
    const char* include_const_char_multi = "This is an embedded literal.\n"
    "This is also an embedded literal.\n"
    "With multiple lines.\n";
-   } // application::detail
+   } // namespace application::detail
 
    #endif // APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H
 
@@ -160,7 +161,7 @@ function(toolbelt_embed file variable)
     cmake_parse_arguments("" "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     toolbelt_required(_EMBED)
-    toolbelt_enum(_AUTO_LITERAL _CHAR_LITERAL _AUTO_ARRAY _BYTE_ARRAY _DEFINE)
+    toolbelt_enum(_AUTO_LITERAL _CHAR_LITERAL _BYTE_ARRAY _DEFINE)
 
     # Get the include guard and namespace comment.
     string(TOUPPER "${file}" header_stem)

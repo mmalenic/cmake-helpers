@@ -7,7 +7,7 @@
 Utilities
 *********
 
-The utilities module contains miscellaneous commands such as for defining enums or required arguments.
+The utilities module contains miscellaneous commands such as defining enums or required arguments.
 ]]
 
 #[[.rst:
@@ -24,8 +24,10 @@ This is useful to define enum options which can be one out of a set of defined v
     )
 
 This macro returns an error in the scope of the calling code, if more than one variable in :cmake:`variables`
-evaluates to true. It assumes that variables prefixed with :cmake:`_` should be printed without this prefix which is
-useful to properly format arguments parsed by |cmake_parse_arguments|.
+evaluates to true.
+
+.. note:: This function assumes that variables prefixed with :cmake:`_` should be used without this prefix. This is
+          used to format arguments parsed by |cmake_parse_arguments|.
 
 Examples
 --------

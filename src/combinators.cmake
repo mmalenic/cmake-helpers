@@ -9,7 +9,7 @@ include(utilities)
 Combinators
 ***********
 
-The combinators module combines cmake functions and aim to reduce repetitive build configuration code.
+The combinators module combines cmake functions and aims to reduce repetitive build configuration code.
 ]]
 
 #[[.rst:
@@ -33,7 +33,7 @@ By default, this checks if the given :cmake:`SYMBOL` can be found after includin
 same name as :cmake:`VAR` is created if this check succeeds. Setting the :cmake:`C` flag uses |check_symbol_exists|
 instead.
 
-This function calls the check function and compile definitions function directly, so all features of
+This function calls the check function and compile definitions function directly. All features of
 those commands are supported, such as setting the :cmake:`CMAKE_REQUIRED_*` variables.
 
 Examples
@@ -116,7 +116,7 @@ result is written to :cmake:`VAR` and a compile-time definition with the same na
 check succeeds. Setting :cmake:`LANGUAGE` to :cmake:`C` or :cmake:`CXX` uses the C or C++ compiler respectively.
 If :cmake:`LANGUAGE` is not set the C compiler is preferred if it is available.
 
-This function calls |check_include_files| and |add_compile_definitions| directly, so all features of those
+This function calls |check_include_files| and |add_compile_definitions| directly. All features of those
 commands are supported.
 
 Examples
@@ -232,8 +232,8 @@ This example finds :cmake:`ZLIB` and links :cmake:`ZLIB::ZLIB` as private depend
         FIND_PACKAGE_ARGS REQUIRED QUIET
     )
 
-Find a only some components
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Find only some components
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This finds the :cmake:`Interpreter` and :cmake:`Development` components of :cmake:`Python` and links all found
 components to :cmake`target`:
