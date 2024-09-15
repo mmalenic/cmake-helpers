@@ -45,7 +45,7 @@ html_theme_options = {
             "url": "https://github.com/mmalenic/cmake-toolbelt",
             "icon": "fa-brands fa-github",
         },
-    ]
+    ],
 }
 html_sidebars = {
     "**": [
