@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f8f77a50" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4bf4006c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -191,7 +191,7 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="code_generation.html">Code Generation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="combinators.html">Combinators</a></li>
@@ -384,7 +384,7 @@ document.write(`
                   
   <section id="utilities">
 <h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h1>
-<p>The utilities module contains miscellaneous commands such as for defining enums or required arguments.</p>
+<p>The utilities module contains miscellaneous commands such as defining enums or required arguments.</p>
 <section id="toolbelt-enum">
 <h2>toolbelt_enum<a class="headerlink" href="#toolbelt-enum" title="Link to this heading">#</a></h2>
 <p>A macro which checks whether only one out of a set of variables is truthy and returns an error if not.
@@ -395,8 +395,12 @@ This is useful to define enum options which can be one out of a set of defined v
 </pre></div>
 </div>
 <p>This macro returns an error in the scope of the calling code, if more than one variable in <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">variables</span></code>
-evaluates to true. It assumes that variables prefixed with <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">_</span></code> should be printed without this prefix which is
-useful to properly format arguments parsed by <span class="target" id="index-0-command:command:cmake_parse_arguments"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/cmake_parse_arguments.html#command:cmake_parse_arguments" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments</span></code></a>.</p>
+evaluates to true.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function assumes that variables prefixed with <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">_</span></code> should be used without this prefix. This is
+used to format arguments parsed by <span class="target" id="index-0-command:command:cmake_parse_arguments"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/cmake_parse_arguments.html#command:cmake_parse_arguments" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments</span></code></a>.</p>
+</div>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
 <section id="check-if-an-enum-is-set">

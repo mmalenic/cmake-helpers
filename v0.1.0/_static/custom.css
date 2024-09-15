@@ -4,20 +4,30 @@
     margin-bottom: 0 !important;
 }
 
+:root {
+    --colour-primary: #ffe6f0;
+    --colour-secondary-light: #ffabba;
+    --colour-secondary-dark: #d9919e;
+    --colour-background-dark: #141510;
+    --colour-background-light: #ffffff;
+}
+
 html[data-theme=dark] {
-    --pst-color-background: #141510;
-    --pst-color-primary: #ffabba;
-    --pst-color-secondary: #ffe6f0;
-    --pst-color-table-row-hover-bg: #d9919e;
-    --logo-colour: #ffe6f0;
+    --pst-color-background: var(--colour-background-dark);
+    --pst-color-primary: var(--colour-primary);
+    --pst-color-secondary: var(--colour-secondary-light);
+    --pst-color-table-row-hover-bg: var(--colour-secondary-dark);
+    --pst-color-inline-code-links: var(--colour-secondary-dark);
+    --logo-colour: var(--colour-primary);
 }
 
 html[data-theme=light] {
-    --pst-color-background: #ffffff;
-    --pst-color-primary: #d9919e;
-    --pst-color-secondary: #ffabba;
-    --pst-color-table-row-hover-bg: #d9919e;
-    --logo-colour: #141510;
+    --pst-color-background: var(--colour-background-light);
+    --pst-color-primary: var(--colour-secondary-dark);
+    --pst-color-secondary: var(--colour-secondary-light);
+    --pst-color-table-row-hover-bg: var(--colour-secondary-dark);
+    --pst-color-inline-code-links: var(--colour-secondary-dark);
+    --logo-colour: var(--colour-background-dark);
 }
 
 .primary-logo {

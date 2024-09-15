@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f8f77a50" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4bf4006c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -192,7 +192,7 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="code_generation.html">Code Generation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Combinators</a></li>
@@ -375,7 +375,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-add-dep">toolbelt_add_dep</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Examples</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-zlib-and-link-to-a-target">Find ZLIB and link to a target</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-a-only-some-components">Find a only some components</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-only-some-components">Find only some components</a></li>
 </ul>
 </li>
 </ul>
@@ -400,7 +400,7 @@ document.write(`
                   
   <section id="combinators">
 <h1>Combinators<a class="headerlink" href="#combinators" title="Link to this heading">#</a></h1>
-<p>The combinators module combines cmake functions and aim to reduce repetitive build configuration code.</p>
+<p>The combinators module combines cmake functions and aims to reduce repetitive build configuration code.</p>
 <section id="toolbelt-check-symbol">
 <h2>toolbelt_check_symbol<a class="headerlink" href="#toolbelt-check-symbol" title="Link to this heading">#</a></h2>
 <p>A wrapper function around <span class="target" id="index-0-command:command:check_cxx_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckCXXSymbolExists.html#command:check_cxx_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_cxx_symbol_exists</span></code></a>, or <span class="target" id="index-0-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_symbol_exists</span></code></a> that adds compile time
@@ -417,7 +417,7 @@ definitions using <span class="target" id="index-0-command:command:add_compile_d
 <span class="target" id="index-1-command:command:check_cxx_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckCXXSymbolExists.html#command:check_cxx_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_cxx_symbol_exists</span></code></a>. A cached result is written to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> and a compile-time definition with the
 same name as <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> is created if this check succeeds. Setting the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">C</span></code> flag uses <span class="target" id="index-1-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_symbol_exists</span></code></a>
 instead.</p>
-<p>This function calls the check function and compile definitions function directly, so all features of
+<p>This function calls the check function and compile definitions function directly. All features of
 those commands are supported, such as setting the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CMAKE_REQUIRED_</span><span class="p">*</span></code> variables.</p>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
@@ -459,7 +459,7 @@ those commands are supported, such as setting the <code class="code highlight cm
 result is written to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> and a compile-time definition with the same name as <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> is created if this
 check succeeds. Setting <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LANGUAGE</span></code> to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">C</span></code> or <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CXX</span></code> uses the C or C++ compiler respectively.
 If <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LANGUAGE</span></code> is not set the C compiler is preferred if it is available.</p>
-<p>This function calls <span class="target" id="index-1-command:command:check_include_files"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckIncludeFiles.html#command:check_include_files" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_include_files</span></code></a> and <span class="target" id="index-3-command:command:add_compile_definitions"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_compile_definitions.html#command:add_compile_definitions" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions</span></code></a> directly, so all features of those
+<p>This function calls <span class="target" id="index-1-command:command:check_include_files"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckIncludeFiles.html#command:check_include_files" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_include_files</span></code></a> and <span class="target" id="index-3-command:command:add_compile_definitions"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_compile_definitions.html#command:add_compile_definitions" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions</span></code></a> directly. All features of those
 commands are supported.</p>
 <section id="id1">
 <h3>Examples<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
@@ -533,8 +533,8 @@ are supported. Set <code class="code highlight cmake docutils literal highlight-
 </pre></div>
 </div>
 </section>
-<section id="find-a-only-some-components">
-<h4>Find a only some components<a class="headerlink" href="#find-a-only-some-components" title="Link to this heading">#</a></h4>
+<section id="find-only-some-components">
+<h4>Find only some components<a class="headerlink" href="#find-only-some-components" title="Link to this heading">#</a></h4>
 <p>This finds the <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Interpreter</span></code> and <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Development</span></code> components of <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Python</span></code> and links all found
 components to :cmake`target`:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_add_dep(</span>
@@ -641,7 +641,7 @@ additional libraries which should be linked to <code class="code highlight cmake
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-add-dep">toolbelt_add_dep</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Examples</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-zlib-and-link-to-a-target">Find ZLIB and link to a target</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-a-only-some-components">Find a only some components</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-only-some-components">Find only some components</a></li>
 </ul>
 </li>
 </ul>
