@@ -192,7 +192,7 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Code Generation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="combinators.html">Combinators</a></li>
@@ -384,7 +384,7 @@ resources, serving as a replacement for the C23 <a class="reference external" hr
 <section id="toolbelt-embed">
 <h2>toolbelt_embed<a class="headerlink" href="#toolbelt-embed" title="Link to this heading">#</a></h2>
 <p>Embeds a resource into source code as a variable or define macro. This function is similar to the C23 <a class="reference external" href="https://en.cppreference.com/w/c/preprocessor/embed">#embed</a>
-directive, however the <a class="reference external" href="https://en.cppreference.com/w/c/preprocessor/embed">#embed</a> directive should be preferred over <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt_embed</span></code> if it is available.</p>
+directive. The <a class="reference external" href="https://en.cppreference.com/w/c/preprocessor/embed">#embed</a> directive should be preferred over <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt_embed</span></code> if it is available.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_embed(</span>
 <span class="w">    </span><span class="nv">&lt;file&gt;</span>
 <span class="w">    </span><span class="nv">&lt;variable&gt;</span>
@@ -393,7 +393,7 @@ directive, however the <a class="reference external" href="https://en.cppreferen
 <span class="w">    </span><span class="p">[</span><span class="no">OUTPUT_DIR</span><span class="w"> </span><span class="nb">output_dir</span><span class="p">]</span>
 <span class="w">    </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">target</span><span class="p">]</span>
 <span class="w">    </span><span class="p">[</span><span class="no">VISIBILITY</span><span class="w"> </span><span class="nb">visibility</span><span class="p">]</span>
-<span class="w">    </span><span class="p">[</span><span class="no">AUTO_LITERAL</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">CHAR_LITERAL</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">BYTE_ARRAY</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DEFINE_LITERAL</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DEFINE_ARRAY</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="no">AUTO_LITERAL</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">CHAR_LITERAL</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">BYTE_ARRAY</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DEFINE</span><span class="p">]</span>
 <span class="nf">)</span>
 </pre></div>
 </div>
@@ -405,8 +405,8 @@ then they are all concatenated and embedded in the same <code class="code highli
 <p>This function cannot create multiple variables in the same file.</p>
 </div>
 <p>In order to control how the variable is created the mode should be specified as either <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">AUTO_LITERAL</span></code>,
-<code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CHAR_LITERAL</span></code>, <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">BYTE_ARRAY</span></code>, <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">DEFINE_LITERAL</span></code> or <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">DEFINE_ARRAY</span></code>. This function returns
-an error if more than one of these modes if specified. The default mode is <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">AUTO_LITERAL</span></code>.</p>
+<code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CHAR_LITERAL</span></code>, <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">BYTE_ARRAY</span></code>, <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">DEFINE</span></code>. This function returns an error if more than one of
+these modes if specified. The default mode is <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">AUTO_LITERAL</span></code>.</p>
 <p><code class="code highlight cmake docutils literal highlight-cmake"><span class="no">AUTO_LITERAL</span></code> and <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CHAR_LITERAL</span></code> both define string literal variables with a null terminator, and a type
 of <code class="code highlight cpp c++ docutils literal highlight-c++"><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span></code> or <code class="code highlight cpp c++ docutils literal highlight-c++"><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span></code> respectively. <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">BYTE_ARRAY</span></code> defines a byte array variable without
 a null terminator, and a type of <code class="code highlight cpp c++ docutils literal highlight-c++"><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">[]</span></code>. <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">DEFINE</span></code> defines a preprocessor macro.</p>
@@ -458,7 +458,7 @@ a null terminator, and a type of <code class="code highlight cpp c++ docutils li
 </tbody>
 </table>
 </div>
-<p>The variable definition can be surrounded by a namespace by specifying the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">NAMESPACE</span></code>. By default,
+<p>The variable definition can be surrounded by a namespace by specifying <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">NAMESPACE</span></code>. By default,
 <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt_embed</span></code> places the generated file in <span class="target" id="index-0-variable:variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="(in CMake v3.30.3)"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_BINARY_DIR}/generated</span></code></a>. <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">OUTPUT_DIR</span></code> can be used
 to change this location. If <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">TARGET</span></code> is specified, then <span class="target" id="index-0-command:command:target_sources"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/target_sources.html#command:target_sources" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources</span></code></a> is used to add the generated
 file to the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">TARGET</span></code> with <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VISIBILITY</span></code> visibility. The default visibility is <code class="code highlight cmake docutils literal highlight-cmake"><span class="s">&quot;PRIVATE&quot;</span></code>.</p>
@@ -499,6 +499,7 @@ resource.</p>
 <span class="w">    </span><span class="no">EMBED</span><span class="w"> </span><span class="s">&quot;embed_one.txt&quot;</span><span class="w"> </span><span class="s">&quot;embed_two.txt&quot;</span>
 <span class="w">    </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="s">&quot;application::detail&quot;</span>
 <span class="w">    </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">application</span>
+<span class="w">    </span><span class="no">CHAR_LITERAL</span>
 <span class="nf">)</span>
 <span class="nf">target_include_directories(</span><span class="nb">application</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nt">cmake_toolbelt_ret</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
@@ -513,7 +514,7 @@ resource.</p>
 <span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">include_const_char_multi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is an embedded literal.</span><span class="se">\n</span><span class="s">&quot;</span>
 <span class="s">&quot;This is also an embedded literal.</span><span class="se">\n</span><span class="s">&quot;</span>
 <span class="s">&quot;With multiple lines.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<span class="p">}</span><span class="w"> </span><span class="c1">// application::detail</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace application::detail</span>
 
 <span class="cp">#endif </span><span class="c1">// APPLICATION_DETAIL_INCLUDE_CONST_CHAR_H</span>
 </pre></div>
