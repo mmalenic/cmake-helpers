@@ -41,10 +41,9 @@
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'readme';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code Generation" href="code_generation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -127,7 +126,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -208,8 +207,8 @@
         <div class="bd-toc-item navbar-nav active">
             <p aria-level="2" class="caption" role="heading"><span class="caption-text">Versions</span></p>
             <ul class="nav bd-sidenav">
-                <li class="toctree-l1"><a class="reference internal" href="index.html">v0.1.0</a></li>
-                <li class="toctree-l1"><a class="reference internal" href="../v0.1.1/index.html">v0.1.1</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="../v0.1.0/readme.html">v0.1.0</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="readme.html">v0.1.1</a></li>
             </ul>
         </div>
     </nav>
@@ -265,7 +264,7 @@
       
       
       
-      <li><a href="_sources/index.rst" target="_blank"
+      <li><a href="_sources/readme.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -374,7 +373,16 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="primary-logo"></div><section id="cmake-toolbelt">
+  <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_light.svg">
+   <source media="(prefers-color-scheme: light)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_dark.svg">
+   <img alt="Logo" src="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_dark.svg">
+</picture>
+<br>
+<a href="https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE" target="_blank"><img
+   alt="MIT licensed" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+<a href="https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain" target="_blank"><img
+   alt="Build status" src="https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg"/></a><section id="cmake-toolbelt">
 <h1>cmake-toolbelt<a class="headerlink" href="#cmake-toolbelt" title="Link to this heading">#</a></h1>
 <p>A small collection of CMake build code which adds some missing functionality and reduces repetitive build
 configurations.</p>
@@ -390,7 +398,7 @@ commands are available after including with a <code class="code highlight cmake 
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">     </span><span class="nb">toolbelt</span>
 <span class="w">     </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/mmalenic/cmake-toolbelt</span>
-<span class="w">     </span><span class="no">GIT_TAG</span><span class="w"> </span><span class="m">0.1.0</span>
+<span class="w">     </span><span class="no">GIT_TAG</span><span class="w"> </span><span class="nb">v0.1.1</span>
 <span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">toolbelt</span><span class="nf">)</span>
 
@@ -431,27 +439,6 @@ To generate documentation, run the following in the <a class="reference external
 <section id="licence">
 <h2>Licence<a class="headerlink" href="#licence" title="Link to this heading">#</a></h2>
 <p>This project is licensed under the MIT <a class="reference internal" href="#licence">licence</a>.</p>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="code_generation.html">Code Generation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="code_generation.html#toolbelt-embed">toolbelt_embed</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="combinators.html">Combinators</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="combinators.html#toolbelt-check-symbol">toolbelt_check_symbol</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combinators.html#toolbelt-check-includes">toolbelt_check_includes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combinators.html#toolbelt-add-dep">toolbelt_add_dep</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combinators.html#toolbelt-setup-gtest">toolbelt_setup_gtest</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#toolbelt-enum">toolbelt_enum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#toolbelt-required">toolbelt_required</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </section>
 </section>
 
@@ -466,15 +453,6 @@ To generate documentation, run the following in the <a class="reference external
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="code_generation.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Code Generation</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
