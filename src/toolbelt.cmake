@@ -31,7 +31,7 @@ commands are available after including with a :cmake:`toolbelt_` prefix:
    FetchContent_Declare(
         toolbelt
         GIT_REPOSITORY https://github.com/mmalenic/cmake-toolbelt
-        GIT_TAG v0.1.1
+        GIT_TAG v0.2.0
    )
    FetchContent_MakeAvailable(toolbelt)
 
