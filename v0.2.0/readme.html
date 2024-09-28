@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Utilities &#8212; cmake-toolbelt 0.1.0 documentation</title>
+    <title>cmake-toolbelt &#8212; cmake-toolbelt 0.1.0 documentation</title>
   
   
   
@@ -41,10 +41,9 @@
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'utilities';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'readme';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Combinators" href="combinators.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -106,6 +105,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -192,10 +193,10 @@
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="code_generation.html">Code Generation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="combinators.html">Combinators</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
 </ul>
 
     </div>
@@ -206,9 +207,9 @@
         <div class="bd-toc-item navbar-nav active">
             <p aria-level="2" class="caption" role="heading"><span class="caption-text">Versions</span></p>
             <ul class="nav bd-sidenav">
-                <li class="toctree-l1"><a class="reference internal" href="utilities.html">main</a></li>
-                <li class="toctree-l1"><a class="reference internal" href="../v0.1.0/utilities.html">v0.1.0</a></li>
-                <li class="toctree-l1"><a class="reference internal" href="../v0.1.1/utilities.html">v0.1.1</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="../v0.1.0/readme.html">v0.1.0</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="../v0.1.1/readme.html">v0.1.1</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="readme.html">v0.2.0</a></li>
             </ul>
         </div>
     </nav>
@@ -264,7 +265,7 @@
       
       
       
-      <li><a href="_sources/utilities.rst" target="_blank"
+      <li><a href="_sources/readme.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -348,7 +349,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Utilities</h1>
+    <h1>cmake-toolbelt</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -358,20 +359,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-enum">toolbelt_enum</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-an-enum-is-set">Check if an enum is set</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-required">toolbelt_required</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-an-argument-is-set">Check if an argument is set</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-does-this-project-exist">Why does this project exist?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development">Development</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
 </ul>
             </nav>
         </div>
@@ -383,62 +374,72 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h1>
-<p>The utilities module contains miscellaneous commands such as defining enums or required arguments.</p>
-<section id="toolbelt-enum">
-<h2>toolbelt_enum<a class="headerlink" href="#toolbelt-enum" title="Link to this heading">#</a></h2>
-<p>A macro which checks whether only one out of a set of variables is truthy and returns an error if not.
-This is useful to define enum options which can be one out of a set of defined values.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_enum(</span>
-<span class="w">    </span><span class="nv">&lt;variables...&gt;</span>
+  <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_light.svg">
+   <source media="(prefers-color-scheme: light)" srcset="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_dark.svg">
+   <img alt="Logo" src="https://github.com/mmalenic/cmake-toolbelt/blob/main/docs/_static/primary_logo_dark.svg">
+</picture>
+<br>
+<a href="https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE" target="_blank"><img
+   alt="MIT licensed" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+<a href="https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain" target="_blank"><img
+   alt="Build status" src="https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg"/></a><section id="cmake-toolbelt">
+<h1>cmake-toolbelt<a class="headerlink" href="#cmake-toolbelt" title="Link to this heading">#</a></h1>
+<p>A small collection of CMake build code which adds some missing functionality and reduces repetitive build
+configurations.</p>
+<p>This repository contains a C23 <a class="reference external" href="https://en.cppreference.com/w/c/preprocessor/embed">#embed</a> replacement, functions for better dependency management, utilities for
+defining required args and enums, and combinator functions for <span class="target" id="index-0-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<p>To use this library, you can use CMake’s <span class="target" id="index-0-module:module:FetchContent"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/FetchContent.html#module:FetchContent" title="(in CMake v3.30.4)"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> to import the project. All library
+commands are available after including with a <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt_</span></code> prefix:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+
+<span class="c"># Fetch content from this repo.</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">     </span><span class="nb">toolbelt</span>
+<span class="w">     </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/mmalenic/cmake-toolbelt</span>
+<span class="w">     </span><span class="no">GIT_TAG</span><span class="w"> </span><span class="nb">v0.2.0</span>
 <span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">toolbelt</span><span class="nf">)</span>
+
+<span class="c"># Allow cmake to find the src directory.</span>
+<span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MODULE_PATH</span><span class="w"> </span><span class="s">&quot;${toolbelt_SOURCE_DIR}/src&quot;</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">toolbelt</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>This macro returns an error in the scope of the calling code, if more than one variable in <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">variables</span></code>
-evaluates to true.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function assumes that variables prefixed with <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">_</span></code> should be used without this prefix. This is
-used to format arguments parsed by <span class="target" id="index-0-command:command:cmake_parse_arguments"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/cmake_parse_arguments.html#command:cmake_parse_arguments" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments</span></code></a>.</p>
-</div>
-<section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
-<section id="check-if-an-enum-is-set">
-<h4>Check if an enum is set<a class="headerlink" href="#check-if-an-enum-is-set" title="Link to this heading">#</a></h4>
-<p>This checks if only one out of <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">A</span></code>, <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">B</span></code>, and <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">C</span></code> is truthy and returns early if not.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_enum(</span>
-<span class="w">    </span><span class="no">A</span>
-<span class="w">    </span><span class="no">B</span>
-<span class="w">    </span><span class="no">C</span>
-<span class="nf">)</span>
+<p>Alternatively, copy and paste the code in the <a class="reference external" href="https://github.com/mmalenic/cmake-toolbelt/tree/main/src">src</a> directory
+and include the library using <code class="code highlight cmake docutils literal highlight-cmake"><span class="nf">include(</span><span class="nb">toolbelt</span><span class="nf">)</span></code>.</p>
+</section>
+<section id="why-does-this-project-exist">
+<h2>Why does this project exist?<a class="headerlink" href="#why-does-this-project-exist" title="Link to this heading">#</a></h2>
+<p>The motivation behind this project is to define a common set of CMake functions that I use for a variety of C++
+projects.</p>
+<p>There are countless CMake “helper”-style libraries. See a list of some of the <a class="reference external" href="https://github.com/onqtam/awesome-cmake">here</a>.
+This project does not aim to replace these, however it does contain some code which existing libraries lack,
+such as interactions with the CMake <span class="target" id="index-1-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
+</section>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
+<p>This project contains a set of unit tests for the <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt</span></code> commands. These can be run using <a class="reference external" href="https://docs.pytest.org/en/stable/">pytest</a> and
+<a class="reference external" href="https://python-poetry.org/">poetry</a>. After initializing the poetry project, run the tests using pytest:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pytest
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="toolbelt-required">
-<h2>toolbelt_required<a class="headerlink" href="#toolbelt-required" title="Link to this heading">#</a></h2>
-<p>A macro which checks whether an argument is truthy and returns an error if not. This can be used to
-confirm the presence of arguments parsed by <span class="target" id="index-2-command:command:cmake_parse_arguments"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/cmake_parse_arguments.html#command:cmake_parse_arguments" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments</span></code></a>.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_required(</span>
-<span class="w">    </span><span class="nv">&lt;arg&gt;</span>
-<span class="nf">)</span>
+<p>The documentation for this project (including this README) is made using <a class="reference external" href="https://www.sphinx-doc.org/en/master/">sphinx</a>, and published to github pages.
+To generate documentation, run the following in the <a class="reference external" href="https://github.com/mmalenic/cmake-toolbelt/tree/main/docs">docs</a> directory to create a static page:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>html
 </pre></div>
 </div>
-<p>This macro returns an error in the scope of the calling code if <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">arg</span></code> is not truthy.</p>
-<section id="id1">
-<h3>Examples<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<section id="check-if-an-argument-is-set">
-<h4>Check if an argument is set<a class="headerlink" href="#check-if-an-argument-is-set" title="Link to this heading">#</a></h4>
-<p>This checks if <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">arg</span></code> is defined and evaluates to true:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_required(</span>
-<span class="w">    </span><span class="nb">arg</span>
-<span class="nf">)</span>
+<p>Run the following to update this <code class="docutils literal notranslate"><span class="pre">README.md</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>readme
 </pre></div>
 </div>
+<p>Contributions are welcome. Feel free to open any pull requests or issues.</p>
 </section>
-</section>
+<section id="licence">
+<h2>Licence<a class="headerlink" href="#licence" title="Link to this heading">#</a></h2>
+<p>This project is licensed under the MIT <a class="reference internal" href="#licence">licence</a>.</p>
 </section>
 </section>
 
@@ -453,15 +454,6 @@ confirm the presence of arguments parsed by <span class="target" id="index-2-com
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="combinators.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Combinators</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
@@ -478,20 +470,10 @@ confirm the presence of arguments parsed by <span class="target" id="index-2-com
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-enum">toolbelt_enum</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-an-enum-is-set">Check if an enum is set</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-required">toolbelt_required</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-an-argument-is-set">Check if an argument is set</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-does-this-project-exist">Why does this project exist?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development">Development</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licence">Licence</a></li>
 </ul>
   </nav></div>
 
