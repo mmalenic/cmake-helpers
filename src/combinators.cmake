@@ -342,7 +342,7 @@ This discovers tests for :cmake:`test_executable` and links :cmake:`additional_l
 .. |gtest_discover_tests| replace:: :command:`gtest_discover_tests <command:gtest_discover_tests>`
 .. |enable_testing| replace:: :command:`enable_testing <command:enable_testing>`
 ]]
-function(setup_gtest test_executable)
+function(toolbelt_setup_gtest test_executable)
     set(multi_value_args ADD_LIBRARIES)
     cmake_parse_arguments("" "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
