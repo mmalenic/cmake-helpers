@@ -1,0 +1,711 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Combinators &#8212; cmake-toolbelt 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d60a664f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'combinators';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Code Generation" href="code_generation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/secondary_logo_dark.svg" class="logo__image only-light" alt="cmake-toolbelt 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="_static/secondary_logo_light.svg" class="logo__image only-dark" alt="cmake-toolbelt 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mmalenic/cmake-toolbelt/blob/main/LICENSE" title="MIT Licensed" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/badge/license-MIT-blue.svg" class="icon-link-image" alt="MIT Licensed"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mmalenic/cmake-toolbelt/actions?query=workflow%3Atest+branch%3Amain" title="Build status" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://github.com/mmalenic/cmake-toolbelt/actions/workflows/test.yaml/badge.svg" class="icon-link-image" alt="Build status"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mmalenic/cmake-toolbelt" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="code_generation.html">Code Generation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Combinators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="sidebar-primary-item">
+<div class="sidebar-primary-item">
+    <nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="bd-toc-item navbar-nav active">
+            <p aria-level="2" class="caption" role="heading"><span class="caption-text">Versions</span></p>
+            <ul class="nav bd-sidenav">
+                <li class="toctree-l1"><a class="reference internal" href="combinators.html">main</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="../v0.1.0/combinators.html">v0.1.0</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="../v0.1.1/combinators.html">v0.1.1</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/combinators.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Combinators</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-check-symbol">toolbelt_check_symbol</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-a-symbol-exists-in-stdlib-h">Check if a symbol exists in stdlib.h</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-check-includes">toolbelt_check_includes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-stdlib-h-can-be-included">Check if stdlib.h can be included</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-add-dep">toolbelt_add_dep</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-zlib-and-link-to-a-target">Find ZLIB and link to a target</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-only-some-components">Find only some components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-setup-gtest">toolbelt_setup_gtest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#discover-tests-for-an-executable">Discover tests for an executable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="combinators">
+<h1>Combinators<a class="headerlink" href="#combinators" title="Link to this heading">#</a></h1>
+<p>The combinators module combines cmake functions and aims to reduce repetitive build configuration code.</p>
+<section id="toolbelt-check-symbol">
+<h2>toolbelt_check_symbol<a class="headerlink" href="#toolbelt-check-symbol" title="Link to this heading">#</a></h2>
+<p>A wrapper function around <span class="target" id="index-0-command:command:check_cxx_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckCXXSymbolExists.html#command:check_cxx_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_cxx_symbol_exists</span></code></a>, or <span class="target" id="index-0-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_symbol_exists</span></code></a> that adds compile time
+definitions using <span class="target" id="index-0-command:command:add_compile_definitions"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_compile_definitions.html#command:add_compile_definitions" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions</span></code></a>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_check_symbol(</span>
+<span class="w">    </span><span class="no">SYMBOL</span><span class="w"> </span><span class="nv">&lt;symbol&gt;</span>
+<span class="w">    </span><span class="no">VAR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span>
+<span class="w">    </span><span class="no">FILES</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;file&gt;...</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="no">C</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>By default, this checks if the given <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">SYMBOL</span></code> can be found after including <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">FILES</span></code> using
+<span class="target" id="index-1-command:command:check_cxx_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckCXXSymbolExists.html#command:check_cxx_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_cxx_symbol_exists</span></code></a>. A cached result is written to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> and a compile-time definition with the
+same name as <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> is created if this check succeeds. Setting the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">C</span></code> flag uses <span class="target" id="index-1-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_symbol_exists</span></code></a>
+instead.</p>
+<p>This function calls the check function and compile definitions function directly. All features of
+those commands are supported, such as setting the <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CMAKE_REQUIRED_</span><span class="p">*</span></code> variables.</p>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
+<section id="check-if-a-symbol-exists-in-stdlib-h">
+<h4>Check if a symbol exists in stdlib.h<a class="headerlink" href="#check-if-a-symbol-exists-in-stdlib-h" title="Link to this heading">#</a></h4>
+<p>Checks if the <code class="code highlight cpp c++ docutils literal highlight-c++"><span class="s">&quot;exit&quot;</span></code> symbol can be found in <code class="code highlight cpp c++ docutils literal highlight-c++"><span class="s">&quot;stdlib.h&quot;</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_check_symbol(</span>
+<span class="w">    </span><span class="no">SYMBOL</span><span class="w"> </span><span class="s">&quot;exit&quot;</span>
+<span class="w">    </span><span class="no">FILES</span><span class="w"> </span><span class="s">&quot;stdlib.h&quot;</span>
+<span class="w">    </span><span class="no">VAR</span><span class="w"> </span><span class="no">EXIT_EXISTS</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>This causes the following program to exit with 0 if the symbol exists:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if defined(EXIT_EXISTS)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="toolbelt-check-includes">
+<h2>toolbelt_check_includes<a class="headerlink" href="#toolbelt-check-includes" title="Link to this heading">#</a></h2>
+<p>A wrapper function around <span class="target" id="index-0-command:command:check_include_files"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckIncludeFiles.html#command:check_include_files" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_include_files</span></code></a> which adds compile time definitions using
+<span class="target" id="index-2-command:command:add_compile_definitions"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_compile_definitions.html#command:add_compile_definitions" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions</span></code></a>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_check_includes(</span>
+<span class="w">    </span><span class="no">VAR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span>
+<span class="w">    </span><span class="no">INCLUDES</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span>
+<span class="w">    </span><span class="p">[</span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">C</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">CXX</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>By default, this checks that the given <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">INCLUDES</span></code> can be included in a source file. A cached
+result is written to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> and a compile-time definition with the same name as <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VAR</span></code> is created if this
+check succeeds. Setting <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LANGUAGE</span></code> to <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">C</span></code> or <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">CXX</span></code> uses the C or C++ compiler respectively.
+If <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LANGUAGE</span></code> is not set the C compiler is preferred if it is available.</p>
+<p>This function calls <span class="target" id="index-1-command:command:check_include_files"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckIncludeFiles.html#command:check_include_files" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_include_files</span></code></a> and <span class="target" id="index-3-command:command:add_compile_definitions"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_compile_definitions.html#command:add_compile_definitions" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions</span></code></a> directly. All features of those
+commands are supported.</p>
+<section id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="check-if-stdlib-h-can-be-included">
+<h4>Check if stdlib.h can be included<a class="headerlink" href="#check-if-stdlib-h-can-be-included" title="Link to this heading">#</a></h4>
+<p>Check if <code class="docutils literal notranslate"><span class="pre">&quot;stdlib.h&quot;</span></code> can be included using the C++ compiler:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_check_includes(</span>
+<span class="w">    </span><span class="no">VAR</span><span class="w"> </span><span class="no">STDLIB_EXISTS</span>
+<span class="w">    </span><span class="no">INCLUDES</span><span class="w"> </span><span class="s">&quot;stdlib.h&quot;</span>
+<span class="w">    </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">CXX</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>This causes the following program to exit with 0 if the check succeeds:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if defined(STDLIB_EXISTS)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="toolbelt-add-dep">
+<h2>toolbelt_add_dep<a class="headerlink" href="#toolbelt-add-dep" title="Link to this heading">#</a></h2>
+<p>A wrapper function around <span class="target" id="index-0-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> which links a dependency to a target using <span class="target" id="index-0-command:command:target_link_libraries"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries</span></code></a>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_add_dep(</span>
+<span class="w">    </span><span class="nv">&lt;target&gt;</span>
+<span class="w">    </span><span class="nv">&lt;dependency&gt;</span>
+<span class="w">    </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nb">version</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="no">VISIBILITY</span><span class="w"> </span><span class="nb">visibility</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="no">LINK_COMPONENTS</span><span class="w"> </span><span class="nb">link_components...</span><span class="p">]</span>
+<span class="w">    </span><span class="p">[</span><span class="no">FIND_PACKAGE_ARGS</span><span class="w"> </span><span class="nb">extra_args...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>This function calls <span class="target" id="index-1-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> with the <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">dependency</span></code> and <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">version</span></code> and determines the components
+to add by comparing <span class="target" id="index-0-prop_dir:prop_dir:IMPORTED_TARGETS"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/prop_dir/IMPORTED_TARGETS.html#prop_dir:IMPORTED_TARGETS" title="(in CMake v3.30.4)"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">IMPORTED_TARGETS</span></code></a> before and after calling <span class="target" id="index-2-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a>. All new components are linked
+to the <code class="docutils literal notranslate"><span class="pre">target</span></code> using <span class="target" id="index-1-command:command:target_link_libraries"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries</span></code></a> with an optional <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">VISIBILITY</span></code>.</p>
+<p>Set <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LINK_COMPONENTS</span></code> to manually specify which components should be linked to the target, overriding
+the components found using the <span class="target" id="index-1-prop_dir:prop_dir:IMPORTED_TARGETS"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/prop_dir/IMPORTED_TARGETS.html#prop_dir:IMPORTED_TARGETS" title="(in CMake v3.30.4)"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">IMPORTED_TARGETS</span></code></a> logic. This option is useful if only a subset of components
+declared by <span class="target" id="index-3-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> should be linked to <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Some <span class="target" id="index-4-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> modules declare extra targets which may not be intended to be used in
+<span class="target" id="index-2-command:command:target_link_libraries"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries</span></code></a>.</p>
+</div>
+<p>This function calls the <span class="target" id="index-5-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> and <span class="target" id="index-3-command:command:target_link_libraries"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries</span></code></a> directly, so all features of those commands
+are supported. Set <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">FIND_PACKAGE_ARGS</span></code> to pass additional arguments to <span class="target" id="index-6-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="code highlight cmake docutils literal highlight-cmake"><span class="no">LINK_COMPONENTS</span></code> is not passed to <span class="target" id="index-7-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a>, instead use <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">FIND_PACKAGE_ARGS</span></code> to specify
+<code class="code highlight cmake docutils literal highlight-cmake"><span class="no">COMPONENTS</span></code> that <span class="target" id="index-8-command:command:find_package"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/find_package.html#command:find_package" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package</span></code></a> should use.</p>
+</div>
+<section id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="find-zlib-and-link-to-a-target">
+<h4>Find ZLIB and link to a target<a class="headerlink" href="#find-zlib-and-link-to-a-target" title="Link to this heading">#</a></h4>
+<p>This example finds <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">ZLIB</span></code> and links <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">ZLIB</span><span class="o">::</span><span class="no">ZLIB</span></code> as private dependency to <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">target</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_add_dep(</span>
+<span class="w">    </span><span class="nb">target</span>
+<span class="w">    </span><span class="no">ZLIB</span>
+<span class="w">    </span><span class="no">LINK_COMPONENTS</span><span class="w"> </span><span class="no">ZLIB</span><span class="o">::</span><span class="no">ZLIB</span>
+<span class="w">    </span><span class="no">VERSION</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="no">VISIBILITY</span><span class="w"> </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="no">FIND_PACKAGE_ARGS</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">QUIET</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="find-only-some-components">
+<h4>Find only some components<a class="headerlink" href="#find-only-some-components" title="Link to this heading">#</a></h4>
+<p>This finds the <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Interpreter</span></code> and <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Development</span></code> components of <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">Python</span></code> and links all found
+components to :cmake`target`:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_add_dep(</span>
+<span class="w">    </span><span class="nb">target</span>
+<span class="w">    </span><span class="nb">Python</span>
+<span class="w">    </span><span class="no">FIND_PACKAGE_ARGS</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Interpreter</span><span class="w"> </span><span class="nb">Development</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="toolbelt-setup-gtest">
+<h2>toolbelt_setup_gtest<a class="headerlink" href="#toolbelt-setup-gtest" title="Link to this heading">#</a></h2>
+<p>A convenience function which links <a class="reference external" href="https://google.github.io/googletest">GTest</a> and an optional testing library to a test executable
+and calls <span class="target" id="index-0-command:command:gtest_discover_tests"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/GoogleTest.html#command:gtest_discover_tests" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_discover_tests</span></code></a> to find tests.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">toolbelt_setup_gtest(</span>
+<span class="w">    </span><span class="nv">&lt;test_executable&gt;</span>
+<span class="w">    </span><span class="p">[</span><span class="no">ADD_LIBRARIES</span><span class="w"> </span><span class="nb">add_libraries...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>The <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">test_executable</span></code> specifies the  executable to discover tests with and <code class="code highlight cmake docutils literal highlight-cmake"><span class="no">ADD_LIBRARIES</span></code> specifies
+additional libraries which should be linked to <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">test_executable</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function calls <span class="target" id="index-0-command:command:enable_testing"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/command/enable_testing.html#command:enable_testing" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_testing</span></code></a>.</p>
+</div>
+<section id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="discover-tests-for-an-executable">
+<h4>Discover tests for an executable<a class="headerlink" href="#discover-tests-for-an-executable" title="Link to this heading">#</a></h4>
+<p>This discovers tests for <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">test_executable</span></code> and links <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">additional_library</span></code> to the executable.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">setup_gtest(</span>
+<span class="w">    </span><span class="s">&quot;test_executable&quot;</span>
+<span class="w">    </span><span class="no">ADD_LIBRARIES</span><span class="w"> </span><span class="s">&quot;additional_library&quot;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="code_generation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Code Generation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="utilities.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Utilities</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-check-symbol">toolbelt_check_symbol</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-a-symbol-exists-in-stdlib-h">Check if a symbol exists in stdlib.h</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-check-includes">toolbelt_check_includes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-stdlib-h-can-be-included">Check if stdlib.h can be included</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-add-dep">toolbelt_add_dep</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-zlib-and-link-to-a-target">Find ZLIB and link to a target</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#find-only-some-components">Find only some components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolbelt-setup-gtest">toolbelt_setup_gtest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#discover-tests-for-an-executable">Discover tests for an executable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Marko Malenic
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Marko Malenic.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

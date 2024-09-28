@@ -208,6 +208,7 @@
         <div class="bd-toc-item navbar-nav active">
             <p aria-level="2" class="caption" role="heading"><span class="caption-text">Versions</span></p>
             <ul class="nav bd-sidenav">
+                <li class="toctree-l1"><a class="reference internal" href="../main/index.html">main</a></li>
                 <li class="toctree-l1"><a class="reference internal" href="../v0.1.0/index.html">v0.1.0</a></li>
                 <li class="toctree-l1"><a class="reference internal" href="index.html">v0.1.1</a></li>
             </ul>
@@ -379,10 +380,10 @@ document.write(`
 <p>A small collection of CMake build code which adds some missing functionality and reduces repetitive build
 configurations.</p>
 <p>This repository contains a C23 <a class="reference external" href="https://en.cppreference.com/w/c/preprocessor/embed">#embed</a> replacement, functions for better dependency management, utilities for
-defining required args and enums, and combinator functions for <span class="target" id="index-0-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
+defining required args and enums, and combinator functions for <span class="target" id="index-0-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<p>To use this library, you can use CMake’s <span class="target" id="index-0-module:module:FetchContent"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/FetchContent.html#module:FetchContent" title="(in CMake v3.30.3)"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> to import the project. All library
+<p>To use this library, you can use CMake’s <span class="target" id="index-0-module:module:FetchContent"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/FetchContent.html#module:FetchContent" title="(in CMake v3.30.4)"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> to import the project. All library
 commands are available after including with a <code class="code highlight cmake docutils literal highlight-cmake"><span class="nb">toolbelt_</span></code> prefix:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 
@@ -408,7 +409,7 @@ and include the library using <code class="code highlight cmake docutils literal
 projects.</p>
 <p>There are countless CMake “helper”-style libraries. See a list of some of the <a class="reference external" href="https://github.com/onqtam/awesome-cmake">here</a>.
 This project does not aim to replace these, however it does contain some code which existing libraries lack,
-such as interactions with the CMake <span class="target" id="index-1-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.3)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
+such as interactions with the CMake <span class="target" id="index-1-command:command:check_symbol_exists"></span><a class="reference external" href="https://cmake.org/cmake/help/latest/module/CheckSymbolExists.html#command:check_symbol_exists" title="(in CMake v3.30.4)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_</span></code></a> commands.</p>
 </section>
 <section id="development">
 <h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
