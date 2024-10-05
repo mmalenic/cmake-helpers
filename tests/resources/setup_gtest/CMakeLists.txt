@@ -35,4 +35,4 @@ include(toolbelt)
 add_executable(${name} main.cpp)
 
 enable_testing()
-setup_gtest(${name})
+toolbelt_setup_gtest(${name})
