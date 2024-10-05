@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "cmake-helpers"
-version = "0.1.0"
-description = "Testing and codegen python code for the cmake-helpers library."
+version = "0.3.0"
+description = "Testing and doc generation python code for the cmake-toolbelt library."
 authors = ["Marko Malenic <mmalenic1@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -19,12 +19,12 @@ pytest = "^8"
 cmake = "^3"
 conan = "^2"
 brotlicffi = "^1"
-sphinx = "^7"
+sphinx = "^8"
 sphinxcontrib-moderncmakedomain = "^3"
 sphinx-markdown-builder = "^0.6"
 sphinx-book-theme = "^1"
 sphinx-multiversion = "^0.2"
-pre-commit = "^3"
+pre-commit = "^4"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

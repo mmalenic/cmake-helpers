@@ -321,7 +321,8 @@ and calls |gtest_discover_tests| to find tests.
 The :cmake:`test_executable` specifies the  executable to discover tests with and :cmake:`ADD_LIBRARIES` specifies
 additional libraries which should be linked to :cmake:`test_executable`.
 
-.. note:: This function calls |enable_testing|.
+.. note:: This function does not call |enable_testing|. |enable_testing| should be called from the source directory
+          where the tests are defined.
 
 Examples
 --------
@@ -350,7 +351,6 @@ function(toolbelt_setup_gtest test_executable)
         target_link_libraries(${test_executable} PUBLIC ${library})
     endforeach()
 
-    enable_testing()
     set(gtest_force_shared_crt
         ON
         CACHE BOOL "" FORCE
