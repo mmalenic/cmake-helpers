@@ -22,6 +22,7 @@ defining required args and enums, and combinator functions for [`check_`](https:
 To use this library, you can use CMake’s [`FetchContent`](https://cmake.org/cmake/help/latest/module/FetchContent.html#module:FetchContent) to import the project. All library
 commands are available after including with a `toolbelt_` prefix:
 
+<!-- x-release-please-start-version -->
 ```cmake
 include(FetchContent)
 
@@ -29,7 +30,7 @@ include(FetchContent)
 FetchContent_Declare(
      toolbelt
      GIT_REPOSITORY https://github.com/mmalenic/cmake-toolbelt
-     GIT_TAG v0.3.0
+     GIT_TAG v0.2.0
 )
 FetchContent_MakeAvailable(toolbelt)
 
@@ -37,6 +38,8 @@ FetchContent_MakeAvailable(toolbelt)
 list(APPEND CMAKE_MODULE_PATH "${toolbelt_SOURCE_DIR}/src")
 include(toolbelt)
 ```
+
+<!-- x-release-please-end -->
 
 Alternatively, copy and paste the code in the [src](https://github.com/mmalenic/cmake-toolbelt/tree/main/src) directory
 and include the library using `include(toolbelt)`.

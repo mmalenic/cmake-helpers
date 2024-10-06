@@ -23,6 +23,9 @@ Usage
 To use this library, you can use CMake's |fetch_content| to import the project. All library
 commands are available after including with a :cmake:`toolbelt_` prefix:
 
+..
+   x-release-please-start-version
+
 .. code-block:: cmake
 
    include(FetchContent)
@@ -31,13 +34,16 @@ commands are available after including with a :cmake:`toolbelt_` prefix:
    FetchContent_Declare(
         toolbelt
         GIT_REPOSITORY https://github.com/mmalenic/cmake-toolbelt
-        GIT_TAG v0.3.0
+        GIT_TAG v0.2.0
    )
    FetchContent_MakeAvailable(toolbelt)
 
    # Allow cmake to find the src directory.
    list(APPEND CMAKE_MODULE_PATH "${toolbelt_SOURCE_DIR}/src")
    include(toolbelt)
+
+..
+   x-release-please-end
 
 Alternatively, copy and paste the code in the `src`_ directory
 and include the library using :cmake:`include(toolbelt)`.

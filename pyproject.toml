@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "cmake-helpers"
-version = "0.3.0"
+name = "cmake-toolbelt"
+version = "0.2.0"
 description = "Testing and doc generation python code for the cmake-toolbelt library."
 authors = ["Marko Malenic <mmalenic1@gmail.com>"]
 license = "MIT"

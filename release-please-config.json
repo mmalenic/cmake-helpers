@@ -1,0 +1,19 @@
+{
+  "bump-minor-pre-major": true,
+  "extra-files": [
+    {
+      "path": "src/toolbelt.cmake",
+      "type": "generic"
+    },
+    {
+      "path": "README.md",
+      "type": "generic"
+    },
+    {
+      "jsonpath": "$.tool.poetry.version",
+      "path": "pyproject.toml",
+      "type": "toml"
+    }
+  ],
+  "include-component-in-tag": false
+}
